@@ -1,0 +1,75 @@
+MID-SENTENCE CAPITAL
+====================
+
+PURPOSE
+Flags a capital letter that appears mid-sentence within a verse: after a comma, semicolon, colon, or another word rather than after sentence-final punctuation.
+Also flags a capital at the start of a verse when the previous verse ended without sentence-final punctuation (same logic as the Capital at Verse check).
+
+Capitalized terms that appear in the project's TermRenderings.xml (proper names, divine titles, etc.) are automatically excluded from flagging. A rendering can be a multi-word term (e.g. Nueva Jerusalen); the check requires the whole term, word for word in order, to appear at that position -- matching only the first word of a multi-word term is not enough to suppress the warning. Alternative renderings separated by || in a TermRendering entry (e.g. Nueva Jerusalen||Jerusalen Nueva) are each treated as their own separate term.
+Wildcard entries in TermRenderings are supported: a rendering stored as
+Dios* will also suppress Dioses; *Dios will suppress raDios; *Dios*
+suppresses both prefixed and suffixed forms. Wildcards may be applied to any word of a multi-word term, not just single-word terms.
+
+Note: only a term's first word needs to start with a capital letter to be eligible (matching this check's own trigger condition); a capitalized word buried in the middle of a multi-word term is no longer separately whitelisted on its own -- the full term must match.
+
+Words written with decomposed tone or accent marks (a base letter followed by a separate combining mark, as in some Africanist/IPA-based orthographies) are matched and compared as whole units, and a verse ending in such a word is correctly recognized as ending in a letter rather than in the mark itself.
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.
+3. Review the results list; each flagged item shows the reference and a text snippet around the problem.
+
+OPTIONS
+  FinalPunctuation
+    Default:  .!?
+    Characters that mark the end of a sentence. Capitalized words immediately following any of these are not flagged. Add language-specific closing quotation marks here if they can end a sentence in your translation.
+    Inverted sentence-opening punctuation (Spanish ! and ?) is handled automatically without adding it here.
+
+  WordsToIgnore
+    Default:  (empty)
+    Comma-separated list of capitalized words that should never be flagged, for example:  Senor, Alfa, Espiritu
+    Use this for proper nouns that are not already covered by TermRenderings.xml.
+    Accented and non-ASCII characters are supported; entries are compared after NFC normalization.
+
+  IgnoreCapAfterQuote
+    Default:  No
+    Set to Yes to suppress errors where a capitalized word immediately follows an opening quotation mark (e.g. direct speech introduced after a comma).  The characters treated as openers are configured by the QuoteOpeningChars option below.
+
+  QuoteOpeningChars
+    Default:  «"—'
+    Characters treated as opening quotation marks when IgnoreCapAfterQuote is set to Yes.  Each character in this string is an opener.  Default covers left guillemet («), left double curly quote ("), em dash (—), and left single curly quote (').  Clear this field to fall back to Unicode Pi-category detection.
+
+  IgnoreStyles
+    Default:  (empty)
+    Comma-separated list of USFM character style names (without backslash) whose enclosed text is completely excluded from checking.  Words inside these paired styles are not flagged and the span is invisible to the end-of-verse character detection.  Use for styles like:
+      qs  - Selah / acrostic heading text (e.g. \qs Selah\qs*)
+      pn  - Proper name spans
+    Example entry:  qs, pn
+
+  IgnoreParaStyles
+    Default:  sp, r, ms, mr, sr
+    Comma-separated list of USFM paragraph marker names (without backslash) whose marker and following text are treated as a sentence boundary for the within-verse check and excluded from end-of-verse character detection.
+    Default markers covered:
+      sp  - Speaker / Selah label (e.g., in Psalms or Song of Solomon)
+      r   - Parallel passage reference
+      ms  - Major section heading
+      mr  - Major section range reference
+      sr  - Section range reference
+    Note: Section headings (\s, \s1, \s2, etc.) are handled automatically by the check and do not need to be listed here.
+    To disable this feature entirely, clear the option value.
+
+  WordPrefixes
+    Default:  (empty)
+    Space-separated list of word prefixes (e.g.  ra  Ra).  A capitalized word whose beginning matches any listed prefix (case-insensitive) will not be flagged.  Use this for language-specific morphological prefixes that can attach to proper nouns.
+    Example entry:  ra ka
+
+  WordSuffixes
+    Default:  (empty)
+    Space-separated list of word suffixes (e.g.  es  am).  A capitalized word whose ending matches any listed suffix (case-insensitive) will not be flagged.  Use this for language-specific morphological suffixes that can attach to proper nouns.
+    Example entry:  es am pa
+
+  MidWordPunctuation
+    Default:  -
+    Characters that may appear inside a word and should not split it into separate tokens when checking for capitals.  Enter without spaces.
+    The hyphen (-) is included by default to handle compound proper nouns such as Be-nimura or Ebel-setin.  To also allow apostrophes (e.g. k'am), add ' to the value:  -'
+    To disable mid-word joining entirely, clear the option value.

@@ -1,0 +1,27 @@
+﻿\check Conversión de mayúsculas
+\submenu Herramientas_Español
+\script case_convert.py
+\description **Selecciona las palabras que quieras convertir y pulsa Ctrl+C. **O bien, introduce las palabras en las Opciones para que Paratext te muestre las opciones de mayúsculas disponibles. **Las opciones permiten elegir qué tipos de mayúsculas/minúsculas marcar, definir un mínimo de letras y filtrar una palabra específica.
+\noText
+\toList
+\utf8
+
+\optionName CheckLowercase
+\optionLocalizedName Verificar palabras en minúsculas
+\optionDescription Marca palabras donde todos los caracteres de letra son minúsculos. El mensaje muestra las formas en mayúsculas y con primera letra en mayúscula.
+\optionDefault Yes
+
+\optionName CheckUppercase
+\optionLocalizedName Verificar palabras en mayúsculas
+\optionDescription Marca palabras donde todos los caracteres de letra son mayúsculos. El mensaje muestra las formas en minúsculas y en mayúscula de oración (letras después de la primera).
+\optionDefault Yes
+
+\optionName MinLetters
+\optionLocalizedName Cantidad mínima de letras
+\optionDescription Ignorar palabras con menos de esta cantidad de caracteres de letra. Use 2 para omitir palabras de una sola letra; aumente el valor para omitir abreviaciones cortas.
+\optionDefault 2
+
+\optionName FilterWord
+\optionLocalizedName Palabra o frase a verificar
+\optionDescription Ingrese una palabra o frase específica para marcar. Deje en blanco para verificar todas las palabras.
+\optionDefault

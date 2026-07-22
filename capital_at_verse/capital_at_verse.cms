@@ -1,0 +1,53 @@
+﻿\check Capital at verse
+\submenu Phil_new
+\script capital_at_verse.py
+\description Flags a capital letter after a verse number when the previous verse ended with non-sentence-final punctuation (e.g. comma, semicolon, colon). Options let you set sentence-final characters, words/prefixes/suffixes to ignore, quote-opening handling, and character/paragraph styles to skip.
+\books
+\noText
+\toList
+\utf8
+
+\optionName FinalPunctuation
+\optionLocalizedName Sentence-final characters
+\optionDescription Characters that END a sentence. Verses following any of these are not flagged. Extend with language-specific closing quotes if needed.
+\optionDefault .!?
+
+\optionName WordsToIgnore
+\optionLocalizedName Words to ignore
+\optionDescription Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml.
+\optionDefault
+
+\optionName IgnoreCapAfterQuote
+\optionLocalizedName Ignore capital after opening quote
+\optionDescription Set to Yes to suppress errors where a verse begins with a capitalized word immediately after an opening quotation mark (e.g. direct speech). The characters treated as openers are configured by the Opening quote characters option below.
+\optionDefault No
+
+\optionName QuoteOpeningChars
+\optionLocalizedName Opening quote characters
+\optionDescription Characters treated as opening quotation marks when "Ignore capital after opening quote" is set to Yes. Each character in this string is an opener. Default covers left guillemet («), left double curly quote (“), em dash (—), and left single curly quote (‘). Clear this field to fall back to Unicode Pi-category detection.
+\optionDefault «“—‘
+
+\optionName IgnoreStyles
+\optionLocalizedName Character styles to ignore
+\optionDescription Comma-separated USFM character style names (no backslash) whose enclosed text is excluded when detecting the last character of a verse. Use for styles like qs (Selah) or pn (proper names) that do not end with sentence-final punctuation.
+\optionDefault
+
+\optionName IgnoreParaStyles
+\optionLocalizedName Paragraph styles to ignore
+\optionDescription Comma-separated USFM paragraph marker names (no backslash) whose text is excluded when computing the last character of a verse. Default covers: sp (speaker), r (parallel reference), ms/mr (major section), sr (section range). Section headings (s, s1, s2...) are suppressed automatically without this option.
+\optionDefault sp, r, ms, mr, sr
+
+\optionName WordPrefixes
+\optionLocalizedName Word prefixes to ignore
+\optionDescription Space-separated list of word prefixes (e.g. ra Ra). A capitalized verse-start word beginning with any of these (case-insensitive) will not be flagged.
+\optionDefault
+
+\optionName WordSuffixes
+\optionLocalizedName Word suffixes to ignore
+\optionDescription Space-separated list of word suffixes (e.g. es am). A capitalized verse-start word ending with any of these (case-insensitive) will not be flagged.
+\optionDefault
+
+\optionName MidWordPunctuation
+\optionLocalizedName Mid-word punctuation
+\optionDescription Characters that may appear inside a word (e.g. - for hyphen, ' for apostrophe). Enter without spaces. Words containing these characters are treated as a single unit when checking for capitals.
+\optionDefault -

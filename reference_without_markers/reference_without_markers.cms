@@ -1,0 +1,12 @@
+\check Reference without markers
+\submenu Phil_new
+\script reference_without_markers.py
+\description Find scripture references in text not enclosed in \xt, \rq, \ior, \fig, \r, \mr, or \sr markers. Option lets you set the chapter-verse separator character.
+\books
+\toList
+\utf8
+
+\optionName ChapterVerseSep
+\optionLocalizedName Chapter-verse separator
+\optionDescription Character separating chapter from verse numbers (from Settings.xml ChapterVerseSeparator: normally : or .).
+\optionDefault :

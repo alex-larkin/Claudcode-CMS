@@ -1,0 +1,23 @@
+﻿\check Versículo 1 corto
+\submenu Herramientas_Español
+\script short_v_1.py
+\description Marca el texto breve del versículo 1 entre un marcador de párrafo (\p o \m) y el siguiente marcador \p. Las opciones permiten definir la cantidad mínima de caracteres y agregar otros marcadores de párrafo a verificar.
+\books
+\noText
+\toList
+\utf8
+
+\optionName MinChars
+\optionLocalizedName Caracteres mínimos
+\optionDescription Número mínimo de caracteres esperados en el versículo 1 antes del siguiente marcador de párrafo. Se marcarán los versículos 1 más cortos que esto.
+\optionDefault 40
+
+\optionName CheckOtherMarkers
+\optionLocalizedName Verificar otros marcadores
+\optionDescription Elija Sí para también verificar marcadores de párrafo adicionales (listados abajo) antes y después del versículo 1, además de los predeterminados (\p y \m antes, \p después).
+\optionDefault No
+
+\optionName OtherMarkers
+\optionLocalizedName Otros marcadores
+\optionDescription Lista separada por espacios de marcadores de párrafo adicionales a verificar (sin barra invertida), p. ej.: q q1 q2 q3 q4. Solo se usa cuando Verificar otros marcadores es Sí.
+\optionDefault q q1 q2 q3 q4

@@ -1,0 +1,29 @@
+REFERENCE WITHOUT MARKERS
+=========================
+
+PURPOSE
+Finds scripture references in the text that are not enclosed in the proper
+USFM markers (\xt, \rq, \ior, \fig, \r, \mr, or \sr). Bare references should
+be wrapped in these markers so Paratext can make them clickable and so they
+are formatted consistently.
+
+REFERENCE FORMS RECOGNIZED
+  - Standard:          Mat 5:12
+  - Numbered books:    1 S 31:3   or   2 Cr 14:1
+  - Verse ranges:      Mat 5:12-18
+  - Cross-chapter:     Mr 8:31-9:1
+  - Verse sequences:   Lc 22:54-55, 63-71
+  - Verse suffixes:    Lc 9:43a
+  - Scripts supported: Latin, Greek, Hebrew (and other Unicode letters)
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.
+3. Review the results; each flagged item shows the reference that lacks markers.
+
+OPTIONS
+  ChapterVerseSep
+    Default:  :
+    The character your project uses between the chapter number and the verse
+    number. Most projects use a colon (:), but some use a period (.). Set this
+    to match your project's Settings.xml ChapterVerseSeparator value.

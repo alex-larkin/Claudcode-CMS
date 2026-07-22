@@ -1,0 +1,53 @@
+﻿\check Mayúscula a mitad de oración
+\submenu Herramientas_Español
+\script mid_sentence_capital.py
+\description Marca una letra mayúscula que aparece a mitad de oración: después de una coma, punto y coma u otra palabra, en lugar de después de puntuación de fin de oración. Ignora las palabras en mayúscula encontradas en el archivo TermRenderings.xml del proyecto. Las opciones permiten definir los caracteres de límite de oración, palabras/prefijos/sufijos para ignorar, el manejo de comillas de apertura y los estilos de carácter/párrafo a omitir.
+\books
+\noText
+\toList
+\utf8
+
+\optionName FinalPunctuation
+\optionLocalizedName Caracteres de límite de oración
+\optionDescription Caracteres que marcan un límite de oración. Las palabras en mayúscula que siguen inmediatamente a cualquiera de estos no se marcan. El valor predeterminado cubre . ! ?; la puntuación de apertura invertida se maneja automáticamente.
+\optionDefault .!?
+
+\optionName WordsToIgnore
+\optionLocalizedName Palabras para ignorar
+\optionDescription Lista separada por comas de palabras en mayúscula que no deben marcarse (p. ej. Senor, Alfa, Espiritu). Use esta opción para nombres propios no incluidos en TermRenderings.xml.
+\optionDefault
+
+\optionName IgnoreCapAfterQuote
+\optionLocalizedName Ignorar mayúscula después de comilla de apertura
+\optionDescription Establezca en Sí para suprimir errores donde una palabra en mayúscula sigue a una comilla de apertura (p. ej., discurso directo después de una coma). Los caracteres que se tratan como apertura se configuran en la opción Caracteres de apertura de cita.
+\optionDefault No
+
+\optionName QuoteOpeningChars
+\optionLocalizedName Caracteres de apertura de cita
+\optionDescription Caracteres tratados como comillas de apertura cuando "Ignorar mayúscula después de comilla de apertura" está establecido en Sí. Cada carácter en esta cadena es un abridor. El valor predeterminado cubre la comilla angular izquierda («), la comilla doble curva izquierda (“), el guion largo (—) y la comilla simple curva izquierda (‘). Deje este campo en blanco para usar la detección de categoría Pi de Unicode.
+\optionDefault «“—‘
+
+\optionName IgnoreStyles
+\optionLocalizedName Estilos de carácter para ignorar
+\optionDescription Lista separada por comas de nombres de estilos de carácter USFM (sin barra invertida) cuyo texto no se verifica para mayúsculas a mitad de oración y se excluye de la detección de fin de versículo. Use para estilos emparejados como qs (Selah) o pn (nombres propios) que contienen palabras en mayúscula que no deben marcarse.
+\optionDefault
+
+\optionName IgnoreParaStyles
+\optionLocalizedName Estilos de párrafo para ignorar
+\optionDescription Lista separada por comas de nombres de marcadores de párrafo USFM (sin barra invertida) cuyo texto se trata como límite de oración y se excluye de la detección de fin de versículo. El valor predeterminado cubre: sp (locutor), r (referencia paralela), ms/mr (sección mayor), sr (rango de sección). Los encabezados de sección (s, s1, s2...) se suprimen automáticamente.
+\optionDefault sp, r, ms, mr, sr
+
+\optionName WordPrefixes
+\optionLocalizedName Prefijos de palabras para ignorar
+\optionDescription Lista separada por espacios de prefijos de palabras (p. ej. ra Ra). Una palabra en mayúscula que comience con cualquiera de estos prefijos (sin distinguir mayúsculas) no será marcada.
+\optionDefault
+
+\optionName WordSuffixes
+\optionLocalizedName Sufijos de palabras para ignorar
+\optionDescription Lista separada por espacios de sufijos de palabras (p. ej. es am). Una palabra en mayúscula que termine con cualquiera de estos sufijos (sin distinguir mayúsculas) no será marcada.
+\optionDefault
+
+\optionName MidWordPunctuation
+\optionLocalizedName Puntuación dentro de palabras
+\optionDescription Caracteres que pueden aparecer dentro de una palabra (p. ej. - para guion, ' para apóstrofe). Ingrese sin espacios. Las palabras que contienen estos caracteres se tratan como una unidad al verificar mayúsculas.
+\optionDefault -

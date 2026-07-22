@@ -1,0 +1,37 @@
+﻿\check Biblical Terms Reference
+\submenu Phil_new
+\script project_BT_reference_tool.py
+\description PARATEXT SHOULD BE RESTARTED AFTER RUNNING THIS TOOL\n\nThis tool compares a Paratext project's ProjectBiblicalTerms.xml against Paratext's standard reference term lists (AllBiblicalTerms.xml and/or BiblicalTerms.xml, which is the MajorBiblicalTerms) to identify terms that have a different count when compared to AllBiblicalTerms or MajorBiblicalTerms. The tool will generate an HTML table of differences. \nOptionally, with Add Missing References set to Yes, it writes the missing references directly back into ProjectBiblicalTerms.xml, first saving a numbered backup of the original file. \nThis option must be set to add the references.\n\nOnce the tool is run the new references should be available to the Biblical Terms tool.
+\noText
+\toList
+\utf8
+
+\optionName AddMissing
+\optionLocalizedName Add Missing References
+\optionDescription If No, generates an HTML list of differences to consider. If Yes, writes missing references back to ProjectBiblicalTerms.xml
+\optionDefault No
+
+\optionName UseAllBiblicalTerms
+\optionLocalizedName Check AllBiblicalTerms
+\optionDescription Choose Yes to compare against AllBiblicalTerms.xml (the full Paratext term list).
+\optionDefault Yes
+
+\optionName UseBiblicalTerms
+\optionLocalizedName Check BiblicalTerms
+\optionDescription Choose Yes to compare against BiblicalTerms.xml (the standard Major Biblical term list).
+\optionDefault Yes
+
+\optionName IgnoreDC
+\optionLocalizedName Ignore (DC) Terms
+\optionDescription Choose Yes to skip any term whose Id contains (DC).
+\optionDefault Yes
+
+\optionName IncludeHebrew
+\optionLocalizedName Include Hebrew Terms
+\optionDescription Choose Yes to include terms whose Id contains Hebrew characters.
+\optionDefault Yes
+
+\optionName IncludeGreek
+\optionLocalizedName Include Greek Terms
+\optionDescription Choose Yes to include terms whose Id contains Greek characters.
+\optionDefault Yes

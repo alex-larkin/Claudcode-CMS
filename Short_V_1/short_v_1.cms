@@ -1,0 +1,23 @@
+﻿\check Short Verse 1
+\submenu Phil_new
+\script short_v_1.py
+\description Flags short verse 1 text between a paragraph marker (\p or \m) and the next \p marker. Options let you set the minimum character count and add other paragraph markers to check.
+\books
+\noText
+\toList
+\utf8
+
+\optionName MinChars
+\optionLocalizedName Minimum Characters
+\optionDescription Minimum number of characters expected in verse 1 before the next paragraph marker. Shorter verse 1s will be flagged.
+\optionDefault 40
+
+\optionName CheckOtherMarkers
+\optionLocalizedName Check Other Markers
+\optionDescription Choose Yes to also check additional paragraph markers (listed below) before and after verse 1, in addition to the defaults (\p and \m before, \p after).
+\optionDefault No
+
+\optionName OtherMarkers
+\optionLocalizedName Other Markers
+\optionDescription Space-separated list of additional paragraph markers to check (without backslash), e.g.: q q1 q2 q3 q4. Only used when Check Other Markers is Yes.
+\optionDefault q q1 q2 q3 q4

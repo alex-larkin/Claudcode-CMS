@@ -1,0 +1,43 @@
+﻿\check Error de línea poética q
+\submenu Herramientas_Español
+\script q_error.py
+\description Busca líneas de poesía (\q, \q1, \q2) con problemas estructurales: puntuación final seguida de texto; dos marcadores de versículo en una línea; texto antes de un marcador de versículo; o (opcionalmente) puntuación no final con una sola palabra al final antes de la siguiente línea poética. Se ignoran las notas al pie (\f), las referencias cruzadas (\x) y el contenido de \qs. Las opciones permiten activar o desactivar cada subverificación y ajustar los caracteres de puntuación y los umbrales.
+\books
+\noText
+\toList
+\utf8
+
+\optionName FinalPunctuation
+\optionLocalizedName Caracteres de puntuación final
+\optionDescription Caracteres que deben terminar una línea poética. Marca cualquier línea \q/\q1/\q2 donde alguno de estos es seguido por un carácter de palabra. El valor predeterminado es punto, signo de exclamación y signo de interrogación.
+\optionDefault .!?
+
+\optionName MinCharsBeforePunct
+\optionLocalizedName Caracteres mínimos antes de la puntuación final
+\optionDescription Ignore la puntuación final que aparece con menos de esta cantidad de caracteres en el texto de la línea poética. Use esto para suprimir falsos positivos en líneas muy cortas. Establezca en 0 para verificar todas las líneas sin importar su longitud.
+\optionDefault 0
+
+\optionName NonFinalPunctuation
+\optionLocalizedName Caracteres de puntuación no final
+\optionDescription Se usa solo cuando "Marcar palabra suelta" es Sí. Caracteres considerados puntuación de mitad de línea (no final).
+\optionDefault ,;:
+
+\optionName CheckFinalPunct
+\optionLocalizedName ¿Marcar puntuación final seguida de texto?
+\optionDescription Elija No para deshabilitar la verificación de puntuación final seguida de un carácter de palabra en la misma línea poética.
+\optionDefault Yes
+
+\optionName CheckDoubleVerse
+\optionLocalizedName ¿Marcar múltiples marcadores de versículo en una línea poética?
+\optionDescription Elija No para deshabilitar la verificación de dos marcadores \v dentro de una sola línea \q/\q1/\q2 (en la misma línea o continuando a la siguiente).
+\optionDefault Yes
+
+\optionName CheckTextBeforeVerse
+\optionLocalizedName ¿Marcar texto antes del marcador de versículo?
+\optionDescription Elija No para deshabilitar la verificación de contenido de texto que aparece antes de un marcador \v en una línea poética. La forma normal es \q1 \v N texto; la forma incorrecta es \q1 texto \v N.
+\optionDefault Yes
+
+\optionName CheckHangingWord
+\optionLocalizedName ¿Marcar línea que termina con puntuación + una sola palabra?
+\optionDescription Elija Sí para marcar cualquier línea poética que termina con puntuación no final seguida de exactamente una palabra (nada más antes del fin de línea). Puede indicar que la última palabra pertenece a la línea siguiente.
+\optionDefault No

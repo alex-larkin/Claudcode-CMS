@@ -1,0 +1,12 @@
+﻿\check Convert Codes
+\submenu Phil_new
+\script convert_codes.py
+\description Copy a list of numeric codes to the clipboard, then run this check. Each code is converted to a Paratext scripture reference (e.g. 00103604200012 -> GEN 36:42). Option lets you choose clickable or plain-text output.
+\noText
+\toList
+\utf8
+
+\optionName Clickable
+\optionLocalizedName Clickable output
+\optionDescription Choose Yes to output references in clickable format (click to navigate to the verse). Default No outputs plain text for easy copy-paste.
+\optionDefault No

@@ -1,0 +1,24 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 REFERENCE WITHOUT MARKERS\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PURPOSE\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Finds scripture references in the text that are not enclosed in the proper USFM markers ({\f1\\xt}, {\f1\\rq}, {\f1\\ior}, {\f1\\fig}, {\f1\\r}, {\f1\\mr}, or {\f1\\sr}). Bare references should be wrapped in these markers so Paratext can make them clickable and so they are formatted consistently.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 REFERENCE FORMS RECOGNIZED\par
+\pard\li360\sb0\sa0\f1\fs20 - Standard:          Mat 5:12\par
+\pard\li360\sb0\sa0\f1\fs20 - Numbered books:    1 S 31:3   or   2 Cr 14:1\par
+\pard\li360\sb0\sa0\f1\fs20 - Verse ranges:      Mat 5:12-18\par
+\pard\li360\sb0\sa0\f1\fs20 - Cross-chapter:     Mr 8:31-9:1\par
+\pard\li360\sb0\sa0\f1\fs20 - Verse sequences:   Lc 22:54-55, 63-71\par
+\pard\li360\sb0\sa0\f1\fs20 - Verse suffixes:    Lc 9:43a\par
+\pard\li360\sb0\sa80\f1\fs20 - Scripts supported: Latin, Greek, Hebrew (and other Unicode letters)\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW TO USE\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copy the .cms and .py files to your My Paratext 9 Projects\\cms folder.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Review the results; each flagged item shows the reference that lacks markers.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 ChapterVerseSep\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i :}\par
+\pard\li720\sb40\sa80\f0\fs20 The character your project uses between the chapter number and the verse number. Most projects use a colon (:), but some use a period (.). Set this to match your project's Settings.xml ChapterVerseSeparator value.\par
+}

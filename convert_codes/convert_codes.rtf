@@ -1,0 +1,22 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 CONVERT CODES\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PURPOSE\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Converts compact numeric verse codes into human-readable Paratext scripture references. For example, the code 001036042 becomes GEN 36:42. Useful when working with exported data or reports that use numeric verse identifiers instead of standard references.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW TO USE\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copy the .cms and .py files to your My Paratext 9 Projects\\cms folder.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab Copy a list of numeric codes to your clipboard (one code per line, or comma-separated). Codes may also be in XML format with {\f1 <Verse>} tags.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab The results list shows each code alongside its converted reference.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 CODE FORMAT\par
+\pard\li360\sb0\sa80\b0\f1\fs20 Each code is a 9-digit number: BBBCCCVVV\par
+\pard\li720\sb0\sa40\f1\fs20 BBB = book number (001 = Genesis, 066 = Revelation)\par
+\pard\li720\sb0\sa40\f1\fs20 CCC = chapter number (zero-padded)\par
+\pard\li720\sb0\sa80\f1\fs20 VVV = verse number (zero-padded)\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Clickable\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 When Yes, outputs references in Paratext's clickable format so you can click a result to navigate directly to that verse. When No, outputs plain text that is easy to copy and paste elsewhere.\par
+}

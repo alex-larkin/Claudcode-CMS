@@ -1,0 +1,43 @@
+\check Marker Space Check
+\submenu Phil_new
+\script MarkerSpace.py
+\description Scans selected books for character markers (read from usfm.sty and the project's custom.sty), plus \f and \x, and writes an HTML report of spacing anomalies: a missing space before the opening marker; an unwanted space before the opening marker for \f/\x, which conventionally attach directly to the preceding word with no space; an unwanted space right before the closing marker; a missing space directly after the closing marker; and a stray space between the closing marker and following punctuation (e.g. "text* ,"). Punctuation directly after a closing marker is normal and not flagged, and so is a closing marker immediately followed by another closing marker (nested styles ending together). Marker codes starting with \t are ignored by default (table/structure markers such as \tc1 or \tr), except \tl and \ts-s/\ts-e. If this project places the footnote BEFORE the word it annotates instead of after, see the "Footnote precedes text" option below.
+\books
+\noText
+\toList
+\utf8
+
+\optionName ExcludeMarkers
+\optionLocalizedName Marker codes to exclude
+\optionDescription Character marker codes to skip, separated by spaces (e.g. "w rq"), for markers that follow a different spacing convention in this project.
+\optionDefault
+
+\optionName NoCloseMarkers
+\optionLocalizedName Markers that do not require a closing marker
+\optionDescription Marker codes, separated by spaces, that do not normally take a closing marker in any context (e.g. footnote/cross-reference text markers and the verse marker). These are skipped by the spacing checks above; if a closing marker is nonetheless found for one, it is reported separately.
+\optionDefault v fk fp fq fqa ft fr xk xo xq
+
+\optionName NoCloseInNoteMarkers
+\optionLocalizedName Markers that do not require a closing marker only inside a footnote/cross-reference
+\optionDescription Marker codes, separated by spaces, that do not require a closing marker ONLY when nested inside a footnote (\f...\f*) or cross-reference (\x...\x*) -- used standalone elsewhere, they are checked normally like any other character marker, including requiring their own closing marker. Default is \xt, which real USFM uses both ways.
+\optionDefault xt
+
+\optionName ExtraSpacingMarkers
+\optionLocalizedName Extra markers to check for spacing
+\optionDescription Marker codes, separated by spaces, to check for spacing even though they are not StyleType Character in usfm.sty. Default is \f (footnote) and \x (cross-reference), which are StyleType Note but should still follow normal open/close spacing conventions.
+\optionDefault f x
+
+\optionName NoSpaceBeforeMarkers
+\optionLocalizedName Markers that should have NO space before them
+\optionDescription Marker codes, separated by spaces, that conventionally attach directly to the preceding word or punctuation with no space (e.g. footnote and cross-reference callers) -- for these, a space before the opening marker is the anomaly, reversing the usual "missing space before" check. A closing marker (e.g. \tl* or \qs*) immediately followed by one of these is always normal and ignored; that marker's own spacing is still checked normally. \f is automatically removed from this list when "Footnote precedes text" below is Yes.
+\optionDefault f x
+
+\optionName FootnotePrecedesText
+\optionLocalizedName Footnote precedes text
+\optionDescription Set to Yes if this project's convention places the footnote marker BEFORE the word it annotates, rather than after (the usual convention). When Yes, \f is checked in the mirror direction: a space is expected before \f, and no space is expected after \f* -- a stray space directly before punctuation (e.g. "\f* ,") is still flagged either way. Does not affect \x.
+\optionDefault No
+
+\optionName MaxExamples
+\optionLocalizedName Max examples per report section
+\optionDescription Caps how many example references are listed under each report section, to keep the HTML readable. Total counts are unaffected.
+\optionDefault 25

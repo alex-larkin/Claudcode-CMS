@@ -1,0 +1,33 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 QUOTATION EXAMINER\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PURPOSE\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Scans selected books for quotation-mark and dash-character usage and writes an HTML report (opened automatically in your default browser) summarizing where each character is used as an opener, closer, continuer, or in an unusual location, along with quotation-nesting levels and how the project's actual usage compares to its configured Quotation settings. This is a descriptive report, not a pass/fail check \emdash it is meant to help you spot places worth a second look, not to declare errors.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW ACTUAL USAGE IS DETERMINED\par
+\pard\sb0\sa120\b0\f0\fs20 A project's {\f1 Settings.xml} may declare which characters are used for quotation levels, continuers, and paragraph-continuation markers ({\f1 ContinueAt}), but this check never assumes the text actually follows that convention. Every opener, closer, continuer, and nesting level reported comes from independently scanning the text itself; Settings.xml is used only as a point of comparison in Section 2 of the report.\par
+\pard\sb0\sa120\b0\f0\fs20 A dash character at the start of a paragraph (or right after a colon introducing speech) is treated as a possible dialogue-opening quotation mark. Since dashes conventionally have no matching closing dash, a dash-opened quotation is considered finished at the end of the paragraph it opened in, unless an explicit second (closing) dash is found first \emdash which is reported separately. {\f1 <<} and {\f1 >>} are always recognized as quotation marks, an ASCII approximation of guillemets some projects key in when proper Unicode input isn't available.\par
+\pard\sb0\sa120\b0\f0\fs20 A continuer \emdash a quotation mark repeated at the start of a new paragraph or poetry line to remind the reader that an earlier quotation is still open \emdash is only considered at the true start of a paragraph/poetry marker ({\f1\\p}, {\f1\\q1}, {\f1\\m}, etc.), never at a section heading or similar. Text inside footnotes ({\f1\\f...\\f*}), cross-references ({\f1\\x...\\x*}), and figures ({\f1\\fig...\\fig*}) is ignored entirely and never scanned.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 REPORT SECTIONS\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab{\b Character usage summary}\emdash every quotation/dash character found, with a total and a breakdown across: Opener, Closer, Continuer, Continuer (suspicious), Closer (no opener), Mid-word (possible apostrophe), Dialogue dash (opener), Dialogue dash (explicit closer), and Other/unusual.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab{\b Configured quotation settings vs. actual usage found in text}\emdash for each nesting level, the openers/closers actually found in the text next to what Settings.xml declares as that level's continuer, and whether the actual pair matches the configured one. A mismatch is informational, not necessarily an error \emdash it means the text doesn't follow the configured setting.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab{\b Unclosed and orphaned quotation marks}\emdash quotations opened but never closed before the end of the book, and closing-type characters found with nothing open to close.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab{\b Continuers}\emdash every reasonable continuer found, plus any {\i suspicious} continuers: a closing-type character sitting at the very start of a paragraph/poetry line with no quotation currently open.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 5.\tab{\b Unusual placements}\emdash characters found somewhere that doesn't clearly fit any of the categories above.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW TO USE\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copy the .cms and .py files to your My Paratext 9 Projects\\cms folder.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new > Quotation Examiner.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Choose which books to scan when prompted.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab The report ({\f1 QuotationExaminerReport.html}) is saved in the project folder and opens automatically in your default browser.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 QuoteCharacters\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i " ' \'ab \'bb \'8b \'9b \'91 \'92 \'82 (U+201B) \'93 \'94 \'84 (U+201F) < > << >>}\par
+\pard\li720\sb40\sa80\f0\fs20 Characters treated as quotation marks, each scanned individually \emdash straight and curly single/double quotes, guillemets, single guillemets, low-set quotes, and two high-reversed quotation marks shown by code point since they fall outside this document's character set. Separate each character with a single space so individual characters are easy to tell apart.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 DashCharacters\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i \'97 \'96 U+2015} \emdash em dash, en dash, and horizontal bar (shown by code point since it falls outside this document's character set)\par
+\pard\li720\sb40\sa80\f0\fs20 Characters treated as possible dialogue-dash / continuer marks. Separate each character with a single space so individual characters are easy to tell apart.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 MaxExamples\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i 25}\par
+\pard\li720\sb40\sa80\f0\fs20 Caps how many example references are listed under each report section, to keep the HTML readable. Total counts shown in Section 1 are unaffected.\par
+}

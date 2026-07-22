@@ -1,0 +1,33 @@
+SHORT VERSE 1
+=============
+
+PURPOSE
+Flags chapters where verse 1 contains fewer characters than a minimum
+threshold. A very short verse 1 often indicates that introductory content
+is missing or that the text has been split incorrectly.
+
+The check counts characters in the text of verse 1 up to the next paragraph
+marker (\p). USFM markers and inline footnotes or cross-references are
+excluded from the count.
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.
+3. Each result shows the reference, the actual character count, and the
+   minimum required so you can quickly see how short the verse is.
+
+OPTIONS
+  MinChars
+    Default:  40
+    The minimum number of characters that verse 1 must contain. Chapters
+    where verse 1 has fewer than this many characters are flagged.
+
+  CheckOtherMarkers
+    Default:  No
+    When Yes, the check also looks for short text after the markers listed
+    in OtherMarkers (e.g., poetry markers like \q1).
+
+  OtherMarkers
+    Default:  q q1 q2 q3 q4
+    Space-separated list of paragraph markers to check in addition to \p
+    and \m. Only used when CheckOtherMarkers is set to Yes.

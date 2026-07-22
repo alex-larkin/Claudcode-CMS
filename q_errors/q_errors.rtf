@@ -1,0 +1,39 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 Q ERRORS\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PURPOSE\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Checks poetry lines (marked with {\f1\\q}, {\f1\\q1}, {\f1\\q2}) for structural problems that are common formatting or typesetting errors in Bible translation manuscripts.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 PROBLEMS DETECTED\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab{\b Final punctuation followed by text}\emdash a sentence-ending mark (e.g., period) appears in the middle of a poetry line rather than at the end.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab{\b Double verse markers}\emdash two {\f1\\v} markers appear on the same poetry line.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab{\b Text before a verse marker}\emdash content appears before {\f1\\v} instead of after it.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab{\b Hanging word (optional)}\emdash a line ends with non-final punctuation (e.g., a comma) followed by only a single word before the next poetry line.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW TO USE\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copy the .cms and .py files to your My Paratext 9 Projects\\cms folder.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Review the results; the error type is shown first to make sorting easy.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 FinalPunctuation\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i .!?}\par
+\pard\li720\sb40\sa80\f0\fs20 Characters that mark the end of a sentence, used by the final-punctuation check.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 NonFinalPunctuation\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i ,;:}\par
+\pard\li720\sb40\sa80\f0\fs20 Characters considered mid-line punctuation, used by the hanging-word check.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 MinCharsBeforePunct\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i 0}\par
+\pard\li720\sb40\sa80\f0\fs20 Ignore final punctuation that occurs fewer than this many characters into the line. Useful to skip short lines where punctuation placement is intentional.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckFinalPunct\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Enable or disable the final-punctuation-followed-by-text check.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckDoubleVerse\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Enable or disable the double-verse-marker check.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckTextBeforeVerse\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Enable or disable the text-before-verse-marker check.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckHangingWord\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 Enable or disable the hanging single-word check. Set to Yes to flag poetry lines that end with punctuation followed by exactly one word.\par
+}

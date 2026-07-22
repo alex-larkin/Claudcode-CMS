@@ -1,0 +1,27 @@
+﻿# This is an example of how to create a simple check that looks for 
+# a regular expression.
+# To create your own, copy this .cms file and edit the \check, \description,
+# and first \optionDefault lines.
+
+\check Colon not followed by quotation
+\submenu Phil_new
+\script FindColonContext.py
+\description Look for colons not followed by a quotation mark (default = «“—‘). Options let you set the quotation-mark characters and require the following word to be capitalized.
+\books
+\noText
+\toList
+\utf8
+
+\optionName QuotationMarks
+\optionDefault «“—‘
+
+\optionName CapitalizedOnly
+\optionDefault Yes
+
+\optionName MatchCase
+\optionDefault Yes
+\optionHidden
+
+\optionName DotAll
+\optionDefault No
+\optionHidden

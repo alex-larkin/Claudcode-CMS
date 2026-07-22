@@ -1,0 +1,37 @@
+﻿\check Referencia de términos bíblicos
+\submenu Herramientas_Español
+\script project_BT_reference_tool.py
+\description PARATEXT DEBE REINICIARSE DESPUÉS DE EJECUTAR ESTA HERRAMIENTA\n\nEsta herramienta compara el archivo ProjectBiblicalTerms.xml de un proyecto de Paratext con las listas de términos de referencia estándar de Paratext (AllBiblicalTerms.xml y/o BiblicalTerms.xml, que es el MajorBiblicalTerms) para identificar referencias de versículos que aparecen en las listas de referencia pero que faltan en la lista de términos del proyecto. \nPara cada referencia faltante, informa la ubicación bíblica legible (p. ej., MAT 11:10) y el ID del término. \nOpcionalmente, con Agregar referencias faltantes en Sí, escribe las referencias faltantes directamente en ProjectBiblicalTerms.xml, guardando previamente una copia de seguridad numerada del archivo original. \nEsta opción debe estar activada para agregar las referencias.\n\nUna vez ejecutada la herramienta, las nuevas referencias deberán estar disponibles en la herramienta de Términos Bíblicos.\n\nLas opciones permiten elegir qué listas de términos comparar (AllBiblicalTerms/BiblicalTerms), si se deben agregar las referencias faltantes, y si se deben ignorar los términos (DC)/hebreos/griegos.
+\noText
+\toList
+\utf8
+
+\optionName AddMissing
+\optionLocalizedName Agregar referencias faltantes
+\optionDescription Si es Sí, escribe las referencias faltantes en ProjectBiblicalTerms.xml
+\optionDefault No
+
+\optionName UseAllBiblicalTerms
+\optionLocalizedName Verificar AllBiblicalTerms
+\optionDescription Elija Sí para comparar con AllBiblicalTerms.xml (la lista completa de términos de Paratext).
+\optionDefault Yes
+
+\optionName UseBiblicalTerms
+\optionLocalizedName Verificar BiblicalTerms
+\optionDescription Elija Sí para comparar con BiblicalTerms.xml (la lista estándar de términos bíblicos principales).
+\optionDefault Yes
+
+\optionName IgnoreDC
+\optionLocalizedName Ignorar términos (DC)
+\optionDescription Elija Sí para omitir cualquier término cuyo Id contenga (DC).
+\optionDefault Yes
+
+\optionName IncludeHebrew
+\optionLocalizedName Incluir términos hebreos
+\optionDescription Elija Sí para incluir términos cuyo Id contenga caracteres hebreos.
+\optionDefault Yes
+
+\optionName IncludeGreek
+\optionLocalizedName Incluir términos griegos
+\optionDescription Elija Sí para incluir términos cuyo Id contenga caracteres griegos.
+\optionDefault Yes

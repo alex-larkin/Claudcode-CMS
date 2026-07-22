@@ -1,0 +1,12 @@
+﻿\check Convertir códigos
+\submenu Herramientas_Español
+\script convert_codes.py
+\description Copie una lista de códigos numéricos al portapapeles y luego ejecute esta verificación. Cada código se convierte a una referencia bíblica de Paratext (p. ej., 00103604200012 -> GEN 36:42). La opción permite elegir salida con hipervínculos o en texto plano.
+\noText
+\toList
+\utf8
+
+\optionName Clickable
+\optionLocalizedName Salida con hipervínculos
+\optionDescription Elija Sí para mostrar las referencias en formato de hipervínculo (haga clic para navegar al versículo). El valor predeterminado No muestra texto plano para fácil copia y pegado.
+\optionDefault No

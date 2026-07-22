@@ -1,0 +1,27 @@
+﻿# Este es un ejemplo de cómo crear una verificación simple que busca
+# una expresión regular.
+# Para crear la suya propia, copie este archivo .cms y edite las líneas
+# \check, \description y el primer \optionDefault.
+
+\check Dos puntos sin cita a continuación
+\submenu Herramientas_Español
+\script FindColonContext.py
+\description Dos puntos sin seguir de una marca de cita :\s(\s?\\v \d+ )?[^«'""—\\]+?\b Las opciones permiten definir los caracteres de comillas y exigir que la palabra siguiente esté en mayúscula.
+\books
+\noText
+\toList
+\utf8
+
+\optionName QuotationMarks
+\optionDefault «"—'
+
+\optionName CapitalizedOnly
+\optionDefault Yes
+
+\optionName MatchCase
+\optionDefault Yes
+\optionHidden
+
+\optionName DotAll
+\optionDefault No
+\optionHidden

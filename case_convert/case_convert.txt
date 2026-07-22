@@ -1,0 +1,31 @@
+CASE CONVERT
+============
+
+PURPOSE
+Scans text for all-lowercase or all-uppercase words and shows what they would look like in other cases (uppercase, lowercase, title case, sentence case).
+Can also convert a specific word or phrase that you highlight and copy.
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. To convert a specific word: highlight it in Paratext and press Ctrl+C, then run the check from Project menu > Tools > Custom Tools > Phil_new. The results will show all case variants for that word.
+3. To scan a passage for all-lower or all-upper words: leave the FilterWord option empty and run the check normally.
+4. Review the results list for conversion suggestions.
+
+OPTIONS
+  CheckLowercase
+    Default:  Yes
+    When Yes, flags words that are entirely lowercase and shows capitalized alternatives.
+
+  CheckUppercase
+    Default:  Yes
+    When Yes, flags words that are entirely uppercase and shows lowercase alternatives.
+
+  MinLetters
+    Default:  2
+    Minimum number of letters a word must contain before it is flagged.
+    Single-letter words like "a" or "I" are skipped by default.
+
+  FilterWord
+    Default:  (empty)
+    Enter a specific word or phrase here to see its case conversion options.
+    If empty, the check scans all words in the passage. You can also populate this by highlighting text in Paratext and copying it to the clipboard before running the check.

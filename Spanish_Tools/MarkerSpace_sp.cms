@@ -1,0 +1,43 @@
+﻿\check Verificación de espacios en marcadores
+\submenu Herramientas_Español
+\script MarkerSpace.py
+\description Escanea los libros seleccionados en busca de marcadores de carácter (leídos de usfm.sty y del custom.sty del proyecto), además de \f y \x, y escribe un informe HTML de anomalías de espaciado: un espacio faltante antes del marcador de apertura; un espacio no deseado antes del marcador de apertura para \f/\x, que por convención se adjuntan directamente a la palabra anterior sin espacio; un espacio no deseado justo antes del marcador de cierre; un espacio faltante justo después del marcador de cierre; y un espacio suelto entre el marcador de cierre y la puntuación siguiente (p. ej., "texto* ,"). La puntuación inmediatamente después de un marcador de cierre es normal y no se marca, al igual que un marcador de cierre seguido inmediatamente por otro marcador de cierre (estilos anidados que terminan juntos). Los códigos de marcador que comienzan con \t se ignoran de forma predeterminada (marcadores de tabla/estructura como \tc1 o \tr), excepto \tl y \ts-s/\ts-e. Si este proyecto coloca la nota al pie ANTES de la palabra que anota en lugar de después, consulte la opción "La nota precede al texto" más abajo.
+\books
+\noText
+\toList
+\utf8
+
+\optionName ExcludeMarkers
+\optionLocalizedName Códigos de marcador a excluir
+\optionDescription Códigos de marcador de carácter para omitir, separados por espacios (p. ej., "w rq"), para marcadores que siguen una convención de espaciado diferente en este proyecto.
+\optionDefault
+
+\optionName NoCloseMarkers
+\optionLocalizedName Marcadores que no requieren un marcador de cierre
+\optionDescription Códigos de marcador, separados por espacios, que normalmente no llevan un marcador de cierre en ningún contexto (p. ej., marcadores de texto de nota al pie/referencia cruzada y el marcador de versículo). Estos se omiten en las verificaciones de espaciado anteriores; si de todos modos se encuentra un marcador de cierre para alguno, se informa por separado.
+\optionDefault v fk fp fq fqa ft fr xk xo xq
+
+\optionName NoCloseInNoteMarkers
+\optionLocalizedName Marcadores que no requieren un marcador de cierre solo dentro de una nota al pie/referencia cruzada
+\optionDescription Códigos de marcador, separados por espacios, que no requieren un marcador de cierre SOLO cuando están anidados dentro de una nota al pie (\f...\f*) o referencia cruzada (\x...\x*) -- usados de forma independiente en otros lugares, se verifican normalmente como cualquier otro marcador de carácter, incluyendo el requerir su propio marcador de cierre. El valor predeterminado es \xt, que el USFM real usa de ambas formas.
+\optionDefault xt
+
+\optionName ExtraSpacingMarkers
+\optionLocalizedName Marcadores adicionales para verificar el espaciado
+\optionDescription Códigos de marcador, separados por espacios, para verificar el espaciado aunque no sean StyleType Character en usfm.sty. El valor predeterminado es \f (nota al pie) y \x (referencia cruzada), que son StyleType Note pero deben seguir igualmente las convenciones normales de espaciado de apertura/cierre.
+\optionDefault f x
+
+\optionName NoSpaceBeforeMarkers
+\optionLocalizedName Marcadores que NO deben tener espacio antes
+\optionDescription Códigos de marcador, separados por espacios, que por convención se adjuntan directamente a la palabra o puntuación anterior sin espacio (p. ej., llamadas de nota al pie y referencia cruzada) -- para estos, un espacio antes del marcador de apertura es la anomalía, invirtiendo la verificación habitual de "espacio faltante antes". Un marcador de cierre (p. ej., \tl* o \qs*) seguido inmediatamente por uno de estos siempre es normal y se ignora; el espaciado propio de ese marcador se sigue verificando normalmente. \f se elimina automáticamente de esta lista cuando "La nota precede al texto" (más abajo) está en Sí.
+\optionDefault f x
+
+\optionName FootnotePrecedesText
+\optionLocalizedName La nota precede al texto
+\optionDescription Establezca en Sí si la convención de este proyecto coloca el marcador de nota al pie ANTES de la palabra que anota, en lugar de después (la convención habitual). Cuando está en Sí, \f se verifica en la dirección inversa: se espera un espacio antes de \f, y no se espera espacio después de \f* -- un espacio suelto justo antes de la puntuación (p. ej., "\f* ,") se sigue marcando de cualquier forma. No afecta a \x.
+\optionDefault No
+
+\optionName MaxExamples
+\optionLocalizedName Máximo de ejemplos por sección del informe
+\optionDescription Limita cuántas referencias de ejemplo se muestran en cada sección del informe, para mantener el HTML legible. Los totales no se ven afectados.
+\optionDefault 25

@@ -1,0 +1,23 @@
+﻿\check Quotation Examiner
+\submenu Phil_new
+\script quotation_examiner.py
+\description Scans selected books for quotation-mark and dash characters and writes an HTML report summarizing where each is used as an opener, closer, continuer, or in an unusual location, plus a breakdown of quotation-nesting levels and how the actual usage compares to the project's configured Quotation settings. A dash at the start of a paragraph is treated as a possible level-1 quotation (dialogue dash); since dashes conventionally have no matching close, one is considered finished at the end of its paragraph unless an explicit closing dash is found first, which is noted separately. Continuers are only considered at the start of a true paragraph/poetry marker, not a section heading or similar. << and >> are also recognized as quotation marks. Suspicious continuers, orphaned closers, possible mid-word apostrophes, and other unusual placements are also reported directly in Paratext's results list, not just the HTML report.
+\books
+\noText
+\toList
+\utf8
+
+\optionName QuoteCharacters
+\optionLocalizedName Quotation characters to scan
+\optionDescription Characters treated as quotation marks, each scanned individually. Separate each character with a single space so individual characters are easy to tell apart.
+\optionDefault " ' « » ‹ › ‘ ’ ‚ ‛ “ ” „ ‟ < > << >>
+
+\optionName DashCharacters
+\optionLocalizedName Dash characters to scan
+\optionDescription Characters treated as possible dialogue-dash / continuer marks. Default is em dash, horizontal bar, and en dash. Separate each character with a single space so individual characters are easy to tell apart.
+\optionDefault — ― –
+
+\optionName MaxExamples
+\optionLocalizedName Max examples per report section
+\optionDescription Caps how many example references are listed under each report section, to keep the HTML readable. Total counts are unaffected.
+\optionDefault 25

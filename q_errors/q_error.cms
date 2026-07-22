@@ -1,0 +1,43 @@
+\check q Error
+\submenu Phil_new
+\script q_error.py
+\description Find poetry lines (\q, \q1, \q2) with structural problems: final punctuation followed by text; two verse markers on one line; text before a verse marker; or (optionally) non-final punctuation with a single trailing word before the next poetry line. Footnotes (\f), cross-references (\x), and \qs content are ignored. Options let you toggle each sub-check on/off and adjust punctuation characters and thresholds.
+\books
+\noText
+\toList
+\utf8
+
+\optionName FinalPunctuation
+\optionLocalizedName Final punctuation characters
+\optionDescription Characters that should end a poetry line. Flags any \q/\q1/\q2 line where one of these is followed by a word character. Default is period, exclamation mark, and question mark.
+\optionDefault .!?
+
+\optionName MinCharsBeforePunct
+\optionLocalizedName Minimum characters before final punctuation
+\optionDescription Ignore final punctuation that appears fewer than this many characters into the poetry line text. Use this to suppress false positives on very short lines. Set to 0 to check all lines regardless of length.
+\optionDefault 0
+
+\optionName NonFinalPunctuation
+\optionLocalizedName Non-final punctuation characters
+\optionDescription Used only when "Flag hanging word" is Yes. Characters considered mid-line (non-final) punctuation.
+\optionDefault ,;:
+
+\optionName CheckFinalPunct
+\optionLocalizedName Flag final punctuation followed by text?
+\optionDescription Choose No to disable checking for final punctuation followed by a word character on the same poetry line.
+\optionDefault Yes
+
+\optionName CheckDoubleVerse
+\optionLocalizedName Flag multiple verse markers in one poetry line?
+\optionDescription Choose No to disable checking for two \v markers within a single \q/\q1/\q2 line (same line or continuing to the next line).
+\optionDefault Yes
+
+\optionName CheckTextBeforeVerse
+\optionLocalizedName Flag text before verse marker?
+\optionDescription Choose No to disable checking for text content appearing before a \v marker in a poetry line. Normal form is \q1 \v N text; bad form is \q1 text \v N.
+\optionDefault Yes
+
+\optionName CheckHangingWord
+\optionLocalizedName Flag line ending with punctuation + single word?
+\optionDescription Choose Yes to flag any poetry line that ends with non-final punctuation followed by exactly one word (nothing else before end of line). May indicate the final word belongs on the following line.
+\optionDefault No

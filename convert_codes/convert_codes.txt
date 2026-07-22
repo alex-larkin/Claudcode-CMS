@@ -1,0 +1,28 @@
+CONVERT CODES
+=============
+
+PURPOSE
+Converts compact numeric verse codes into human-readable Paratext scripture
+references. For example, the code 001036042 becomes GEN 36:42. Useful when
+working with exported data or reports that use numeric verse identifiers
+instead of standard references.
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. Copy a list of numeric codes to your clipboard (one code per line, or
+   comma-separated). Codes may also be in XML format with <Verse> tags.
+3. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.
+4. The results list shows each code alongside its converted reference.
+
+CODE FORMAT
+  Each code is a 9-digit number: BBBCCCVVV
+    BBB = book number (001 = Genesis, 066 = Revelation)
+    CCC = chapter number (zero-padded)
+    VVV = verse number (zero-padded)
+
+OPTIONS
+  Clickable
+    Default:  No
+    When Yes, outputs references in Paratext's clickable format so you can
+    click a result to navigate directly to that verse. When No, outputs
+    plain text that is easy to copy and paste elsewhere.

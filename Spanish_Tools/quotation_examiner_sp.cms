@@ -1,0 +1,23 @@
+﻿\check Examinador de comillas
+\submenu Herramientas_Español
+\script quotation_examiner_sp.py
+\description Escanea los libros seleccionados en busca de caracteres de comillas y de guión, y escribe un informe HTML que resume dónde se usa cada uno como apertura, cierre, continuador o en una ubicación inusual, además de un desglose de los niveles de anidamiento de comillas y cómo el uso real se compara con la configuración de comillas (Quotation) del proyecto. Un guión al inicio de un párrafo se trata como una posible comilla de nivel 1 (guión de diálogo); dado que los guiones por convención no tienen un cierre correspondiente, uno se considera terminado al final de su párrafo a menos que se encuentre primero un guión de cierre explícito, lo cual se indica por separado. Los continuadores solo se consideran al inicio de un marcador verdadero de párrafo/poesía, no en un encabezado de sección ni similar. << y >> también se reconocen como comillas. Los continuadores sospechosos, los cierres huérfanos, las posibles apóstrofes en medio de palabra y otras ubicaciones inusuales también se informan directamente en la lista de resultados de Paratext, no solo en el informe HTML.
+\books
+\noText
+\toList
+\utf8
+
+\optionName QuoteCharacters
+\optionLocalizedName Caracteres de comillas a escanear
+\optionDescription Caracteres tratados como comillas, cada uno escaneado individualmente. Separe cada carácter con un solo espacio para distinguir los caracteres individuales fácilmente.
+\optionDefault " ' « » ‹ › ‘ ’ ‚ ‛ “ ” „ ‟ < > << >>
+
+\optionName DashCharacters
+\optionLocalizedName Caracteres de guión a escanear
+\optionDescription Caracteres tratados como posibles marcas de guión de diálogo/continuador. El valor predeterminado es la raya, la barra horizontal y el guión en (en dash). Separe cada carácter con un solo espacio para distinguir los caracteres individuales fácilmente.
+\optionDefault — ― –
+
+\optionName MaxExamples
+\optionLocalizedName Máximo de ejemplos por sección del informe
+\optionDescription Limita cuántas referencias de ejemplo se muestran en cada sección del informe, para mantener el HTML legible. Los totales no se ven afectados.
+\optionDefault 25

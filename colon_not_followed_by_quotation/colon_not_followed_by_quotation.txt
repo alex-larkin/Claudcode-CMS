@@ -1,0 +1,25 @@
+COLON NOT FOLLOWED BY QUOTATION
+================================
+
+PURPOSE
+Finds places where a colon is followed by text that does not begin with a
+quotation mark. This catches dialogue or quoted speech that may be missing
+its opening quotation mark.
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.
+3. Review the results; each flagged item shows the colon and the text that
+   follows it without a quotation mark.
+
+OPTIONS
+  QuotationMarks
+    Default:  <<  "  --  '
+    The characters that your translation uses to open a quotation. If the
+    word after a colon starts with one of these characters it is not flagged.
+    Update this to match your project's quotation style.
+
+  CapitalizedOnly
+    Default:  Yes
+    When Yes, only flags cases where the first word after the colon begins
+    with a capital letter. Set to No to flag all words regardless of case.

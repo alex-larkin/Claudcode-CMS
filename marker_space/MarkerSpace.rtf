@@ -1,0 +1,45 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 MARKER SPACE CHECK\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PURPOSE\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Scans selected books for character-style markers (read from usfm.sty and the project's custom.sty), plus {\f1\\f} (footnote) and {\f1\\x} (cross-reference), and flags spacing problems around each opening/closing marker pair. Each occurrence is reported both as a results-list entry (with reference and text snippet, like other checks) and as a line in a detailed HTML report ({\f1 MarkerSpaceReport.html}), written to the project folder and opened automatically when the check finishes.\par
+\pard\sb0\sa120\f0\fs20 Marker codes starting with {\f1\\t} are ignored by default (table/structure markers such as {\f1\\tc1} or {\f1\\tr}), except {\f1\\tl} (a genuine character-style pair) and {\f1\\ts-s}/{\f1\\ts-e} (USFM 3 section milestones), which are never silently excluded even though they aren't independently spacing-checked by this tool.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 CHECKS PERFORMED\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab{\b Missing space before opening marker}\emdash e.g. {\f1 word\\nd} instead of {\f1 word \\nd}.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab{\b Unwanted space before opening marker}\emdash for markers listed in NoSpaceBeforeMarkers (default {\f1\\f}, {\f1\\x}), which conventionally attach directly to the preceding word with no space.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab{\b Unwanted space before closing marker}\emdash e.g. {\f1\\nd word \\nd*} instead of {\f1\\nd word\\nd*}.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab{\b Missing space after closing marker}\emdash the closing marker is glued directly to the following word with no space.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 5.\tab{\b Unwanted space before punctuation after closing marker}\emdash e.g. {\f1\\nd* ,} instead of {\f1\\nd*,}. This rule is the same regardless of any other option.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 6.\tab{\b Unclosed marker}\emdash an opening marker with no matching closing marker found before the end of the chapter.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 7.\tab{\b Unexpected closing marker}\emdash a closing marker found for a marker listed in NoCloseMarkers (markers that don't normally take one at all, e.g. {\f1\\v}, {\f1\\xk}, {\f1\\fp}).\par
+\pard\sb0\sa120\f0\fs20{\i Note:} punctuation directly after a closing marker is always normal (never flagged), and so is a closing marker immediately followed by another closing marker (nested character styles ending together, e.g. {\f1\\+nd*\\add*}) -- any real problem there belongs to that outer marker's own check.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW TO USE\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copy the .cms and .py files to your My Paratext 9 Projects\\cms folder.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Review the results list for each flagged occurrence, then open the full HTML report (written to the project folder and launched automatically) for summary counts and grouped examples.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 ExcludeMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i (empty)}\par
+\pard\li720\sb40\sa80\f0\fs20 Marker codes, separated by spaces, to skip entirely (e.g.  w rq ), for markers that follow a different spacing convention in this project.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 NoCloseMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i v fk fp fq fqa ft fr xk xo xq}\par
+\pard\li720\sb40\sa80\f0\fs20 Marker codes, separated by spaces, that don't normally take a closing marker in any context. These are skipped by checks 1-5 above; if a closing marker is nonetheless found for one, it's reported separately (check 7).\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 NoCloseInNoteMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i xt}\par
+\pard\li720\sb40\sa80\f0\fs20 Marker codes, separated by spaces, that only skip requiring a closing marker when nested inside a footnote ({\f1\\f...\\f*}) or cross-reference ({\f1\\x...\\x*}) span. Used on their own elsewhere, they're checked normally like any other marker, including requiring their own closing marker.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 ExtraSpacingMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i f x}\par
+\pard\li720\sb40\sa80\f0\fs20 Marker codes, separated by spaces, to check for spacing even though they aren't StyleType Character in usfm.sty. {\f1\\f} and {\f1\\x} are Note-type markers by default but should still follow normal open/close spacing conventions.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 NoSpaceBeforeMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i f x}\par
+\pard\li720\sb40\sa0\f0\fs20 Marker codes, separated by spaces, that conventionally attach directly to the preceding word or punctuation with no space (footnote and cross-reference callers). For these, a space before the marker is the anomaly instead of the usual missing-space check.\par
+\pard\li720\sb0\sa80\f0\fs20{\f1\\f} is automatically removed from this list when FootnotePrecedesText (below) is set to Yes.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 FootnotePrecedesText\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 Set to Yes if this project's convention places the footnote marker BEFORE the word it annotates, rather than after. Reverses the {\f1\\f} spacing checks: a space is expected before {\f1\\f}, and no space is expected after {\f1\\f*} (a stray space directly before punctuation is still always flagged either way -- see check 5). Does not affect {\f1\\x}.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 MaxExamples\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i 25}\par
+\pard\li720\sb40\sa80\f0\fs20 Caps how many example references are listed under each section of the HTML report. Total counts shown in the report are unaffected.\par
+}

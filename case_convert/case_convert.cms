@@ -1,0 +1,27 @@
+﻿\check Case Conversion
+\submenu Phil_new
+\script case_convert.py
+\description **Highlight the words you want to convert and press Ctrl+C. **Or enter word(s) in the Options to have Paratext show what the capitalization choices would be. **Selecciona las palabras que quieras convertir y pulsa Ctrl+C. **O bien, introduce las palabras en las Opciones para que Paratext te muestre las opciones de mayúsculas disponibles. **Options let you choose which case types to flag, set a minimum letter count, and filter to a specific word. **Las opciones permiten elegir qué tipos de mayúsculas/minúsculas marcar, definir un mínimo de letras y filtrar una palabra específica.
+\noText
+\toList
+\utf8
+
+\optionName CheckLowercase
+\optionLocalizedName Check all-lowercase words
+\optionDescription Flag words where every letter character is lowercase. Message shows the all-uppercase and title-case (first letter only) forms.
+\optionDefault Yes
+
+\optionName CheckUppercase
+\optionLocalizedName Check all-uppercase words
+\optionDescription Flag words where every letter character is uppercase. Message shows the all-lowercase and sentence-case (letters after first) forms.
+\optionDefault Yes
+
+\optionName MinLetters
+\optionLocalizedName Minimum letter count
+\optionDescription Ignore words with fewer than this many letter characters. Use 2 to skip single-letter words; raise to skip short abbreviations.
+\optionDefault 2
+
+\optionName FilterWord
+\optionLocalizedName Word or phrase to check
+\optionDescription Enter a specific word or phrase to flag. Leave blank to check all words.
+\optionDefault

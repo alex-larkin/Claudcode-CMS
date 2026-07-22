@@ -1,0 +1,52 @@
+Q ERRORS
+========
+
+PURPOSE
+Checks poetry lines (marked with \q, \q1, \q2) for structural problems that
+are common formatting or typesetting errors in Bible translation manuscripts.
+
+PROBLEMS DETECTED
+  1. Final punctuation followed by text — a sentence-ending mark (e.g., period)
+     appears in the middle of a poetry line rather than at the end.
+  2. Double verse markers — two \v markers appear on the same poetry line.
+  3. Text before a verse marker — content appears before \v instead of after it.
+  4. Hanging word (optional) — a line ends with non-final punctuation (e.g., a
+     comma) followed by only a single word before the next poetry line.
+
+HOW TO USE
+1. Copy the .cms and .py files to your My Paratext 9 Projects\cms folder.
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.
+3. Review the results; the error type is shown first to make sorting easy.
+
+OPTIONS
+  FinalPunctuation
+    Default:  .!?
+    Characters that mark the end of a sentence, used by the final-punctuation
+    check.
+
+  NonFinalPunctuation
+    Default:  ,;:
+    Characters considered mid-line punctuation, used by the hanging-word check.
+
+  MinCharsBeforePunct
+    Default:  0
+    Ignore final punctuation that occurs fewer than this many characters into
+    the line. Useful to skip short lines where punctuation placement is
+    intentional.
+
+  CheckFinalPunct
+    Default:  Yes
+    Enable or disable the final-punctuation-followed-by-text check.
+
+  CheckDoubleVerse
+    Default:  Yes
+    Enable or disable the double-verse-marker check.
+
+  CheckTextBeforeVerse
+    Default:  Yes
+    Enable or disable the text-before-verse-marker check.
+
+  CheckHangingWord
+    Default:  No
+    Enable or disable the hanging single-word check. Set to Yes to flag poetry
+    lines that end with punctuation followed by exactly one word.

@@ -1,0 +1,81 @@
+Biblical Terms Reference Tool
+==============================
+
+What the tool does
+------------------
+This Paratext custom check compares a project's ProjectBiblicalTerms.xml file against
+Paratext's standard reference term lists (AllBiblicalTerms.xml and/or BiblicalTerms.xml)
+to identify verse references that are present in the reference lists but missing from the
+project's term list. For each missing reference the tool reports the scripture location
+(e.g. MAT 11:10) and the term ID. Optionally, the tool can write the missing references
+directly back into ProjectBiblicalTerms.xml, inserting them in the correct numerical order.
+There is a quick video available at: https://www.loom.com/share/f164ed25a06b47ff8fbe02b487f8284e
+
+Installation
+------------
+1. Copy both files to your Paratext CMS folder:
+
+      project_BT_reference_tool.cms
+      project_BT_reference_tool.py
+
+   The CMS folder is typically located at:
+
+      C:\My Paratext 8 Projects\cms\
+      C:\My Paratext 9 Projects\cms\
+
+2. Restart Paratext (or reload custom checks) so the new tool appears in the check list.
+
+3. The tool will appear under Custom Checks > Phil_new > Biblical Terms Reference.
+
+
+Options
+-------
+Project
+   The short name of the Paratext project to check (e.g. MYP). The tool looks for
+   ProjectBiblicalTerms.xml in the project folder under both Paratext 8 and Paratext 9
+   project directories.
+
+Check AllBiblicalTerms  (default: Yes)
+   When set to Yes, missing references are identified by comparing against
+   AllBiblicalTerms.xml, the full Paratext biblical term list.
+
+Check BiblicalTerms  (default: Yes)
+   When set to Yes, missing references are identified by comparing against
+   BiblicalTerms.xml, the standard Paratext biblical term list.
+   Both lists can be active at the same time; references from either list that are
+   missing from the project will be reported.
+
+Ignore (DC) Terms  (default: Yes)
+   When set to Yes, any term whose Id contains "(DC)" (Deuterocanonical) is skipped
+   entirely and will not appear in the report or be added to the project file.
+
+Include Hebrew Terms  (default: Yes)
+   When set to No, any term whose Id contains Hebrew characters is skipped and will
+   not appear in the report or be added to the project file.
+
+Include Greek Terms  (default: Yes)
+   When set to No, any term whose Id contains Greek characters is skipped and will
+   not appear in the report or be added to the project file.
+
+Add Missing References  (default: No)
+   When set to Yes, the tool writes all missing references back into
+   ProjectBiblicalTerms.xml after generating the report. References are inserted in
+   numerical order within each term's <References> list. Before making any changes a
+   numbered backup of the original file is saved automatically (see below).
+
+
+Restoring the original ProjectBiblicalTerms.xml
+------------------------------------------------
+Before the tool modifies ProjectBiblicalTerms.xml it saves a numbered backup in the
+same folder:
+
+   ProjectBiblicalTerms.xml.1   (first run with Add Missing References = Yes)
+   ProjectBiblicalTerms.xml.2   (second run)
+   ...and so on.
+
+To restore the original file:
+1. Close Paratext.
+2. In the project folder, rename (or delete) the current ProjectBiblicalTerms.xml.
+3. Rename the desired backup file (e.g. ProjectBiblicalTerms.xml.1) back to
+   ProjectBiblicalTerms.xml.
+4. Restar Paratext.

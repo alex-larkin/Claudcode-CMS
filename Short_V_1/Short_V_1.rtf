@@ -1,0 +1,23 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 SHORT VERSE 1\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PURPOSE\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Flags chapters where verse 1 contains fewer characters than a minimum threshold. A very short verse 1 often indicates that introductory content is missing or that the text has been split incorrectly.\par
+\pard\sb0\sa120\f0\fs20 The check counts characters in the text of verse 1 up to the next paragraph marker ({\f1\\p}). USFM markers and inline footnotes or cross-references are excluded from the count.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 HOW TO USE\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copy the .cms and .py files to your My Paratext 9 Projects\\cms folder.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Each result shows the reference, the actual character count, and the minimum required so you can quickly see how short the verse is.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 MinChars\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i 40}\par
+\pard\li720\sb40\sa80\f0\fs20 The minimum number of characters that verse 1 must contain. Chapters where verse 1 has fewer than this many characters are flagged.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckOtherMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 When Yes, the check also looks for short text after the markers listed in OtherMarkers (e.g., poetry markers like {\f1\\q1}).\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 OtherMarkers\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Default:}  {\i q q1 q2 q3 q4}\par
+\pard\li720\sb40\sa80\f0\fs20 Space-separated list of paragraph markers to check in addition to {\f1\\p} and {\f1\\m}. Only used when CheckOtherMarkers is set to Yes.\par
+}

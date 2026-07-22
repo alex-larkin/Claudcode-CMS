@@ -1,0 +1,12 @@
+﻿\check Referencia sin marcadores
+\submenu Herramientas_Español
+\script reference_without_markers.py
+\description Busca referencias bíblicas en el texto que no estén encerradas en marcadores \xt, \rq, \ior, \fig, \r, \mr o \sr. La opción permite definir el carácter separador de capítulo y versículo.
+\books
+\toList
+\utf8
+
+\optionName ChapterVerseSep
+\optionLocalizedName Separador de capítulo y versículo
+\optionDescription Carácter que separa el capítulo del número de versículo (del atributo ChapterVerseSeparator en Settings.xml: normalmente : o .).
+\optionDefault :
