@@ -1,7 +1,7 @@
-\check q Error
+\check Report of Poetry Errors
 \submenu Phil_new
 \script q_error.py
-\description Find poetry lines (\q, \q1, \q2) with structural problems: final punctuation followed by text; two verse markers on one line; text before a verse marker; or (optionally) non-final punctuation with a single trailing word before the next poetry line. Footnotes (\f), cross-references (\x), and \qs content are ignored. Options let you toggle each sub-check on/off and adjust punctuation characters and thresholds.
+\description Find poetry lines (\q, \q1, \q2) with structural problems: final punctuation followed by text; two verse markers on one line; text before a verse marker; or (optionally) non-final punctuation with a single trailing word before the next poetry line. Footnotes (\f), cross-references (\x), and \qs content are ignored. Options let you toggle each sub-check on/off and adjust punctuation characters and thresholds. Also writes an HTML report (QErrorsReport.html, opened automatically) grouping every issue by error type, with the full \q line shown for context and the specific problem highlighted in red.
 \books
 \noText
 \toList

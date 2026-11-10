@@ -1,0 +1,40 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b FOOTNOTES\b0\fs22\par
+\par
+\b PURPOSE\b0\par
+Scans selected books for footnotes (\\f...\\f*) to help review their internal structure (\\fr, \\fq, \\ft, and any nested character styles such as \\+it or \\+xt) and verify that every opening marker has a matching closing marker.\par
+\par
+Results appear in two places:\par
+- The results list shows one row per footnote, with the codes of the sub-markers it contains (e.g. "fr fq ft") for easy searching. Clicking a row jumps to that footnote in the text.\par
+- A FootnotesReport.html report is written, with one row per footnote showing the reference, caller, \\fr reference, and the rest of the footnote text rendered with the actual formatting (Bold/Italic/Superscript/SmallCaps/Underline/Color) declared in usfm.sty and the project's custom.sty, each in its own aligned column, plus a summary table of every marker found (opening and closing markers counted separately, e.g. \\w and \\w*) and its resolved style. The report opens automatically in your browser after the check runs.\par
+- When a capitalization option is on (see OPTIONS), each footnote it flags gets its own extra row in the results list (e.g. "\\ft not capitalized"), and its row in the HTML report is highlighted with the message shown in red.\par
+\par
+If anything unexpected happens, a FootnotesDebug.log file will appear in the project folder with the details - please share its contents so the check can be fixed.\par
+\par
+\b HOW TO USE\b0\par
+1. Copy the .cms and .py files to your My Paratext Projects\\cms folder. To make the references in the HTML report clickable (a click shows that place in Paratext), also copy ptx_goto.py and ParatextGoTo.exe there. The first click makes the browser ask whether to open ParatextGoTo, and Paratext follows only when the text window's scroll group follows other programs.\par
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+3. Review the results list to search footnotes by reference or marker, and the FootnotesReport.html report (opened automatically) to see the same information in one aligned table.\par
+\par
+\b OPTIONS\b0\par
+\b SortAlphabetically\b0\par
+\tab Default:  No\par
+\tab Yes sorts the footnotes listed in the HTML report alphabetically by the footnote's own text (everything except the \\fr reference), so identical or near-identical footnotes end up next to each other for easy comparison. No (default) lists them in canonical book/chapter/verse scan order.\par
+\par
+\b HideMarkers\b0\par
+\tab Default:  No\par
+\tab Yes hides the marker labels (e.g. \\fq, \\+it, \\+it*) shown before each piece of footnote text in the HTML report - the text keeps its resolved Bold/Italic/Superscript/SmallCaps/Underline/Color styling, only the marker labels themselves are hidden, for a cleaner reading view. No (default) shows the markers alongside the styled text, as today. Does not affect the Section 1 marker/style summary table or the Paratext results list.\par
+\par
+\b CheckFtCapitals\b0  (Check capitals after \\ft)\par
+\tab Default:  No\par
+\tab Yes checks, within each footnote: (1) a \\ft that is the first marker after the \\fr reference (or the first marker at all when there is no \\fr) must be followed by a word starting with a capital letter; (2) any other \\ft is checked only when the text before it ends a sentence (with . ? or !, ignoring markers and other punctuation such as closing quotes or brackets in between), and then it must also be followed by a capital. So in "\\fr 21:6 \\fq Dios \\ft o ..." the \\ft follows \\fq and is not flagged. When finding the next word, character markers (e.g. \\+it) and leading punctuation (e.g. \'ab or \'bf) are skipped. Words starting with a digit, or with a letter that has no capital form, are not flagged. Flagged footnotes appear in the results list as "\\ft not capitalized".\par
+\par
+\b CheckCapitalAfterFr\b0  (Check capital after the \\fr reference)\par
+\tab Default:  No\par
+\tab Yes checks that the first marker following the \\fr reference (\\ft, \\fq, \\fk, ...) is followed by a capital letter, with the same rules for finding the next word. Flagged footnotes appear as e.g. "\\fq not capitalized after \\fr". If this and CheckFtCapitals both apply to the same \\ft, it is reported only once. Note that some projects quote the verse text in \\fq in lower case on purpose; for them, this option will flag most footnotes.\par
+\par
+\b OnlyCapitalIssues\b0  (Show only footnotes with capitalization issues)\par
+\tab Default:  No\par
+\tab Yes lists only the footnotes flagged by CheckFtCapitals or CheckCapitalAfterFr, both in the results list and in the HTML report's list of footnotes, which then says how many of all the footnotes are shown. The marker summary table still counts every footnote. It has no effect unless at least one of those two checks is set to Yes; the report then says so.\par
+}

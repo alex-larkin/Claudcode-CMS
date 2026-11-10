@@ -1,0 +1,31 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b B\'daSQUEDA DE T\'cdTULOS\b0\fs22\par
+\par
+\b PROP\'d3SITO\b0\par
+Escanea los libros seleccionados y enumera el texto del t\'edtulo principal \\mt/\\mt1/\\mt2/\\mt3 encontrado para cada libro, combinado en el orden en que aparece. Un libro sin ning\'fan marcador \\mt se enumera como "ausente".\par
+\par
+Los resultados aparecen en dos lugares:\par
+- La lista de resultados muestra una fila por libro con su texto de t\'edtulo \\mt (o "ausente"), y opcionalmente el texto \\h del encabezado de p\'e1gina. Al hacer clic en una fila se salta al marcador correspondiente en el texto.\par
+- Se escribe un informe InformeTitulos.html, que enumera el texto del t\'edtulo de cada libro (cada segmento \\mt con el estilo definido en usfm.sty/custom.sty) y opcionalmente el texto \\h del encabezado de p\'e1gina, en la carpeta del proyecto, y se abre autom\'e1ticamente en su navegador despu\'e9s de ejecutar la verificaci\'f3n.\par
+\par
+Si ocurre algo inesperado, aparecer\'e1 un archivo FindTitlesDebug.log en la carpeta del proyecto con los detalles -- comparta su contenido para que la verificaci\'f3n pueda corregirse. (Este archivo de depuraci\'f3n es compartido con la versi\'f3n en ingl\'e9s del check; su nombre no est\'e1 traducido a prop\'f3sito, ya que es solo para diagn\'f3stico t\'e9cnico.)\par
+\par
+\b C\'d3MO USAR\b0\par
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+2. En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+3. Revise la lista de resultados para ver el t\'edtulo de cada libro, y el informe InformeTitulos.html (abierto autom\'e1ticamente) para ver la misma informaci\'f3n en una sola tabla.\par
+\par
+\b OPCIONES\b0\par
+\b SortByTitle (Ordenar por t\'edtulo)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado) lista los libros en el orden can\'f3nico de escaneo. S\'ed ordena el informe alfab\'e9ticamente por el texto del t\'edtulo \\mt en su lugar (los caracteres acentuados/diacr\'edticos se ignoran al determinar el orden, pero se siguen mostrando normalmente; los libros con t\'edtulo ausente se ordenan al final). Anulado por Ordenar por encabezado si este est\'e1 en S\'ed.\par
+\par
+\b DisplayHeader (Mostrar encabezado)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado) muestra solo el t\'edtulo \\mt. S\'ed agrega una columna al informe que muestra el texto \\h (encabezado de p\'e1gina) de cada libro, o "ausente" si no est\'e1 presente. Se activa autom\'e1ticamente si Ordenar por encabezado est\'e1 en S\'ed.\par
+\par
+\b SortByHeader (Ordenar por encabezado)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado). S\'ed ordena el informe alfab\'e9ticamente por el texto \\h en su lugar, anulando Ordenar por t\'edtulo, y muestra autom\'e1ticamente la columna de encabezado aunque Mostrar encabezado est\'e9 en No (los caracteres acentuados/diacr\'edticos se ignoran al determinar el orden, pero se siguen mostrando normalmente; los libros sin texto \\h se ordenan al final).\par
+}

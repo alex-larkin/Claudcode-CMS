@@ -1,6 +1,6 @@
 ﻿\check Versículo 1 corto
 \submenu Herramientas_Español
-\script short_v_1.py
+\script short_v_1_sp.py
 \description Marca el texto breve del versículo 1 entre un marcador de párrafo (\p o \m) y el siguiente marcador \p. Las opciones permiten definir la cantidad mínima de caracteres y agregar otros marcadores de párrafo a verificar.
 \books
 \noText

@@ -1,0 +1,50 @@
+﻿\check Quotation Inserter 4 oteU [CAN CHANGE TEXT]
+\submenu Phil_new
+\script quotation_matcher2.py
+\description Compares each verse against the RVCST and, wherever the base text shows quotation marks but the current verse has none, inserts matching quotation marks into the current project. Verses are matched by verse number, not by word position, so placement inside the verse is best-effort: it anchors on nearby punctuation (a comma/colon before an opener, sentence-final punctuation before a closer) when possible and otherwise falls back to a proportional position within the verse. Also detects quotation continuers -- a character the base text repeats at the start of a new paragraph (\p, \q, etc.) when a quotation continues across paragraph breaks, including multiple times within the same verse for a multi-line poetry citation -- and inserts the configured continuer character at the same paragraph-start position in the current project. This version refines continuer placement further: a continuer that follows \q or \m in the base is always ignored, and a continuer that follows \p in the base is ignored unless the current project also has a \p at that same point -- these are the exact checks previously done by hand with a find/replace after running the original Quotation Matcher (see CMS/quotation_matcher/ReadMe1st.txt). Because Otomi and the base text differ in word order, always review the HTML report (QuotationMatcher2Report.html, written to the project folder and opened automatically) before trusting an insertion, especially any marked "proportional" rather than "anchored". Leaves any verse alone that already contains a configured quotation-mark or continuer character, so it never overwrites existing quotes. With Apply Changes = No (the default) nothing is written -- it only reports what it would do. With Apply Changes = Yes, it backs up each touched book's original chapter text to QuotationMatcher2Backup_<BOOK>.sfm in the project folder before writing, but you should still back up or Send/Receive your project first.
+\books
+\noText
+\toList
+\outputProject
+\utf8
+
+\optionName BaseProject
+\optionLocalizedName Base project or resource
+\optionDescription The tool uses the RVCST to match quotation markers
+\optionDefault RVCST
+\optionListAllTexts
+
+\optionName BaseQuotes
+\optionLocalizedName Base text: quote characters
+\optionDescription Open and close characters (separated by a space) that count as a quotation mark in the base project/resource.
+\optionDefault « »
+
+\optionName InsertQuotes
+\optionLocalizedName Current project: quote characters to insert
+\optionDescription Open and close characters (separated by a space) to insert in the current project. Set these to match the current project's own quotation convention.
+\optionDefault « »
+
+\optionName BaseContinuer
+\optionLocalizedName Base text: continuer character
+\optionDescription Character the base project/resource repeats at the start of a new paragraph (or poetry line) when a quotation continues across paragraph breaks -- often the same as the closing character. Leave blank to disable continuer detection.
+\optionDefault »
+
+\optionName InsertContinuer
+\optionLocalizedName Current project: continuer character to insert
+\optionDescription Character to insert at the start of a new paragraph (or poetry line) in the current project when a quotation continues across paragraph breaks. Leave blank to disable continuer insertion.
+\optionDefault »
+
+\optionName ApplyChanges
+\optionLocalizedName Apply changes
+\optionDescription No = preview only, report what would be inserted without changing any text. Yes = write the inserted quotation marks into the current project (a backup of each touched book's original text is written first).
+\optionDefault Yes
+
+\optionName IgnoreNotes
+\optionLocalizedName Ignore footnotes and cross references
+\optionDescription Do not scan or insert inside footnotes or cross references.
+\optionDefault Yes
+
+\optionName MaxExamples
+\optionLocalizedName Max rows per report table
+\optionDescription Caps how many rows are listed in each table of the HTML report, to keep it readable. Totals in the summary are unaffected.
+\optionDefault 100

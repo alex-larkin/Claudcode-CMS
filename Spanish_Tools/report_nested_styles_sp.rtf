@@ -1,0 +1,20 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b INFORME DE ESTILOS ANIDADOS\b0\fs22\par
+\par
+\b PROP\'d3SITO\b0\par
+USFM 3 requiere un prefijo '+' en cualquier estilo de car\'e1cter anidado dentro del contenido de otro marcador -- por ejemplo, dentro de una nota al pie (\\f...\\f*), un estilo de referencia cruzada debe escribirse \\+xt...\\+xt*, no \\xt...\\xt* sin el +. Esta verificaci\'f3n escanea los libros seleccionados en busca de notas al pie y se\'f1ala cualquier estilo de car\'e1cter usado dentro de una que le falte su '+' requerido.\par
+\par
+Solo se verifican los marcadores que el usfm.sty/custom.sty de su proyecto realmente declaran como estilo de car\'e1cter. Los marcadores internos de la nota al pie (\\fr, \\fq, \\fqa, \\fk, \\fl, \\fp, \\ft, \\fv, \\fdc, \\fm) nunca se se\'f1alan -- son la estructura propia de la nota, no un estilo anidado. Cada marcador de apertura y de cierre se verifica por separado, de modo que un par no coincidente (por ejemplo \\+it abierto correctamente pero cerrado como \\it* sin el +) se detecta en el token espec\'edfico que est\'e1 mal.\par
+\par
+Los resultados aparecen en dos lugares:\par
+- La lista de resultados muestra una fila por cada nota al pie se\'f1alada, con el/los marcador(es) al que le falta el '+' (p. ej. "Falta +: xt"). Al hacer clic en una fila se salta a esa nota en el texto. Las notas al pie sin problemas no aparecen aqu\'ed.\par
+- Se escribe un informe InformeEstilosAnidados.html: un resumen de cu\'e1ntas notas al pie se escanearon y se\'f1alaron, adem\'e1s de un desglose de cu\'e1ntas veces se encontr\'f3 cada marcador sin su '+', seguido de cada nota al pie se\'f1alada mostrada con sus marcadores -- el/los marcador(es) al que le falta el '+' resaltado(s) en rojo. Las notas al pie sin problemas no aparecen en el informe. El informe se abre autom\'e1ticamente en su navegador despu\'e9s de ejecutar la verificaci\'f3n.\par
+\par
+Si ocurre algo inesperado, aparecer\'e1 un archivo NestedStylesDebug.log en la carpeta del proyecto con los detalles -- comparta su contenido para que la verificaci\'f3n pueda corregirse. (Este archivo de depuraci\'f3n es compartido con la versi\'f3n en ingl\'e9s del check; su nombre no est\'e1 traducido a prop\'f3sito, ya que es solo para diagn\'f3stico t\'e9cnico.)\par
+\par
+\b C\'d3MO USAR\b0\par
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+2. En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+3. Revise la lista de resultados para saltar a cada nota al pie se\'f1alada, y el informe InformeEstilosAnidados.html (abierto autom\'e1ticamente) para ver cada nota al pie se\'f1alada con el/los marcador(es) resaltado(s) en rojo.\par
+}

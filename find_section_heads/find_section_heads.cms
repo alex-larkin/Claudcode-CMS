@@ -1,0 +1,68 @@
+﻿\check Report of Section heads
+\submenu Phil_new
+\script find_section_heads.py
+\description Scans selected books for \s/\s1-\s4 section heading markers and reports each one in the results list (and in an accompanying FindSectionHeadsReport.html, opened automatically). Consecutive \s/\s1-\s4 markers with no verse content between them (e.g. a \s3/\s2/\s1 run) are combined into a single report entry, in document order, with each level styled (\s/\s1 Bold, \s2 Regular, \s3 Italic, \s4 Regular). Optionally sorts the report alphabetically by section heading text, includes \r (parallel passage reference) fields -- both those immediately following a section heading and any standalone \r with no preceding \s -- flags section headings containing punctuation anywhere in their text, flags section headings (or section heading + \r pairs) that are immediately followed by \m, can show only the section headings with punctuation and/or followed by \m (the two Show only options), and optionally displays (in smaller text) any \f...\f*/\x...\x* footnotes/cross-references found within a section heading instead of ignoring them. Optionally also flags any word other than the first word of a (possibly multi-marker) section heading that starts with a capital letter -- using the same words/prefixes/suffixes to ignore and TermRenderings.xml recognition as the Mid-sentence Capital check -- and highlights the flagged word(s) in place in the \s column. If a FindSectionHeadsDebug.log appears in the project folder, something unexpected happened -- please share it.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortAlphabetically
+\optionLocalizedName Sort alphabetically
+\optionDescription No (default) lists section headings in canonical book/chapter/verse scan order. Yes sorts the HTML report alphabetically by section heading text instead (accented/diacritic characters are ignored when determining sort order, but are still displayed normally; standalone \r rows with no section heading sort to the end).
+\optionDefault No
+
+\optionName IncludeReferences
+\optionLocalizedName Include \r references
+\optionDescription No (default) reports only \s/\s1-\s4 section headings. Yes adds an \r column to the report showing each section heading's parallel-passage reference (when one immediately follows it), and also reports any \r found with no preceding section heading as its own row -- both in the HTML report and in the results list.
+\optionDefault No
+
+\optionName FlagPunctuation
+\optionLocalizedName Flag punctuation
+\optionDescription Yes (default) adds a Punctuation column to the report with a check mark for any section heading whose text contains one of the characters listed in Punctuation characters below, anywhere in the text (not just at the end). No hides the column (the report's summary line always states how many section headings end with punctuation, regardless of this option).
+\optionDefault Yes
+
+\optionName PunctuationChars
+\optionLocalizedName Punctuation characters
+\optionDescription Characters counted as punctuation for the Flag punctuation option above (only used when that option is Yes). Add language-specific punctuation as needed.
+\optionDefault .?!
+
+\optionName FlagFollowedByM
+\optionLocalizedName Flag followed by \m
+\optionDescription Yes (default) adds an \m column to the report with a check mark for any section heading -- or section heading + \r pair, when Include \r references above is relevant -- that is immediately followed by an \m marker. No hides the column (the report's summary line always states how many section headings are followed by \m, regardless of this option).
+\optionDefault Yes
+
+\optionName ShowOnlyPunctuation
+\optionLocalizedName Show only punctuation in section heads
+\optionDescription No (default) lists every section heading. Yes lists only section headings that contain one of the Punctuation characters above, anywhere in the text, in the results list and the HTML report. If Show only section heads followed by \m is also Yes, section headings with either problem are listed. The report's summary counts still cover every section heading, and standalone \r rows are left out.
+\optionDefault No
+
+\optionName ShowOnlyFollowedByM
+\optionLocalizedName Show only section heads followed by \m
+\optionDescription No (default) lists every section heading. Yes lists only section headings (or section heading + \r pairs) immediately followed by \m, in the results list and the HTML report. If Show only punctuation in section heads is also Yes, section headings with either problem are listed. The report's summary counts still cover every section heading, and standalone \r rows are left out.
+\optionDefault No
+
+\optionName IgnoreFootnotesAndCrossRefs
+\optionLocalizedName Ignore footnotes/cross-references
+\optionDescription Yes (default) ignores \f...\f* footnotes and \x...\x* cross-references found within \s/\s1-\s4 section heading text: they are omitted from the HTML report, and never affect the Flag punctuation check or alphabetical sorting either way. No displays the raw footnote/cross-reference markup in the HTML report, in smaller text nested within the section heading's own formatting -- the Flag punctuation check, sorting, and the results-list message always ignore note content regardless of this option.
+\optionDefault Yes
+
+\optionName FlagNonTitleCaps
+\optionLocalizedName Report non-title initial capitals
+\optionDescription No (default) does not check section heading text for capital letters. Yes adds a Non-title cap column with a check mark for any section heading containing a capitalized word other than the very first word of the (possibly multi-marker) heading, and highlights the specific flagged word(s) in place in the \s column's own text. Words listed in Words to ignore below, and words recognized (including via Word prefixes/suffixes to ignore) as a base form in that list or as a capitalized Biblical Terms rendering already recognized from the project's TermRenderings.xml, are not flagged. Off by default because it can be noisy until Words to ignore/TermRenderings.xml are tuned for a project.
+\optionDefault No
+
+\optionName WordsToIgnore
+\optionLocalizedName Words to ignore
+\optionDescription Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml. This is also the base-word list that Word prefixes/suffixes to ignore build on: a listed word with one of those prefixes or suffixes attached is also not flagged. Has no effect unless Report non-title initial capitals above is Yes.
+\optionDefault
+
+\optionName PrefixesToIgnore
+\optionLocalizedName Word prefixes to ignore
+\optionDescription Space-separated list of word prefixes (e.g. ra Ra). A capitalized word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering this check already recognizes from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect on a word whose remainder after the prefix isn't recognized either way, or unless Report non-title initial capitals above is Yes. An entry can also be a "/"-separated group of interchangeable variants (e.g. i/ɨ/ʉ) for languages where attaching the prefix changes the following letter(s) rather than just adding characters: if the word starts with one variant, each other variant in the group is tried in its place when reconstructing the word to check against Words to ignore / TermRenderings.xml.
+\optionDefault
+
+\optionName SuffixesToIgnore
+\optionLocalizedName Word suffixes to ignore
+\optionDescription Space-separated list of word suffixes (e.g. es am). A capitalized word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering this check already recognizes from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect on a word whose remainder before the suffix isn't recognized either way, or unless Report non-title initial capitals above is Yes. An entry can also be a "/"-separated group of interchangeable variants (e.g. ión/iones, or ɨ/ʉ) for languages where the stem's ending changes when a suffix attaches rather than the suffix simply being added on: if the word ends in one variant, each other variant in the group is tried in its place when reconstructing the word to check against Words to ignore / TermRenderings.xml.
+\optionDefault

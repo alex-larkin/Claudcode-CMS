@@ -1,7 +1,7 @@
 ﻿\check Mid-sentence Capital
 \submenu Phil_new
 \script mid_sentence_capital.py
-\description Flags a capital letter that appears mid-sentence: after a comma, semicolon, or another word rather than after sentence-final punctuation. Ignores capitalized words found in the project TermRenderings.xml. Options let you set sentence-boundary characters, words/prefixes/suffixes to ignore, quote-opening handling, and character/paragraph styles to skip.
+\description Flags a capital letter that appears mid-sentence: after a comma, semicolon, or another word rather than after sentence-final punctuation. Capitalized Biblical Terms renderings and words the project's wordlist always capitalizes can be ignored. Options let you set sentence-boundary characters, words/prefixes/suffixes to ignore, quote-opening handling, and character/paragraph styles to skip.
 \books
 \noText
 \toList
@@ -9,13 +9,23 @@
 
 \optionName FinalPunctuation
 \optionLocalizedName Sentence boundary characters
-\optionDescription Characters that mark a sentence boundary. Capitalized words immediately following any of these are not flagged. Default covers . ! ?; inverted sentence-opening punctuation is handled automatically.
+\optionDescription Characters that mark a sentence boundary. Capitalized words immediately following any of these are not flagged. Default covers . ! ? inverted sentence-opening punctuation is handled automatically.
 \optionDefault .!?
 
 \optionName WordsToIgnore
 \optionLocalizedName Words to ignore
-\optionDescription Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml.
+\optionDescription Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml. This is also the base-word list that Word prefixes/suffixes to ignore build on: a listed word with one of those prefixes or suffixes attached is also not flagged.
 \optionDefault
+
+\optionName IgnoreBiblicalTerms
+\optionLocalizedName Ignore capitalized Biblical Terms
+\optionDescription Set to Yes to skip a capitalized word or phrase that is a rendering in the project's Biblical Terms (TermRenderings.xml), such as a proper name. Set to No to flag these too; prefixes/suffixes to ignore then build only on Words to ignore and the wordlist.
+\optionDefault Yes
+
+\optionName IgnoreWordlistCapitals
+\optionLocalizedName Ignore capitalized words in the Wordlist
+\optionDescription Set to Yes to skip a word that the project's Wordlist marks as always capitalized (a specific case in SpellingStatus.xml, e.g. Galilaaya). A listed word with one of the prefixes/suffixes to ignore attached is also skipped.
+\optionDefault Yes
 
 \optionName IgnoreCapAfterQuote
 \optionLocalizedName Ignore capital after opening quote
@@ -37,14 +47,14 @@
 \optionDescription Comma-separated USFM paragraph marker names (no backslash) whose text is treated as a sentence boundary and excluded from end-of-verse detection. Default covers: sp (speaker), r (parallel reference), ms/mr (major section), sr (section range). Section headings (s, s1, s2...) are suppressed automatically.
 \optionDefault sp, r, ms, mr, sr
 
-\optionName WordPrefixes
+\optionName PrefixesToIgnore
 \optionLocalizedName Word prefixes to ignore
-\optionDescription Space-separated list of word prefixes (e.g. ra Ra). A capitalized word beginning with any of these (case-insensitive) will not be flagged.
+\optionDescription Space-separated list of word prefixes (e.g. ra Ra). A capitalized word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering this check already recognizes from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect on a word whose remainder after the prefix isn't recognized either way. An entry can also be a "/"-separated group of interchangeable variants (e.g. i/ɨ/ʉ) for languages where attaching the prefix changes the following letter(s) rather than just adding characters: if the word starts with one variant, each other variant in the group is tried in its place when reconstructing the word to check against Words to ignore / TermRenderings.xml.
 \optionDefault
 
-\optionName WordSuffixes
+\optionName SuffixesToIgnore
 \optionLocalizedName Word suffixes to ignore
-\optionDescription Space-separated list of word suffixes (e.g. es am). A capitalized word ending with any of these (case-insensitive) will not be flagged.
+\optionDescription Space-separated list of word suffixes (e.g. es am). A capitalized word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering this check already recognizes from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect on a word whose remainder before the suffix isn't recognized either way. An entry can also be a "/"-separated group of interchangeable variants (e.g. ión/iones, or ɨ/ʉ) for languages where the stem's ending changes when a suffix attaches rather than the suffix simply being added on: if the word ends in one variant, each other variant in the group is tried in its place when reconstructing the word to check against Words to ignore / TermRenderings.xml.
 \optionDefault
 
 \optionName MidWordPunctuation

@@ -1,7 +1,7 @@
 ﻿\check Mayúscula a mitad de oración
 \submenu Herramientas_Español
 \script mid_sentence_capital.py
-\description Marca una letra mayúscula que aparece a mitad de oración: después de una coma, punto y coma u otra palabra, en lugar de después de puntuación de fin de oración. Ignora las palabras en mayúscula encontradas en el archivo TermRenderings.xml del proyecto. Las opciones permiten definir los caracteres de límite de oración, palabras/prefijos/sufijos para ignorar, el manejo de comillas de apertura y los estilos de carácter/párrafo a omitir.
+\description Marca una letra mayúscula que aparece a mitad de oración: después de una coma, punto y coma u otra palabra, en lugar de después de puntuación de fin de oración. Se pueden ignorar las traducciones con mayúscula de los Términos bíblicos y las palabras que la lista de palabras del proyecto siempre escribe con mayúscula. Las opciones permiten definir los caracteres de límite de oración, palabras/prefijos/sufijos para ignorar, el manejo de comillas de apertura y los estilos de carácter/párrafo a omitir.
 \books
 \noText
 \toList
@@ -14,8 +14,18 @@
 
 \optionName WordsToIgnore
 \optionLocalizedName Palabras para ignorar
-\optionDescription Lista separada por comas de palabras en mayúscula que no deben marcarse (p. ej. Senor, Alfa, Espiritu). Use esta opción para nombres propios no incluidos en TermRenderings.xml.
+\optionDescription Lista separada por comas de palabras en mayúscula que no deben marcarse (p. ej. Senor, Alfa, Espiritu). Use esta opción para nombres propios no incluidos en TermRenderings.xml. Esta es también la lista de palabras base sobre la que se construyen los Prefijos/Sufijos de palabras para ignorar: una palabra listada aquí con uno de esos prefijos o sufijos agregado tampoco será marcada.
 \optionDefault
+
+\optionName IgnoreBiblicalTerms
+\optionLocalizedName Ignorar Términos bíblicos con mayúscula
+\optionDescription Establezca en Sí para omitir una palabra o frase con mayúscula que sea una traducción en los Términos bíblicos del proyecto (TermRenderings.xml), como un nombre propio. Establezca en No para marcarlas también; en ese caso los prefijos/sufijos a ignorar se aplican solo a las Palabras a ignorar y a la lista de palabras.
+\optionDefault Yes
+
+\optionName IgnoreWordlistCapitals
+\optionLocalizedName Ignorar palabras con mayúscula de la Lista de palabras
+\optionDescription Establezca en Sí para omitir una palabra que la Lista de palabras del proyecto marca como siempre con mayúscula (una grafía específica en SpellingStatus.xml, p. ej. Galilaaya). También se omite si lleva uno de los prefijos/sufijos a ignorar.
+\optionDefault Yes
 
 \optionName IgnoreCapAfterQuote
 \optionLocalizedName Ignorar mayúscula después de comilla de apertura
@@ -37,14 +47,14 @@
 \optionDescription Lista separada por comas de nombres de marcadores de párrafo USFM (sin barra invertida) cuyo texto se trata como límite de oración y se excluye de la detección de fin de versículo. El valor predeterminado cubre: sp (locutor), r (referencia paralela), ms/mr (sección mayor), sr (rango de sección). Los encabezados de sección (s, s1, s2...) se suprimen automáticamente.
 \optionDefault sp, r, ms, mr, sr
 
-\optionName WordPrefixes
+\optionName PrefixesToIgnore
 \optionLocalizedName Prefijos de palabras para ignorar
-\optionDescription Lista separada por espacios de prefijos de palabras (p. ej. ra Ra). Una palabra en mayúscula que comience con cualquiera de estos prefijos (sin distinguir mayúsculas) no será marcada.
+\optionDescription Lista separada por espacios de prefijos de palabras (p. ej. ra Ra). Una palabra en mayúscula formada por uno de estos prefijos más una palabra listada en Palabras para ignorar, o una representación de Términos Bíblicos que este chequeo ya reconoce desde TermRenderings.xml (sin distinguir mayúsculas), no será marcada. No tiene efecto sobre una palabra cuyo resto después del prefijo no esté reconocido de ninguna de las dos formas. Una entrada también puede ser un grupo de variantes intercambiables separadas por "/" (p. ej. i/ɨ/ʉ), para idiomas donde agregar el prefijo cambia la(s) letra(s) siguiente(s) en lugar de simplemente añadir caracteres: si la palabra comienza con una variante, se prueba cada otra variante del grupo en su lugar al reconstruir la palabra para verificarla contra Palabras para ignorar / TermRenderings.xml.
 \optionDefault
 
-\optionName WordSuffixes
+\optionName SuffixesToIgnore
 \optionLocalizedName Sufijos de palabras para ignorar
-\optionDescription Lista separada por espacios de sufijos de palabras (p. ej. es am). Una palabra en mayúscula que termine con cualquiera de estos sufijos (sin distinguir mayúsculas) no será marcada.
+\optionDescription Lista separada por espacios de sufijos de palabras (p. ej. es am). Una palabra en mayúscula formada por uno de estos sufijos más una palabra listada en Palabras para ignorar, o una representación de Términos Bíblicos que este chequeo ya reconoce desde TermRenderings.xml (sin distinguir mayúsculas), no será marcada. No tiene efecto sobre una palabra cuyo resto antes del sufijo no esté reconocido de ninguna de las dos formas. Una entrada también puede ser un grupo de variantes intercambiables separadas por "/" (p. ej. ión/iones, o ɨ/ʉ), para idiomas donde la terminación de la raíz cambia al agregar un sufijo en lugar de que el sufijo simplemente se añada: si la palabra termina en una variante, se prueba cada otra variante del grupo en su lugar al reconstruir la palabra para verificarla contra Palabras para ignorar / TermRenderings.xml.
 \optionDefault
 
 \optionName MidWordPunctuation

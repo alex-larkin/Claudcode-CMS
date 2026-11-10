@@ -1,0 +1,78 @@
+LEYENDAS DE FIGURAS
+===================
+Versión 1.1
+
+PROPÓSITO
+Escanea los libros seleccionados en busca de marcadores de figura \fig para
+ayudar a revisar las leyendas de figura y la información de derechos de autor.
+Los proyectos de Paratext usan una de dos sintaxis de figura USFM incompatibles
+(USFM 2, con campos separados por barras verticales, o USFM 3, con atributos
+key="value") -- esta verificación detecta automáticamente cuál usa cada
+figura, por lo que no es necesario seleccionar una versión.
+
+Los resultados aparecen en dos lugares:
+  - La lista de resultados muestra una fila por figura para la leyenda (su
+    texto real, o "vacío" si no tiene), una fila para los derechos de autor
+    (su texto real, o "Derechos de autor: vacío" si no tiene), y una fila
+    para el nombre del archivo de ilustración (su nombre real, o "vacío" si
+    no tiene). Al hacer clic en una fila se salta a esa figura en el texto.
+  - Se escribe un informe InformeDeFigura.html, con la referencia y el
+    texto real de la leyenda/derechos de autor y el nombre del archivo de
+    ilustración de cada figura, en la carpeta del proyecto, y se abre
+    automáticamente en su navegador después de ejecutar la verificación.
+  - Miniaturas de las imágenes: cuando la carpeta figures del proyecto
+    tiene una imagen de una figura (con el mismo nombre de archivo, o una
+    copia .jpg/.png de un .tif), el informe tiene una casilla "Mostrar
+    miniaturas de las imágenes" en la parte superior. Márquela para añadir
+    una columna Imagen con una copia pequeña de cada imagen ("sin imagen"
+    donde no se encontró ninguna). Los navegadores no pueden mostrar
+    archivos .tif, así que una figura cuya única imagen es un .tif no tiene
+    miniatura.
+
+Si ocurre algo inesperado, aparecerá un archivo FigureCaptionsDebug.log en la
+carpeta del proyecto con los detalles -- comparta su contenido para que la
+verificación pueda corregirse. (Este archivo de depuración es compartido con
+la versión en inglés del check; su nombre no está traducido a propósito, ya
+que es solo para diagnóstico técnico.)
+
+CÓMO USAR
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie allí también ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.
+2. En Paratext, ejecute la verificación desde el menú Proyecto > Herramientas
+   > Herramientas personalizadas > Herramientas_Español.
+3. Revise la lista de resultados para ver el texto de la leyenda/derechos de
+   autor de cada figura, y el informe InformeDeFigura.html (abierto
+   automáticamente) para ver la misma información en una sola tabla.
+
+OPCIONES
+  DisplayCaption (¿Mostrar la leyenda de figura?)
+    Predeterminado: Sí
+    Sí incluye una columna de Leyenda en el informe y una fila en la lista de
+    resultados con el texto de la leyenda (o "vacío") para cada figura.
+
+  DisplayCopyright (¿Mostrar los derechos de autor?)
+    Predeterminado: Sí
+    Sí incluye una columna de Derechos de autor en el informe y una fila en
+    la lista de resultados con el texto de los derechos de autor (o
+    "Derechos de autor: vacío") para cada figura.
+
+  DisplayIllustrationFile (¿Mostrar el nombre del archivo de ilustración?)
+    Predeterminado: Sí
+    Sí incluye una columna de Archivo de ilustración en el informe y una
+    fila en la lista de resultados con el nombre del archivo de la
+    ilustración (p. ej. "CN01629B.TIF" o "MyrrhBush_HK00118.tif") para
+    cada figura, o "vacío" si no se especifica ninguno. En USFM 3 es el
+    atributo src="..."; en USFM 2 es el campo justo después de la primera
+    barra vertical.
+
+  SortByCaption (¿Ordenar las leyendas alfabéticamente?)
+    Predeterminado: No
+    Sí ordena las figuras que aparecen en el informe HTML alfabéticamente
+    según el texto de la leyenda de cada figura, de modo que las leyendas
+    idénticas o casi idénticas queden juntas para facilitar su
+    comparación. Si las leyendas están ocultas (¿Mostrar la leyenda de
+    figura? = No), ordena en su lugar por el nombre del archivo de
+    ilustración (si se muestra); si ambos están ocultos, ordena por el
+    texto de los derechos de autor. No (predeterminado) las lista en el
+    orden de escaneo canónico de libro/capítulo/versículo. Los caracteres
+    acentuados o con diacríticos se ignoran al determinar el orden (pero
+    se siguen mostrando normalmente).

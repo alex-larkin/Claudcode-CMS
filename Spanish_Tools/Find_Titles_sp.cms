@@ -1,0 +1,23 @@
+﻿\check Informe de los títulos
+\submenu Herramientas_Español
+\script Find_Titles_sp.py
+\description Escanea los libros seleccionados y lista el texto del título principal \mt/\mt1/\mt2/\mt3 encontrado para cada libro, tanto en la lista de resultados (una fila por libro) como en un informe InformeTitulos.html adjunto (que se abre automáticamente), con cada segmento \mt con el estilo definido en usfm.sty/custom.sty. Un libro sin ningún marcador \mt se lista como "ausente". Opcionalmente ordena el informe alfabéticamente por el texto del título \mt, o por el texto \h en su lugar (lo cual anula el orden por título), y opcionalmente agrega una columna que muestra el texto \h (encabezado de página) de cada libro. Si aparece un archivo FindTitlesDebug.log en la carpeta del proyecto, algo inesperado ocurrió -- por favor compártalo.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortByTitle
+\optionLocalizedName Ordenar por título
+\optionDescription No (predeterminado) lista los libros en el orden canónico de escaneo. Sí ordena el informe alfabéticamente por el texto del título \mt en su lugar (los caracteres acentuados/diacríticos se ignoran al determinar el orden, pero se siguen mostrando normalmente; los libros con título ausente se ordenan al final). Anulado por Ordenar por encabezado si este está en Sí.
+\optionDefault No
+
+\optionName DisplayHeader
+\optionLocalizedName Mostrar encabezado
+\optionDescription No (predeterminado) muestra solo el título \mt. Sí agrega una columna al informe que muestra el texto \h (encabezado de página) de cada libro, o "ausente" si no está presente. Se activa automáticamente si Ordenar por encabezado está en Sí.
+\optionDefault No
+
+\optionName SortByHeader
+\optionLocalizedName Ordenar por encabezado
+\optionDescription No (predeterminado). Sí ordena el informe alfabéticamente por el texto \h en su lugar, anulando Ordenar por título, y muestra automáticamente la columna de encabezado aunque Mostrar encabezado esté en No (los caracteres acentuados/diacríticos se ignoran al determinar el orden, pero se siguen mostrando normalmente; los libros sin texto \h se ordenan al final).
+\optionDefault No

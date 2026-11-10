@@ -14,6 +14,9 @@ REFERENCE FORMS RECOGNIZED
   - Cross-chapter:     Mr 8:31-9:1
   - Verse sequences:   Lc 22:54-55, 63-71
   - Verse suffixes:    Lc 9:43a
+  - Book-less:         1:11, 1:1-9, 1:10-4:21 (no book name needed; an
+                        all-zero verse like 50.00 is excluded, since that's
+                        a decimal number, not a real verse)
   - Scripts supported: Latin, Greek, Hebrew (and other Unicode letters)
 
 HOW TO USE

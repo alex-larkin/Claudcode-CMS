@@ -1,0 +1,28 @@
+﻿\check Informe de leyendas de figuras v1.1
+\submenu Herramientas_Español
+\script Find_caption_sp.py
+\description Escanea los libros seleccionados en busca de marcadores de figura \fig, muestra la leyenda, los derechos de autor y el nombre del archivo de ilustración de cada figura directamente en la lista de resultados (una fila por elemento; "vacío" o "Derechos de autor: vacío" cuando falta), y escribe un informe InformeDeFigura.html (que se abre automáticamente) con la referencia, la leyenda, los derechos de autor y el archivo de ilustración de cada figura. Cuando la carpeta figures del proyecto tiene una imagen de una figura (con el mismo nombre, o una copia .jpg de un .tif), una casilla "Mostrar miniaturas de las imágenes" en la parte superior del informe muestra una copia pequeña de cada imagen. Cada figura se clasifica automáticamente como USFM 2 (campos separados por barras verticales) o USFM 3 (atributos key="value") según su contenido, por lo que no es necesario seleccionar una versión. Si aparece un archivo FigureCaptionsDebug.log en la carpeta del proyecto, ocurrió algo inesperado -- compártalo, por favor. [Versión 1.1]
+\books
+\noText
+\toList
+\utf8
+
+\optionName DisplayCaption
+\optionLocalizedName ¿Mostrar la leyenda de figura?
+\optionDescription Sí incluye una columna de Leyenda en el informe y una fila en la lista de resultados con el texto de la leyenda (o "vacío") para cada figura.
+\optionDefault Yes
+
+\optionName DisplayCopyright
+\optionLocalizedName ¿Mostrar los derechos de autor?
+\optionDescription Sí incluye una columna de Derechos de autor en el informe y una fila en la lista de resultados con el texto de los derechos de autor (o "Derechos de autor: vacío") para cada figura.
+\optionDefault Yes
+
+\optionName DisplayIllustrationFile
+\optionLocalizedName ¿Mostrar el nombre del archivo de ilustración?
+\optionDescription Sí incluye una columna de Archivo de ilustración en el informe y una fila en la lista de resultados con el nombre del archivo de la ilustración (p. ej. "CN01629B.TIF" o "MyrrhBush_HK00118.tif") para cada figura, o "vacío" si no se especifica ninguno. En USFM 3 es el atributo src="..."; en USFM 2 es el campo justo después de la primera barra vertical.
+\optionDefault Yes
+
+\optionName SortByCaption
+\optionLocalizedName ¿Ordenar las leyendas alfabéticamente?
+\optionDescription Sí ordena las figuras que aparecen en el informe HTML alfabéticamente según el texto de la leyenda de cada figura, de modo que las leyendas idénticas o casi idénticas queden juntas para facilitar su comparación. Si las leyendas están ocultas (¿Mostrar la leyenda de figura? = No), ordena en su lugar por el nombre del archivo de ilustración (si se muestra); si ambos están ocultos, ordena por el texto de los derechos de autor. No (predeterminado) las lista en el orden de escaneo canónico de libro/capítulo/versículo. Los caracteres acentuados o con diacríticos se ignoran al determinar el orden (pero se siguen mostrando normalmente).
+\optionDefault No

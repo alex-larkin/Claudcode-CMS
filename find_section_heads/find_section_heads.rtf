@@ -1,0 +1,67 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b FIND SECTION HEADS\b0\fs22\par
+\par
+\b PURPOSE\b0\par
+Scans selected books and lists every \\s/\\s1-\\s4 section heading found, in canonical scan order. Consecutive \\s/\\s1-\\s4 markers with no verse content between them (e.g. a \\s3/\\s2/\\s1 run) are combined into a single entry, in document order, with each level styled (\\s/\\s1 Bold, \\s2 Regular, \\s3 Italic, \\s4 Regular). Optionally includes \\r (parallel passage reference) fields, flags section headings containing punctuation anywhere in their text, flags section headings that are immediately followed by \\m, can show only the section headings with punctuation and/or followed by \\m, optionally displays (in smaller text) any \\f...\\f*/\\x...\\x* footnotes/cross-references found within a section heading instead of ignoring them, and optionally flags any word other than the first word of a section heading that starts with a capital letter, using the same ignore-list and TermRenderings.xml logic as the Mid-sentence Capital check, highlighting the flagged word(s) in the report.\par
+\par
+Results appear in two places:\par
+- The results list shows one row per section heading (and, if Include \\r references is Yes, one row per \\r field), searchable by reference or by its text. Clicking a row jumps to the relevant marker in the text.\par
+- A FindSectionHeadsReport.html report, listing every section heading with its book and reference (plus a summary at the top showing how many \\s/\\s1-\\s4 markers of each type were found, and how many section headings contain footnotes or cross-references), is written to the project folder and opened automatically in your browser after the check runs.\par
+\par
+If anything unexpected happens, a FindSectionHeadsDebug.log file will appear in the project folder with the details - please share its contents so the check can be fixed.\par
+\par
+\b HOW TO USE\b0\par
+1. Copy the .cms and .py files to your My Paratext Projects\\cms folder. To make the references in the HTML report clickable (a click shows that place in Paratext), also copy ptx_goto.py and ParatextGoTo.exe there. The first click makes the browser ask whether to open ParatextGoTo, and Paratext follows only when the text window's scroll group follows other programs.\par
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+3. Review the results list for each section heading, and the FindSectionHeadsReport.html report (opened automatically) for the same information in one table.\par
+\par
+\b OPTIONS\b0\par
+\b SortAlphabetically\b0\par
+\tab Default:  No\par
+No (default) lists section headings in canonical book/chapter/verse scan order. Yes sorts the HTML report alphabetically by section heading text instead (accented/diacritic characters are ignored when determining sort order, but are still displayed normally; standalone \\r rows with no section heading sort to the end).\par
+\par
+\b IncludeReferences\b0\par
+\tab Default:  No\par
+No (default) reports only \\s/\\s1-\\s4 section headings. Yes adds an \\r column to the report showing each section heading's parallel-passage reference (when one immediately follows it), and also reports any \\r found with no preceding section heading as its own row - both in the HTML report and in the results list.\par
+\par
+\b FlagPunctuation\b0\par
+\tab Default:  Yes\par
+Yes (default) adds a Punctuation column to the report with a check mark for any section heading whose text contains one of the characters listed in Punctuation characters below, anywhere in the text (not just at the end). No hides the column (the report's summary line always states how many section headings end with punctuation, regardless of this option).\par
+\par
+\b PunctuationChars\b0\par
+\tab Default:  .?!\par
+Characters counted as punctuation for the Flag punctuation option above (only used when that option is Yes). Add language-specific punctuation as needed.\par
+\par
+\b FlagFollowedByM\b0\par
+\tab Default:  Yes\par
+Yes (default) adds an \\m column to the report with a check mark for any section heading - or section heading + \\r pair, when Include \\r references above applies - that is immediately followed by an \\m marker. No hides the column (the report's summary line always states how many section headings are followed by \\m, regardless of this option).\par
+\par
+\b ShowOnlyPunctuation (Show only punctuation in section heads)\b0\par
+\tab Default:  No\par
+No (default) lists every section heading. Yes lists only section headings that contain one of the Punctuation characters, anywhere in the text, in the results list and the HTML report, and always shows the Punctuation column. If ShowOnlyFollowedByM is also Yes, section headings with either problem are listed. The report's summary counts still cover every section heading, and standalone \\r rows are left out.\par
+\par
+\b ShowOnlyFollowedByM (Show only section heads followed by \\m)\b0\par
+\tab Default:  No\par
+No (default) lists every section heading. Yes lists only section headings (or section heading + \\r pairs) immediately followed by \\m, in the results list and the HTML report, and always shows the \\m column. If ShowOnlyPunctuation is also Yes, section headings with either problem are listed. The report's summary counts still cover every section heading, and standalone \\r rows are left out.\par
+\par
+\b IgnoreFootnotesAndCrossRefs\b0\par
+\tab Default:  Yes\par
+Yes (default) ignores \\f...\\f* footnotes and \\x...\\x* cross-references found within \\s/\\s1-\\s4 section heading text: they are omitted from the HTML report, and never affect the Flag punctuation check or alphabetical sorting either way. No displays the raw footnote/cross-reference markup in the HTML report, in smaller text nested within the section heading's own formatting - the Flag punctuation check, sorting, and the results-list message always ignore note content regardless of this option.\par
+\par
+\b FlagNonTitleCaps (Report non-title initial capitals)\b0\par
+\tab Default:  No\par
+No (default) does not check section heading text for capital letters. Yes adds a Non-title cap column with a check mark for any section heading containing a capitalized word other than the very first word of the (possibly multi-marker) heading, and highlights the specific flagged word(s) in place in the \\s column's own text. Words listed in Words to ignore below, and words recognized (including via Word prefixes/suffixes to ignore) as a base form in that list or as a capitalized Biblical Terms rendering already recognized from the project's TermRenderings.xml, are not flagged. Off by default because it can be noisy until Words to ignore/TermRenderings.xml are tuned for a project.\par
+\par
+\b WordsToIgnore (Words to ignore)\b0\par
+\tab Default:  (empty)\par
+Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml. This is also the base-word list that Word prefixes/suffixes to ignore build on. Has no effect unless Report non-title initial capitals above is Yes.\par
+\par
+\b PrefixesToIgnore (Word prefixes to ignore)\b0\par
+\tab Default:  (empty)\par
+Space-separated list of word prefixes (e.g. ra Ra). A capitalized word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering already recognized from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect unless Report non-title initial capitals above is Yes. An entry can also be a "/"-separated group of interchangeable variants (e.g. i/\u616\'3f/\u649\'3f) for languages where attaching the prefix changes the following letter(s) rather than just adding characters.\par
+\par
+\b SuffixesToIgnore (Word suffixes to ignore)\b0\par
+\tab Default:  (empty)\par
+Space-separated list of word suffixes (e.g. es am). A capitalized word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering already recognized from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect unless Report non-title initial capitals above is Yes. An entry can also be a "/"-separated group of interchangeable variants (e.g. i\'f3n/iones) for languages where the stem's ending changes when a suffix attaches.\par
+}

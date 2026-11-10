@@ -1,0 +1,40 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b NOTAS AL PIE\b0\fs22\par
+\par
+\b PROP\'d3SITO\b0\par
+Escanea los libros seleccionados en busca de notas al pie \\f...\\f* para ayudar a revisar su estructura interna (\\fr, \\fq, \\ft, y cualquier estilo de car\'e1cter anidado como \\+it o \\+xt) y verificar que cada marcador de apertura tenga su marcador de cierre correspondiente.\par
+\par
+Los resultados aparecen en dos lugares:\par
+- La lista de resultados muestra una fila por nota al pie, con los c\'f3digos de los submarcadores que contiene (p. ej. "fr fq ft") para facilitar la b\'fasqueda. Al hacer clic en una fila se salta a esa nota en el texto.\par
+- Se escribe un informe InformeNotasAlPie.html, con una fila por nota que muestra la referencia, la llamada, la referencia \\fr y el resto del texto con el formato real (Negrita/Cursiva/Super\'edndice/Versalitas/Subrayado/Color) declarado en usfm.sty y en el custom.sty del proyecto, adem\'e1s de una tabla resumen de cada marcador encontrado (los marcadores de apertura y cierre se cuentan por separado, p. ej. \\w y \\w*) y su estilo resuelto. El informe se abre autom\'e1ticamente en su navegador despu\'e9s de ejecutar la verificaci\'f3n.\par
+- Cuando una opci\'f3n de may\'fasculas est\'e1 activada (vea OPCIONES), cada nota que marca recibe una fila adicional en la lista de resultados (p. ej. "\\ft sin mayuscula"), y su fila en el informe HTML aparece resaltada con el mensaje en rojo.\par
+\par
+Si ocurre algo inesperado, aparecer\'e1 un archivo FootnotesDebug.log en la carpeta del proyecto con los detalles -- comparta su contenido para que la verificaci\'f3n pueda corregirse. (Este archivo de depuraci\'f3n es compartido con la versi\'f3n en ingl\'e9s del check; su nombre no est\'e1 traducido a prop\'f3sito, ya que es solo para diagn\'f3stico t\'e9cnico.)\par
+\par
+\b C\'d3MO USAR\b0\par
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+2. En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+3. Revise la lista de resultados para buscar notas al pie por referencia o por marcador, y el informe InformeNotasAlPie.html (abierto autom\'e1ticamente) para ver la misma informaci\'f3n en una sola tabla alineada.\par
+\par
+\b OPCIONES\b0\par
+\b SortAlphabetically (\'bfOrdenar las notas al pie alfab\'e9ticamente?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed ordena las notas al pie del informe HTML alfab\'e9ticamente seg\'fan el propio texto de la nota (todo excepto la referencia \\fr), de modo que las notas id\'e9nticas o casi id\'e9nticas queden juntas para facilitar su comparaci\'f3n. No (predeterminado) las lista en el orden de escaneo can\'f3nico de libro/cap\'edtulo/vers\'edculo.\par
+\par
+\b HideMarkers (\'bfOcultar los marcadores en el informe HTML?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed oculta las etiquetas de marcador (p. ej. \\fq, \\+it, \\+it*) que aparecen antes de cada fragmento de texto de la nota en el informe HTML -- el texto conserva su formato de Negrita/Cursiva/Super\'edndice/Versalitas/Subrayado/Color, solo se ocultan las etiquetas de marcador, para una vista de lectura m\'e1s limpia. No (predeterminado) muestra los marcadores junto al texto con estilo, como hasta ahora.\par
+\par
+\b CheckFtCapitals (\'bfRevisar may\'fasculas despu\'e9s de \\ft?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed revisa, en cada nota al pie: (1) un \\ft que es el primer marcador despu\'e9s de la referencia \\fr (o el primer marcador, si no hay \\fr) debe ir seguido de una palabra que empiece con may\'fascula; (2) cualquier otro \\ft se revisa solo cuando el texto anterior termina una oraci\'f3n (con . ? o !, sin contar los marcadores ni otra puntuaci\'f3n intermedia, como comillas o par\'e9ntesis de cierre), y entonces tambi\'e9n debe ir seguido de may\'fascula. As\'ed, en "\\fr 21:6 \\fq Dios \\ft o ..." el \\ft sigue a \\fq y no se marca. Para hallar la siguiente palabra se saltan los marcadores de car\'e1cter (p. ej. \\+it) y la puntuaci\'f3n inicial (p. ej. \'ab o \'bf). Las palabras que empiezan con un n\'famero, o con una letra sin forma may\'fascula, no se marcan. Las notas marcadas aparecen en la lista de resultados como "\\ft sin mayuscula".\par
+\par
+\b CheckCapitalAfterFr (\'bfRevisar may\'fascula despu\'e9s de la referencia \\fr?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed revisa que el primer marcador despu\'e9s de la referencia \\fr (\\ft, \\fq, \\fk...) vaya seguido de may\'fascula, con las mismas reglas para hallar la siguiente palabra. Las notas marcadas aparecen, p. ej., como "\\fq sin mayuscula despues de \\fr". Si esta opci\'f3n y CheckFtCapitals se aplican al mismo \\ft, se informa una sola vez. Algunos proyectos citan a prop\'f3sito el texto del vers\'edculo en min\'fascula en \\fq; en ellos, esta opci\'f3n marcar\'e1 la mayor\'eda de las notas.\par
+\par
+\b OnlyCapitalIssues (\'bfMostrar solo las notas con problemas de may\'fasculas?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed muestra solo las notas al pie marcadas por CheckFtCapitals o CheckCapitalAfterFr, tanto en la lista de resultados como en la lista de notas del informe HTML, que indica cu\'e1ntas del total se muestran. La tabla resumen de marcadores sigue contando todas las notas. No tiene efecto a menos que al menos una de esas dos revisiones est\'e9 en S\'ed; en ese caso el informe lo indica.\par
+}

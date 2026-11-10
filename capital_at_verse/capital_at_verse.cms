@@ -1,7 +1,7 @@
-﻿\check Capital at verse
+﻿\check Report of Capital at Verse
 \submenu Phil_new
 \script capital_at_verse.py
-\description Flags a capital letter after a verse number when the previous verse ended with non-sentence-final punctuation (e.g. comma, semicolon, colon). Options let you set sentence-final characters, words/prefixes/suffixes to ignore, quote-opening handling, and character/paragraph styles to skip.
+\description Flags a capital letter after a verse number when the previous verse ended with non-sentence-final punctuation (e.g. comma, semicolon, colon). Options let you set sentence-final characters, words/prefixes/suffixes to ignore, quote-opening handling, and character/paragraph styles to skip. Also writes an HTML report (CapitalAtVerseReport.html, opened automatically) showing three words of context before and after each flagged verse number, with footnotes, cross-references, and figures excluded from the context. Capitalized Biblical Terms renderings and words the project's wordlist always capitalizes can be ignored. When ptx_goto.py and ParatextGoTo.exe are in the cms folder, clicking a reference in the report shows that verse in Paratext.
 \books
 \noText
 \toList
@@ -14,8 +14,18 @@
 
 \optionName WordsToIgnore
 \optionLocalizedName Words to ignore
-\optionDescription Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml.
+\optionDescription Comma-separated list of capitalized words that should not be flagged (e.g. Senor, Alfa, Espiritu). Use this for proper nouns not covered by TermRenderings.xml. This is also the base-word list that Word prefixes/suffixes to ignore build on: a listed word with one of those prefixes or suffixes attached is also not flagged.
 \optionDefault
+
+\optionName IgnoreBiblicalTerms
+\optionLocalizedName Ignore capitalized Biblical Terms
+\optionDescription Set to Yes to skip a capitalized word or phrase that is a rendering in the project's Biblical Terms (TermRenderings.xml), such as a proper name. Set to No to flag these too; prefixes/suffixes to ignore then build only on Words to ignore and the wordlist.
+\optionDefault Yes
+
+\optionName IgnoreWordlistCapitals
+\optionLocalizedName Ignore capitalized words in the Wordlist
+\optionDescription Set to Yes to skip a word that the project's Wordlist marks as always capitalized (a specific case in SpellingStatus.xml, e.g. Galilaaya). A listed word with one of the prefixes/suffixes to ignore attached is also skipped.
+\optionDefault Yes
 
 \optionName IgnoreCapAfterQuote
 \optionLocalizedName Ignore capital after opening quote
@@ -34,20 +44,25 @@
 
 \optionName IgnoreParaStyles
 \optionLocalizedName Paragraph styles to ignore
-\optionDescription Comma-separated USFM paragraph marker names (no backslash) whose text is excluded when computing the last character of a verse. Default covers: sp (speaker), r (parallel reference), ms/mr (major section), sr (section range). Section headings (s, s1, s2...) are suppressed automatically without this option.
+\optionDescription Comma-separated USFM paragraph marker names (no backslash) whose text is excluded when computing the last character of a verse. Default covers: sp (speaker), r (parallel reference), ms/mr (major section), sr (section range). Section headings (s, s1, s2...) are suppressed automatically without this option. A paragraph break whose only text before the next verse is from these styles (e.g. \s1 heading, then \sp speaker, then \q1) also suppresses the check.
 \optionDefault sp, r, ms, mr, sr
 
-\optionName WordPrefixes
+\optionName PrefixesToIgnore
 \optionLocalizedName Word prefixes to ignore
-\optionDescription Space-separated list of word prefixes (e.g. ra Ra). A capitalized verse-start word beginning with any of these (case-insensitive) will not be flagged.
+\optionDescription Space-separated list of word prefixes (e.g. ra Ra). A capitalized verse-start word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering this check already recognizes from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect on a word whose remainder after the prefix isn't recognized either way. An entry can also be a "/"-separated group of interchangeable variants (e.g. i/ɨ/ʉ) for languages where attaching the prefix changes the following letter(s) rather than just adding characters: if the word starts with one variant, each other variant in the group is tried in its place when reconstructing the word to check against Words to ignore / TermRenderings.xml.
 \optionDefault
 
-\optionName WordSuffixes
+\optionName SuffixesToIgnore
 \optionLocalizedName Word suffixes to ignore
-\optionDescription Space-separated list of word suffixes (e.g. es am). A capitalized verse-start word ending with any of these (case-insensitive) will not be flagged.
+\optionDescription Space-separated list of word suffixes (e.g. es am). A capitalized verse-start word made of one of these plus either a word listed in Words to ignore, or a capitalized Biblical Terms rendering this check already recognizes from TermRenderings.xml (case-insensitive), will not be flagged. Has no effect on a word whose remainder before the suffix isn't recognized either way. An entry can also be a "/"-separated group of interchangeable variants (e.g. ión/iones, or ɨ/ʉ) for languages where the stem's ending changes when a suffix attaches rather than the suffix simply being added on: if the word ends in one variant, each other variant in the group is tried in its place when reconstructing the word to check against Words to ignore / TermRenderings.xml.
 \optionDefault
 
 \optionName MidWordPunctuation
 \optionLocalizedName Mid-word punctuation
 \optionDescription Characters that may appear inside a word (e.g. - for hyphen, ' for apostrophe). Enter without spaces. Words containing these characters are treated as a single unit when checking for capitals.
 \optionDefault -
+
+\optionName SkipBeforeVerse
+\optionLocalizedName Characters to skip before a verse number
+\optionDescription Characters (no spaces) that may stand just before a verse number, such as the [ that opens a bracketed verse. They are looked past when finding how the previous verse ended, so "word. [" counts as ending with . and a paragraph marker followed only by [ counts as a paragraph break. Clear this field to treat them as ordinary characters.
+\optionDefault [

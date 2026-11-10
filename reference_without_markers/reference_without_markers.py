@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import checking
 import re
 import sys as _sys
@@ -66,6 +66,13 @@ ORIG_MARKER_RE = re.compile(
     ur'\\(?:fr|xo)\b[^\\]*',
     re.UNICODE)
 
+# Remark markers (\rem) -- free-text comments that may contain
+# reference-looking text; blank to the next USFM marker since remark
+# content isn't reliably confined to a single line.
+REM_MARKER_RE = re.compile(
+    ur'\\rem\b[^\\]*',
+    re.UNICODE)
+
 # ---------------------------------------------------------------------------
 # Pattern for a bare (unmarked) scripture reference.
 #
@@ -80,27 +87,41 @@ ORIG_MARKER_RE = re.compile(
 #        combining marks (handles NFD-form text such as e + combining-acute).
 # ---------------------------------------------------------------------------
 _L    = u'[^\\W\\d_]'
-_COMB = u'[̀-ͯؐ-ٟ᷀-᷿︠-︯]'
+# Combining-mark ranges: U+0300-036F, U+0610-065F, U+1DC0-1DFF, U+FE20-FE2F.
+# Built with unichr() rather than literal non-ASCII characters -- see
+# feedback_cms_py_source_ascii_only in project memory.
+_COMB = (u'[' + unichr(0x0300) + u'-' + unichr(0x036f) +
+         unichr(0x0610) + u'-' + unichr(0x065f) +
+         unichr(0x1dc0) + u'-' + unichr(0x1dff) +
+         unichr(0xfe20) + u'-' + unichr(0xfe2f) + u']')
 _BC   = u'(?:' + _L + _COMB + u'*)'
 _CVS  = re.escape(ChapterVerseSep)
 
 _pat = (
     u'(?<!\\w)'
+    # Book-name prefix is optional: with it, "Mat 5:12"; without it, a bare
+    # "5:12" is flagged too (e.g. inside \ft body text with no book name).
+    u'(?:'
     # Numbered-book form: "1 S", "2 Cr", "3 Jn", or fully spelled "1 Corintios".
     #   No upper bound so any fully spelled numbered book name matches.
-    #   = non-breaking space; accept either space or NBSP after the digit.
-    u'(?:[123][  ]' + _BC + u'{1,}'
+    # NBSP (U+00A0) accepted alongside a plain space after the digit.
+    u'(?:[123][ ' + unichr(0x00a0) + u']' + _BC + u'{1,}'
     # Standard form: abbreviation or fully spelled book name, e.g. "Is",
-    # "Mat", "Sal", "Génesis". Minimum of 2 prevents bare single-letter
+    # "Mat", "Sal", "Genesis". Minimum of 2 prevents bare single-letter
     # false positives. No upper bound -- a long ordinary word immediately
     # followed by an "N:N" pattern can occasionally match too; accepted
     # trade-off since this is a manually-reviewed check.
     u'|' + _BC + u'{2,})'
     u'[ \\t]+'                                          # space(s) before chapter number
-    u'\\d{1,3}' + _CVS + u'\\d{1,3}[a-z]?'            # chapter:verse with optional letter
-    # Optional range end: – = en-dash.
-    # Verse range: -65, -43a   Cross-chapter: -9:1 or –9:1
-    u'(?:[-–]\\d{1,3}(?:' + _CVS + u'\\d{1,3})?[a-z]?)?'
+    u')?'
+    u'\\d{1,3}' + _CVS +
+    # Reject an all-zero verse ("00"/"000", e.g. "50.00") -- a decimal-number
+    # artifact, not a real verse.
+    u'(?!0{2,3}(?!\\d))' +
+    u'\\d{1,3}[a-z]?'                                    # chapter:verse with optional letter
+    # Optional range end: accepts a hyphen or an en-dash (U+2013).
+    # Verse range: -65, -43a   Cross-chapter: -9:1 or en-dash 9:1
+    u'(?:[-' + unichr(0x2013) + u']\\d{1,3}(?:' + _CVS + u'\\d{1,3})?[a-z]?)?'
     # Optional verse-sequence continuations: ", 63-71" or ",24"
     u'(?:,[ ]?\\d{1,3}[a-z]?(?:-\\d{1,3}[a-z]?)?)*'
 )
@@ -113,6 +134,7 @@ def checkChapter(reference, text, lastChapter):
     blanked = MARKED_SPAN_RE.sub(lambda m: u' ' * len(m.group(0)), text)
     blanked = LINE_REF_RE.sub(lambda m: u' ' * len(m.group(0)), blanked)
     blanked = ORIG_MARKER_RE.sub(lambda m: u' ' * len(m.group(0)), blanked)
+    blanked = REM_MARKER_RE.sub(lambda m: u' ' * len(m.group(0)), blanked)
     for m in BARE_REF_RE.finditer(blanked):
         checking.outputError(m.start(), m.end(),
                              u'')

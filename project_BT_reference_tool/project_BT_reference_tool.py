@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import checking
 import codecs
 import os
@@ -97,11 +97,12 @@ def norm(code):
 
 
 def has_hebrew(tid):
-    return any(u'֐' <= c <= u'׿' for c in tid)
+    return any(unichr(0x0590) <= c <= unichr(0x05ff) for c in tid)
 
 
 def has_greek(tid):
-    return any((u'Ͱ' <= c <= u'Ͽ') or (u'ἀ' <= c <= u'῿') for c in tid)
+    return any((unichr(0x0370) <= c <= unichr(0x03ff)) or
+               (unichr(0x1f00) <= c <= unichr(0x1fff)) for c in tid)
 
 
 def parse_terms(path, ignore_dc=False, include_hebrew=True, include_greek=True):
@@ -154,7 +155,7 @@ def write_html_report(html_path, project_name, rows, show_all, show_bt):
     lines = []
     lines.append(u'<!DOCTYPE html>')
     lines.append(u'<html><head><meta charset="utf-8">')
-    lines.append(u'<title>BT Reference Comparison – {}</title>'.format(_he(project_name)))
+    lines.append(u'<title>BT Reference Comparison {} {}</title>'.format(unichr(0x2013), _he(project_name)))
     lines.append(u'<style>')
     lines.append(u'body{font-family:sans-serif;font-size:13px}')
     lines.append(u'table{border-collapse:collapse}')
@@ -177,11 +178,11 @@ def write_html_report(html_path, project_name, rows, show_all, show_bt):
         lines.append(u'<td>{}</td>'.format(proj_count))
         if show_all:
             css = u' class="hi"' if all_count is not None and all_count != proj_count else u''
-            cell = u'{}'.format(all_count) if all_count is not None else u'–'
+            cell = u'{}'.format(all_count) if all_count is not None else unichr(0x2013)
             lines.append(u'<td{}>{}</td>'.format(css, cell))
         if show_bt:
             css = u' class="hi"' if bt_count is not None and bt_count != proj_count else u''
-            cell = u'{}'.format(bt_count) if bt_count is not None else u'–'
+            cell = u'{}'.format(bt_count) if bt_count is not None else unichr(0x2013)
             lines.append(u'<td{}>{}</td>'.format(css, cell))
         lines.append(u'</tr>')
     lines.append(u'</table></body></html>')

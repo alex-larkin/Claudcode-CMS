@@ -1,0 +1,23 @@
+﻿\check Report of Titles
+\submenu Phil_new
+\script Find_Titles.py
+\description Scans selected books and lists the \mt/\mt1/\mt2/\mt3 main title text found for each book, both in the results list (one row per book) and in an accompanying FindTitlesReport.html (opened automatically), with each \mt segment styled per usfm.sty/custom.sty. A book with no \mt marker at all is listed as missing. Optionally sorts the report alphabetically by \mt title text, or by \h text instead (which overrides sorting by title), and optionally adds a column showing the \h (running header) text for each book. If a FindTitlesDebug.log appears in the project folder, something unexpected happened -- please share it.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortByTitle
+\optionLocalizedName Sort by Title
+\optionDescription No (default) lists books in canonical scan order. Yes sorts the report alphabetically by \mt title text instead (accented/diacritic characters are ignored when determining sort order, but are still displayed normally; books with a missing title sort to the end). Overridden by Sort by Header below if that is set to Yes.
+\optionDefault No
+
+\optionName DisplayHeader
+\optionLocalizedName Display Header
+\optionDescription Yes (default) adds a column to the report showing the \h (running header) text for each book, or "missing" if absent. No shows only the \mt title. Automatically turned on if Sort by Header below is Yes.
+\optionDefault Yes
+
+\optionName SortByHeader
+\optionLocalizedName Sort by Header
+\optionDescription No (default). Yes sorts the report alphabetically by \h text instead, overriding Sort by Title above, and automatically displays the Header column even if Display Header above is No (accented/diacritic characters are ignored when determining sort order, but are still displayed normally; books missing \h text sort to the end).
+\optionDefault No

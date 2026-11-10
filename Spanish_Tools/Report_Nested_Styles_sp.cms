@@ -1,0 +1,8 @@
+﻿\check Informe de estilos anidados
+\submenu Herramientas_Español
+\script report_nested_styles_sp.py
+\description Escanea los libros seleccionados en busca de notas al pie (\f...\f*) y señala cualquier estilo de carácter usado dentro de una nota al pie que no tenga el prefijo de anidamiento requerido por USFM3 -- por ejemplo, \xt sin el signo + en lugar de \+xt. Los marcadores internos de la nota (\fr, \fq, \fqa, \fk, \fl, \fp, \ft, \fv, \fdc, \fm) nunca se señalan; solo se verifican los marcadores que el usfm.sty/custom.sty del proyecto declaran como estilo de carácter, y cada marcador de apertura y de cierre se verifica por separado, de modo que un par no coincidente (p. ej. \+it abierto correctamente pero cerrado como \it* sin el +) también se detecta. La lista de resultados muestra una fila por cada nota al pie señalada. Además, escribe un informe HTML (InformeEstilosAnidados.html, que se abre automáticamente): un resumen de cuántas notas al pie se escanearon/señalaron y un desglose de cuántas veces se encontró cada marcador sin su '+', seguido de cada nota al pie señalada mostrada con sus marcadores -- el/los marcador(es) al que le falta el '+' resaltado(s) en rojo. Las notas al pie sin problemas no aparecen en el informe.
+\books
+\noText
+\toList
+\utf8

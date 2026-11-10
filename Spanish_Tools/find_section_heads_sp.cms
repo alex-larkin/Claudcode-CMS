@@ -1,0 +1,48 @@
+﻿\check Informe de los encabezados de sección
+\submenu Herramientas_Español
+\script find_section_heads_sp.py
+\description Escanea los libros seleccionados en busca de marcadores de encabezado de sección \s/\s1-\s4 e informa cada uno en la lista de resultados (y en un informe InformeEncabezadosSeccion.html adjunto, que se abre automáticamente). Los marcadores \s/\s1-\s4 consecutivos sin contenido de versículo entre ellos (p. ej., una secuencia \s3/\s2/\s1) se combinan en una sola entrada del informe, en el orden del documento, con cada nivel con su propio estilo (\s/\s1 negrita, \s2 normal, \s3 cursiva, \s4 normal). Opcionalmente ordena el informe alfabéticamente por el texto del encabezado de sección, incluye campos \r (referencia paralela) -- tanto los que siguen inmediatamente a un encabezado de sección como cualquier \r independiente sin un \s precedente --, marca los encabezados de sección que contienen puntuación en cualquier parte de su texto, marca los encabezados de sección (o pares encabezado de sección + \r) que están seguidos inmediatamente por \m, puede mostrar solo los encabezados de sección con puntuación y/o seguidos de \m (las dos opciones Mostrar solo), y opcionalmente muestra (en texto más pequeño) cualquier nota al pie \f...\f* o referencia cruzada \x...\x* encontrada dentro de un encabezado de sección en lugar de ignorarla. Si aparece un archivo FindSectionHeadsDebug.log en la carpeta del proyecto, algo inesperado ocurrió -- por favor compártalo.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortAlphabetically
+\optionLocalizedName Ordenar alfabéticamente
+\optionDescription No (predeterminado) lista los encabezados de sección en el orden canónico de escaneo por libro/capítulo/versículo. Sí ordena el informe HTML alfabéticamente por el texto del encabezado de sección en su lugar (los caracteres acentuados/diacríticos se ignoran al determinar el orden, pero se siguen mostrando normalmente; las filas \r independientes sin encabezado de sección se ordenan al final).
+\optionDefault No
+
+\optionName IncludeReferences
+\optionLocalizedName Incluir referencias \r
+\optionDescription No (predeterminado) informa solo los encabezados de sección \s/\s1-\s4. Sí agrega una columna \r al informe que muestra la referencia paralela de cada encabezado de sección (cuando una lo sigue inmediatamente), y también informa cualquier \r encontrado sin un encabezado de sección precedente como su propia fila -- tanto en el informe HTML como en la lista de resultados.
+\optionDefault No
+
+\optionName FlagPunctuation
+\optionLocalizedName Marcar puntuación
+\optionDescription No (predeterminado). Sí agrega una columna Puntuación al informe con una marca de verificación para cualquier encabezado de sección cuyo texto contenga uno de los caracteres indicados en Caracteres de puntuación más abajo, en cualquier parte del texto (no solo al final).
+\optionDefault No
+
+\optionName PunctuationChars
+\optionLocalizedName Caracteres de puntuación
+\optionDescription Caracteres considerados puntuación para la opción Marcar puntuación anterior (solo se usa cuando esa opción está en Sí). Agregue puntuación específica del idioma según sea necesario.
+\optionDefault .?!
+
+\optionName FlagFollowedByM
+\optionLocalizedName Marcar seguido de \m
+\optionDescription No (predeterminado). Sí agrega una columna \m al informe con una marca de verificación para cualquier encabezado de sección -- o par encabezado de sección + \r, cuando Incluir referencias \r anterior es pertinente -- que esté seguido inmediatamente por un marcador \m.
+\optionDefault No
+
+\optionName ShowOnlyPunctuation
+\optionLocalizedName Mostrar solo encabezados de sección con puntuación
+\optionDescription No (predeterminado) enumera todos los encabezados de sección. Sí enumera solo los encabezados de sección que contienen uno de los Caracteres de puntuación anteriores, en cualquier parte del texto, en la lista de resultados y en el informe HTML. Si Mostrar solo encabezados de sección seguidos de \m también está en Sí, se enumeran los encabezados de sección con cualquiera de los dos problemas. Los totales del resumen del informe siguen contando todos los encabezados de sección, y las filas \r independientes se omiten.
+\optionDefault No
+
+\optionName ShowOnlyFollowedByM
+\optionLocalizedName Mostrar solo encabezados de sección seguidos de \m
+\optionDescription No (predeterminado) enumera todos los encabezados de sección. Sí enumera solo los encabezados de sección (o pares encabezado de sección + \r) seguidos inmediatamente por \m, en la lista de resultados y en el informe HTML. Si Mostrar solo encabezados de sección con puntuación también está en Sí, se enumeran los encabezados de sección con cualquiera de los dos problemas. Los totales del resumen del informe siguen contando todos los encabezados de sección, y las filas \r independientes se omiten.
+\optionDefault No
+
+\optionName IgnoreFootnotesAndCrossRefs
+\optionLocalizedName Ignorar notas al pie/referencias cruzadas
+\optionDescription Sí (predeterminado) ignora las notas al pie \f...\f* y las referencias cruzadas \x...\x* encontradas dentro del texto de los encabezados de sección \s/\s1-\s4: se omiten del informe HTML y nunca afectan la verificación Marcar puntuación ni el orden alfabético, en ningún caso. No muestra el marcado sin procesar de la nota al pie/referencia cruzada en el informe HTML, en texto más pequeño anidado dentro del propio formato del encabezado de sección -- la verificación Marcar puntuación, el orden y el mensaje de la lista de resultados siempre ignoran el contenido de las notas, sin importar esta opción.
+\optionDefault Yes

@@ -1,0 +1,41 @@
+{\rtf1\ansi\ansicpg1252\deff0
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 ERRORES EN Q\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 PROP\'d3SITO\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Verifica las l\'edneas de poes\'eda (marcadas con {\f1\\q}, {\f1\\q1}, {\f1\\q2}) en busca de problemas estructurales que son errores comunes de formato o tipograf\'eda en los manuscritos de traducci\'f3n b\'edblica.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 PROBLEMAS DETECTADOS\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab{\b Puntuaci\'f3n final seguida de texto}\emdash un signo que cierra una oraci\'f3n (p. ej., un punto) aparece en medio de una l\'ednea po\'e9tica en lugar de al final.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab{\b Marcadores de vers\'edculo dobles}\emdash aparecen dos marcadores {\f1\\v} en la misma l\'ednea po\'e9tica.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab{\b Texto antes de un marcador de vers\'edculo}\emdash el contenido aparece antes de {\f1\\v} en lugar de despu\'e9s.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab{\b Palabra suelta (opcional)}\emdash una l\'ednea termina con puntuaci\'f3n no final (p. ej., una coma) seguida de una sola palabra antes de la siguiente l\'ednea po\'e9tica.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 INFORME HTML\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Adem\'e1s de la lista de resultados, al ejecutar la verificaci\'f3n se escribe un informe HTML ({\f1 InformeErroresQ.html}) en la carpeta del proyecto, que se abre autom\'e1ticamente. Los hallazgos se agrupan por tipo de error, y cada entrada muestra la l\'ednea po\'e9tica completa con el problema espec\'edfico resaltado en rojo\emdash incluida una fuente ligeramente m\'e1s grande para un punto final aislado, que de otro modo es f\'e1cil pasar por alto.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 C\'d3MO USAR\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Revise los resultados; el tipo de error se muestra primero para facilitar la clasificaci\'f3n.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPCIONES\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 FinalPunctuation\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i .!?}\par
+\pard\li720\sb40\sa80\f0\fs20 Caracteres que marcan el final de una oraci\'f3n, usados por la verificaci\'f3n de puntuaci\'f3n final.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 NonFinalPunctuation\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i ,;:}\par
+\pard\li720\sb40\sa80\f0\fs20 Caracteres considerados puntuaci\'f3n de mitad de l\'ednea, usados por la verificaci\'f3n de palabra suelta.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 MinCharsBeforePunct\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i 0}\par
+\pard\li720\sb40\sa80\f0\fs20 Ignora la puntuaci\'f3n final que aparece a menos de esta cantidad de caracteres en la l\'ednea. \'datil para omitir l\'edneas cortas donde la puntuaci\'f3n es intencional.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckFinalPunct\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Activa o desactiva la verificaci\'f3n de puntuaci\'f3n final seguida de texto.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckDoubleVerse\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Activa o desactiva la verificaci\'f3n de marcadores de vers\'edculo dobles.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckTextBeforeVerse\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Activa o desactiva la verificaci\'f3n de texto antes de un marcador de vers\'edculo.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 CheckHangingWord\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Predeterminado:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 Activa o desactiva la verificaci\'f3n de palabra suelta. Establezca en Yes para marcar l\'edneas po\'e9ticas que terminan con puntuaci\'f3n seguida de exactamente una palabra.\par
+}

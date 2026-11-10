@@ -1,0 +1,8 @@
+\check Report of Nested Styles
+\submenu Phil_new
+\script report_nested_styles.py
+\description Scans selected books for footnotes (\f...\f*) and flags any character style used inside a footnote that is missing its required USFM3 nesting prefix -- e.g. bare \xt instead of \+xt. Footnote-internal markers (\fr, \fq, \fqa, \fk, \fl, \fp, \ft, \fv, \fdc, \fm) are never flagged; only markers the project's usfm.sty/custom.sty declare as a character style are checked, and each opening/closing token is checked independently so a mismatched pair (e.g. \+it opened correctly but closed as plain \it*) is caught. Results list shows one row per flagged footnote. Also writes an HTML report (NestedStylesReport.html, opened automatically): a summary of how many footnotes were scanned/flagged and a breakdown of how many times each marker was found missing its '+', followed by every flagged footnote shown with its markers displayed -- the specific marker(s) missing '+' highlighted in red. Footnotes with no issues are not shown in the report.
+\books
+\noText
+\toList
+\utf8

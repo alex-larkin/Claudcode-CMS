@@ -1,0 +1,59 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b EXAMINADOR DE TOC\b0\fs22\par
+\par
+\b PROP\'d3SITO\b0\par
+Escanea los libros seleccionados en busca de discrepancias entre los marcadores de t\'edtulo/encabezado del libro: \\toc1 (t\'edtulo largo del \'edndice) frente al t\'edtulo principal del libro, combinando \\mt/\\mt1/\\mt2/\\mt3 en el orden en que aparecen en el texto (algunos libros dividen el t\'edtulo entre m\'e1s de un marcador \\mt). Un // literal usado como salto de l\'ednea suave en \\toc1, \\mt, o un nombre largo/corto de BookNames.xml se ignora (cualquier espacio alrededor se reduce a un solo espacio) antes de comparar. Tambi\'e9n compara \\toc2 (t\'edtulo corto del \'edndice) con \\h (encabezado de p\'e1gina). Opcionalmente tambi\'e9n compara \\toc1 y \\toc2 con los nombres largo/corto de ese libro en el archivo BookNames.xml del proyecto. Se informa cualquier marcador faltante.\par
+\par
+Los resultados aparecen en dos lugares:\par
+- La lista de resultados muestra una fila por cada problema encontrado (una discrepancia, o un marcador faltante) -- un libro correcto sin problemas no genera ninguna fila. Al hacer clic en una fila se salta al marcador correspondiente en el texto.\par
+- Se escribe un informe InformeExaminadorTOC.html, que enumera cada problema encontrado con el libro, los textos de los marcadores en conflicto, y dos columnas adicionales que indican si la diferencia es solo de may\'fasculas/min\'fasculas (\'bfSolo may\'fasculas/min\'fasculas?) o una diferencia menor de tipeo/ortograf\'eda (\'bfOrtograf\'eda?), a diferencia de una frase sustancialmente distinta, en la carpeta del proyecto, y se abre autom\'e1ticamente en su navegador despu\'e9s de ejecutar la verificaci\'f3n.\par
+\par
+\b LIBROS NUMERADOS (1, 2, 3)\b0\par
+El informe tambi\'e9n tiene una secci\'f3n para los libros numerados entre los seleccionados (1 Samuel a 2 Cr\'f3nicas, 1 Corintios a 3 Juan). Para cada campo -- \\h, \\toc1, \\toc2, \\toc3, \\mt y los nombres largo, corto y abreviatura de BookNames.xml -- revisa c\'f3mo se escribe el n\'famero en cada uno de esos libros: un d\'edgito y espacio (1 Juan), un d\'edgito con terminaci\'f3n (1.\'ba, 1\'aa, 1st), un d\'edgito sin espacio (1Juan), un d\'edgito y punto (1. Juan), un d\'edgito y espacio de no separaci\'f3n, un n\'famero romano (I Juan), un n\'famero despu\'e9s del nombre (Juan 1) o una palabra (Primera de Juan). El estilo que usa la mayor\'eda de los libros se toma como el habitual para ese campo, y se enumera cada libro que lo escribe de otra forma, con el texto y su estilo. Despu\'e9s viene una tabla de todos los libros numerados, con esas celdas resaltadas. Si ning\'fan estilo es claramente el m\'e1s com\'fan, se resaltan todos los libros de ese campo.\par
+Cada campo se compara por separado, as\'ed que \\toc1 puede usar una palabra mientras \\toc2 usa un d\'edgito. Dos palabras ordinales no se comparan entre s\'ed: Primera y First cuentan como el mismo estilo. Estos resultados aparecen solo en el informe HTML, no en la lista de resultados. La opci\'f3n CheckNumberedBooks desactiva la secci\'f3n.\par
+\par
+Si ocurre algo inesperado, aparecer\'e1 un archivo TocExaminerDebug.log en la carpeta del proyecto con los detalles -- comparta su contenido para que la verificaci\'f3n pueda corregirse. (Este archivo de depuraci\'f3n es compartido con la versi\'f3n en ingl\'e9s del check; su nombre no est\'e1 traducido a prop\'f3sito, ya que es solo para diagn\'f3stico t\'e9cnico.)\par
+\par
+\b C\'d3MO USAR\b0\par
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+2. En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+3. Revise la lista de resultados para ver cada problema encontrado, y el informe InformeExaminadorTOC.html (abierto autom\'e1ticamente) para ver la misma informaci\'f3n en una sola tabla.\par
+\par
+\b OPCIONES\b0\par
+\b CompareToc1ToMt (\'bfComparar \\toc1 con \\mt?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed (predeterminado) compara \\toc1 con el t\'edtulo principal del libro, combinando \\mt/\\mt1/\\mt2/\\mt3 en el orden en que aparecen en el texto (algunos libros dividen el t\'edtulo entre m\'e1s de un marcador \\mt). Informa una discrepancia, o informa que falta \\toc1 o \\mt si alguno de los dos est\'e1 ausente. No desactiva esta comparaci\'f3n y sus verificaciones de marcador faltante por completo.\par
+\par
+\b CompareToc2ToH (\'bfComparar \\toc2 con \\h?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed (predeterminado) compara \\toc2 con \\h (el texto del encabezado de p\'e1gina). Informa una discrepancia, o informa que falta \\toc2 o \\h si alguno de los dos est\'e1 ausente. No desactiva esta comparaci\'f3n y sus verificaciones de marcador faltante por completo.\par
+\par
+\b CompareToc1ToBookNames (\'bfComparar \\toc1 con BookNames.xml?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed (predeterminado) compara \\toc1 con el nombre "long" de ese libro en el archivo BookNames.xml del proyecto. Informa una discrepancia, o informa que falta \\toc1 si est\'e1 ausente. Se omite silenciosamente para un libro si BookNames.xml falta, no se puede leer, o no tiene un nombre largo registrado para ese libro. No desactiva esta comparaci\'f3n por completo.\par
+\par
+\b CompareToc2ToBookNames (\'bfComparar \\toc2 con BookNames.xml?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed (predeterminado) compara \\toc2 con el nombre "short" de ese libro en el archivo BookNames.xml del proyecto. Informa una discrepancia, o informa que falta \\toc2 si est\'e1 ausente. Se omite silenciosamente para un libro si BookNames.xml falta, no se puede leer, o no tiene un nombre corto registrado para ese libro. No desactiva esta comparaci\'f3n por completo.\par
+\par
+\b IgnoreCapitalizationOnly (\'bfIgnorar diferencias solo de may\'fasculas/min\'fasculas?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed ignora (no informa) una discrepancia entre dos marcadores comparados si la \'fanica diferencia es el uso de may\'fasculas/min\'fasculas -- la misma prueba usada para la columna \'bfSolo may\'fasculas/min\'fasculas? del informe HTML. Las diferencias de ortograf\'eda y el texto sustancialmente distinto siempre se informan. No (predeterminado) informa toda discrepancia, incluidas las diferencias de may\'fasculas/min\'fasculas, como hoy.\par
+\par
+\b IgnoreMt1 (\'bfIgnorar \\mt1 al combinar el texto de \\mt?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed excluye por completo el texto de \\mt1 al construir el t\'edtulo principal comparado con \\toc1 -- \'fatil para proyectos donde \\mt1 contiene algo distinto del texto del t\'edtulo (p. ej. una etiqueta corta) y el t\'edtulo real est\'e1 solo en \\mt2/\\mt3. No afecta la verificaci\'f3n de \\mt faltante: si \\mt1 existe f\'edsicamente pero es el \'fanico marcador de nivel \\mt presente, sigue sin informarse como faltante, pero entonces no queda nada que comparar con \\toc1, por lo que tampoco se informa ninguna discrepancia. No (predeterminado) incluye \\mt1 como hoy.\par
+\par
+\b IgnoreMt2 (\'bfIgnorar \\mt2 al combinar el texto de \\mt?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed excluye por completo el texto de \\mt2 al construir el t\'edtulo principal comparado con \\toc1 -- \'fatil para proyectos donde \\mt2 contiene algo distinto del texto del t\'edtulo y el t\'edtulo real est\'e1 en \\mt1/\\mt3. No afecta la verificaci\'f3n de \\mt faltante: si \\mt2 existe f\'edsicamente pero es el \'fanico marcador de nivel \\mt presente, sigue sin informarse como faltante, pero entonces no queda nada que comparar con \\toc1, por lo que tampoco se informa ninguna discrepancia. No (predeterminado) incluye \\mt2 como hoy.\par
+\par
+\b IgnoreMt3 (\'bfIgnorar \\mt3 al combinar el texto de \\mt?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed excluye por completo el texto de \\mt3 al construir el t\'edtulo principal comparado con \\toc1 -- \'fatil para proyectos donde \\mt3 contiene algo distinto del texto del t\'edtulo y el t\'edtulo real est\'e1 en \\mt1/\\mt2. No afecta la verificaci\'f3n de \\mt faltante: si \\mt3 existe f\'edsicamente pero es el \'fanico marcador de nivel \\mt presente, sigue sin informarse como faltante, pero entonces no queda nada que comparar con \\toc1, por lo que tampoco se informa ninguna discrepancia. No (predeterminado) incluye \\mt3 como hoy.\par
+\par
+\b CheckNumberedBooks (\'bfRevisar c\'f3mo los libros numerados escriben su n\'famero?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed (predeterminado) a\'f1ade al informe HTML la secci\'f3n de libros numerados descrita arriba. No la omite.\par
+}

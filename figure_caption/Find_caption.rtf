@@ -1,0 +1,37 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b FIGURE CAPTIONS\b0\fs22\par
+Version 1.1\par
+\par
+\b PURPOSE\b0\par
+Scans selected books for \\fig figure markers to help review figure captions and copyright info. Paratext projects use one of two incompatible USFM figure syntaxes (USFM 2 pipe-delimited fields, or USFM 3 key="value" attributes) - this check detects which one each figure uses automatically, so no version needs to be selected.\par
+\par
+Results appear in two places:\par
+- The results list shows one row per figure for the caption (its actual text, or "empty" if none), one row for the copyright (its actual text, or "Copyright: empty" if none), and one row for the illustration file name (its actual name, or "empty" if none). Clicking a row jumps to that figure in the text.\par
+- A FigureCaptions.html report, listing every figure's reference and its actual caption/copyright text and illustration file name, is written to the project folder and opened automatically in your browser after the check runs.\par
+- Picture thumbnails: when the project's figures folder holds a picture for a figure (the same file name, or a .jpg/.png copy of a .tif), the report has a "Show picture thumbnails" checkbox at the top. Tick it to add a Picture column with a small copy of each picture ("no picture" where none was found). Browsers can't show .tif files, so a figure whose only picture is a .tif has no thumbnail.\par
+\par
+If anything unexpected happens, a FigureCaptionsDebug.log file will appear in the project folder with the details - please share its contents so the check can be fixed.\par
+\par
+\b HOW TO USE\b0\par
+1. Copy the .cms and .py files to your My Paratext Projects\\cms folder. To make the references in the HTML report clickable (a click shows that place in Paratext), also copy ptx_goto.py and ParatextGoTo.exe there. The first click makes the browser ask whether to open ParatextGoTo, and Paratext follows only when the text window's scroll group follows other programs.\par
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+3. Review the results list for each figure's caption/copyright text, and the FigureCaptions.html report (opened automatically) for the same information in one table.\par
+\par
+\b OPTIONS\b0\par
+\b DisplayCaption\b0\par
+\tab Default:  Yes\par
+\tab Yes includes a Caption column in the report and a results-list row with the caption text (or "empty") for every figure.\par
+\par
+\b DisplayCopyright\b0\par
+\tab Default:  Yes\par
+\tab Yes includes a Copyright column in the report and a results-list row with the copyright text (or "Copyright: empty") for every figure.\par
+\par
+\b DisplayIllustrationFile\b0\par
+\tab Default:  Yes\par
+\tab Yes includes an Illustration File column in the report and a results-list row with the illustration's file name (e.g. "CN01629B.TIF" or "MyrrhBush_HK00118.tif") for every figure, or "empty" if none is specified. For USFM 3 this is the src="..." attribute; for USFM 2 it is the field right after the first pipe.\par
+\par
+\b SortByCaption\b0\par
+\tab Default:  No\par
+\tab Yes sorts the figures listed in the HTML report alphabetically by the figure's caption text, so identical or near-identical captions end up next to each other for easy comparison. If captions are hidden (Display caption = No), sorts by the illustration file name instead (if shown); if both are hidden, sorts by copyright text instead. No (default) lists them in canonical book/chapter/verse scan order. Accented/diacritic characters are ignored when determining sort order (but are still displayed normally).\par
+}

@@ -86,6 +86,9 @@ _CVS  = re.escape(ChapterVerseSep)
 
 _pat = (
     u'(?<!\\w)'
+    # Book-name prefix is optional: with it, "Mat 5:12"; without it, a bare
+    # "5:12" is flagged too (e.g. inside \ft body text with no book name).
+    u'(?:'
     # Numbered-book form: "1 S", "2 Cr", "3 Jn", or fully spelled "1 Corintios".
     #   No upper bound so any fully spelled numbered book name matches.
     #   = non-breaking space; accept either space or NBSP after the digit.
@@ -97,7 +100,12 @@ _pat = (
     # trade-off since this is a manually-reviewed check.
     u'|' + _BC + u'{2,})'
     u'[ \\t]+'                                          # space(s) before chapter number
-    u'\\d{1,3}' + _CVS + u'\\d{1,3}[a-z]?'            # chapter:verse with optional letter
+    u')?'
+    u'\\d{1,3}' + _CVS +
+    # Reject an all-zero verse ("00"/"000", e.g. "50.00") -- a decimal-number
+    # artifact, not a real verse.
+    u'(?!0{2,3}(?!\\d))' +
+    u'\\d{1,3}[a-z]?'                                    # chapter:verse with optional letter
     # Optional range end: – = en-dash.
     # Verse range: -65, -43a   Cross-chapter: -9:1 or –9:1
     u'(?:[-–]\\d{1,3}(?:' + _CVS + u'\\d{1,3})?[a-z]?)?'

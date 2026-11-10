@@ -1,7 +1,7 @@
-﻿\check Error de línea poética q
+﻿\check Informe de errores en q
 \submenu Herramientas_Español
-\script q_error.py
-\description Busca líneas de poesía (\q, \q1, \q2) con problemas estructurales: puntuación final seguida de texto; dos marcadores de versículo en una línea; texto antes de un marcador de versículo; o (opcionalmente) puntuación no final con una sola palabra al final antes de la siguiente línea poética. Se ignoran las notas al pie (\f), las referencias cruzadas (\x) y el contenido de \qs. Las opciones permiten activar o desactivar cada subverificación y ajustar los caracteres de puntuación y los umbrales.
+\script q_error_sp.py
+\description Busca líneas de poesía (\q, \q1, \q2) con problemas estructurales: puntuación final seguida de texto; dos marcadores de versículo en una línea; texto antes de un marcador de versículo; o (opcionalmente) puntuación no final con una sola palabra al final antes de la siguiente línea poética. Se ignoran las notas al pie (\f), las referencias cruzadas (\x) y el contenido de \qs. Las opciones permiten activar o desactivar cada subverificación y ajustar los caracteres de puntuación y los umbrales. También escribe un informe HTML (InformeErroresQ.html, que se abre automáticamente) que agrupa cada incidencia por tipo de error, mostrando la línea \q completa como contexto con el problema específico resaltado en rojo.
 \books
 \noText
 \toList

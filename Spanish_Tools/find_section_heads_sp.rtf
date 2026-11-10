@@ -1,0 +1,51 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b ENCABEZADOS DE SECCI\'d3N\b0\fs22\par
+\par
+\b PROP\'d3SITO\b0\par
+Escanea los libros seleccionados y enumera cada encabezado de secci\'f3n \\s/\\s1-\\s4 encontrado, en el orden can\'f3nico de escaneo. Los marcadores \\s/\\s1-\\s4 consecutivos sin contenido de vers\'edculo entre ellos (p. ej., una secuencia \\s3/\\s2/\\s1) se combinan en una sola entrada, en el orden del documento, con cada nivel con su propio estilo (\\s/\\s1 negrita, \\s2 normal, \\s3 cursiva, \\s4 normal). Opcionalmente incluye campos \\r (referencia paralela), marca los encabezados de secci\'f3n que contienen puntuaci\'f3n en cualquier parte de su texto, marca los encabezados de secci\'f3n seguidos inmediatamente por \\m, puede mostrar solo los encabezados de secci\'f3n con puntuaci\'f3n y/o seguidos de \\m, y opcionalmente muestra (en texto m\'e1s peque\'f1o) cualquier nota al pie \\f...\\f*/referencia cruzada \\x...\\x* encontrada dentro de un encabezado de secci\'f3n en lugar de ignorarla.\par
+\par
+Los resultados aparecen en dos lugares:\par
+- La lista de resultados muestra una fila por encabezado de secci\'f3n (y, si Incluir referencias \\r est\'e1 en S\'ed, una fila por campo \\r), que se puede buscar por referencia o por su texto. Al hacer clic en una fila se salta al marcador correspondiente en el texto.\par
+- Se escribe un informe InformeEncabezadosSeccion.html, que enumera cada encabezado de secci\'f3n con su libro y referencia (adem\'e1s de un resumen en la parte superior que muestra cu\'e1ntos marcadores \\s/\\s1-\\s4 de cada tipo se encontraron, y cu\'e1ntos encabezados de secci\'f3n contienen notas al pie o referencias cruzadas), en la carpeta del proyecto, y se abre autom\'e1ticamente en su navegador despu\'e9s de ejecutar la verificaci\'f3n.\par
+\par
+Si ocurre algo inesperado, aparecer\'e1 un archivo FindSectionHeadsDebug.log en la carpeta del proyecto con los detalles -- comparta su contenido para que la verificaci\'f3n pueda corregirse. (Este archivo de depuraci\'f3n es compartido con la versi\'f3n en ingl\'e9s del check; su nombre no est\'e1 traducido a prop\'f3sito, ya que es solo para diagn\'f3stico t\'e9cnico.)\par
+\par
+\b C\'d3MO USAR\b0\par
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+2. En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+3. Revise la lista de resultados para cada encabezado de secci\'f3n, y el informe InformeEncabezadosSeccion.html (abierto autom\'e1ticamente) para ver la misma informaci\'f3n en una sola tabla.\par
+\par
+\b OPCIONES\b0\par
+\b SortAlphabetically (Ordenar alfab\'e9ticamente)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado) lista los encabezados de secci\'f3n en el orden can\'f3nico de escaneo por libro/cap\'edtulo/vers\'edculo. S\'ed ordena el informe HTML alfab\'e9ticamente por el texto del encabezado de secci\'f3n en su lugar (los caracteres acentuados/diacr\'edticos se ignoran al determinar el orden, pero se siguen mostrando normalmente; las filas \\r independientes sin encabezado de secci\'f3n se ordenan al final).\par
+\par
+\b IncludeReferences (Incluir referencias \\r)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado) informa solo los encabezados de secci\'f3n \\s/\\s1-\\s4. S\'ed agrega una columna \\r al informe que muestra la referencia paralela de cada encabezado de secci\'f3n (cuando una lo sigue inmediatamente), y tambi\'e9n informa cualquier \\r encontrado sin un encabezado de secci\'f3n precedente como su propia fila -- tanto en el informe HTML como en la lista de resultados.\par
+\par
+\b FlagPunctuation (Marcar puntuaci\'f3n)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado). S\'ed agrega una columna Puntuaci\'f3n al informe con una marca de verificaci\'f3n para cualquier encabezado de secci\'f3n cuyo texto contenga uno de los caracteres indicados en Caracteres de puntuaci\'f3n m\'e1s abajo, en cualquier parte del texto (no solo al final).\par
+\par
+\b PunctuationChars (Caracteres de puntuaci\'f3n)\b0\par
+\tab Predeterminado:  .?!\par
+Caracteres considerados puntuaci\'f3n para la opci\'f3n Marcar puntuaci\'f3n anterior (solo se usa cuando esa opci\'f3n est\'e1 en S\'ed). Agregue puntuaci\'f3n espec\'edfica del idioma seg\'fan sea necesario.\par
+\par
+\b FlagFollowedByM (Marcar seguido de \\m)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado). S\'ed agrega una columna \\m al informe con una marca de verificaci\'f3n para cualquier encabezado de secci\'f3n -- o par encabezado de secci\'f3n + \\r, cuando Incluir referencias \\r anterior es pertinente -- que est\'e9 seguido inmediatamente por un marcador \\m.\par
+\par
+\b ShowOnlyPunctuation (Mostrar solo encabezados de secci\'f3n con puntuaci\'f3n)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado) enumera todos los encabezados de secci\'f3n. S\'ed enumera solo los encabezados de secci\'f3n que contienen uno de los Caracteres de puntuaci\'f3n, en cualquier parte del texto, en la lista de resultados y en el informe HTML, y siempre muestra la columna Puntuaci\'f3n. Si ShowOnlyFollowedByM tambi\'e9n est\'e1 en S\'ed, se enumeran los encabezados de secci\'f3n con cualquiera de los dos problemas. Los totales del resumen del informe siguen contando todos los encabezados de secci\'f3n, y las filas \\r independientes se omiten.\par
+\par
+\b ShowOnlyFollowedByM (Mostrar solo encabezados de secci\'f3n seguidos de \\m)\b0\par
+\tab Predeterminado:  No\par
+No (predeterminado) enumera todos los encabezados de secci\'f3n. S\'ed enumera solo los encabezados de secci\'f3n (o pares encabezado de secci\'f3n + \\r) seguidos inmediatamente por \\m, en la lista de resultados y en el informe HTML, y siempre muestra la columna \\m. Si ShowOnlyPunctuation tambi\'e9n est\'e1 en S\'ed, se enumeran los encabezados de secci\'f3n con cualquiera de los dos problemas. Los totales del resumen del informe siguen contando todos los encabezados de secci\'f3n, y las filas \\r independientes se omiten.\par
+\par
+\b IgnoreFootnotesAndCrossRefs (Ignorar notas al pie/referencias cruzadas)\b0\par
+\tab Predeterminado:  S\'ed\par
+S\'ed (predeterminado) ignora las notas al pie \\f...\\f* y las referencias cruzadas \\x...\\x* encontradas dentro del texto de los encabezados de secci\'f3n \\s/\\s1-\\s4: se omiten del informe HTML y nunca afectan la verificaci\'f3n Marcar puntuaci\'f3n ni el orden alfab\'e9tico, en ning\'fan caso. No muestra el marcado sin procesar de la nota al pie/referencia cruzada en el informe HTML, en texto m\'e1s peque\'f1o anidado dentro del propio formato del encabezado de secci\'f3n -- la verificaci\'f3n Marcar puntuaci\'f3n, el orden y el mensaje de la lista de resultados siempre ignoran el contenido de las notas, sin importar esta opci\'f3n.\par
+}

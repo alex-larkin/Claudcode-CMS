@@ -1,10 +1,25 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import checking
 import os
 import re
 import sys
+import traceback
 import unicodedata
 import xml.etree.ElementTree as ET
+
+# Optional helper from the cms folder (ptx_goto.py): makes the references in
+# the HTML report clickable. Without it the references stay plain text.
+try:
+    import ptx_goto as _ptx_goto
+except Exception:
+    _ptx_goto = None
+_links_on = False
+
+def _goto(ref):
+    return _ptx_goto.target(ref) if _links_on else None
+
+def _ref_link(ref_html, tgt):
+    return _ptx_goto.link(ref_html, tgt) if _links_on and tgt else ref_html
 
 # ---------------------------------------------------------------------------
 # Option guards
@@ -26,13 +41,25 @@ def _to_unicode(v):
 try:
     QuoteCharacters
 except NameError:
-    QuoteCharacters = u'" « » ‘ ’ ‚ ‛ “ ” „ ‟ › ‹'
+    # Matches quotation_examiner.cms's own \optionDefault exactly. Built
+    # with unichr() rather than literal non-ASCII characters -- see
+    # feedback_cms_py_source_ascii_only in project memory (this literal
+    # was previously typed directly and is the one code path that had
+    # never actually been exercised by any real Paratext run before it was
+    # found to be a suspect, though ultimately not proven, contributor to
+    # a live corruption bug; kept ASCII-only now regardless, on principle).
+    QuoteCharacters = u' '.join([
+        u'"', u"'", unichr(0x00ab), unichr(0x00bb), unichr(0x2039), unichr(0x203a),
+        unichr(0x2018), unichr(0x2019), unichr(0x201a), unichr(0x201b),
+        unichr(0x201c), unichr(0x201d), unichr(0x201e), unichr(0x201f),
+        u'<', u'>', u'<<', u'>>',
+    ])
 QuoteCharacters = _to_unicode(QuoteCharacters)
 
 try:
     DashCharacters
 except NameError:
-    DashCharacters = u'— ― –'
+    DashCharacters = u' '.join([unichr(0x2014), unichr(0x2015), unichr(0x2013)])
 DashCharacters = _to_unicode(DashCharacters)
 
 try:
@@ -210,7 +237,8 @@ def _next_nonspace_from(text, pos):
     immediately follows the token, unlike _prev_nonspace which looks
     before a start offset). Delegates to _skip_markers_and_space so an
     inline character-style marker sitting right against the token (e.g.
-    "“\\tl Text") doesn't hide the real next word from view."""
+    an opening curly quote immediately before "\\tl Text") doesn't hide
+    the real next word from view."""
     j = _skip_markers_and_space(text, pos)
     return text[j] if j < len(text) else None
 
@@ -311,7 +339,8 @@ def _read_configured_levels(directory):
         continuer = _text(cont_tag) or u''
         enabled = (_text(enable_tag) or u'').strip().lower() == u'yes'
         # Settings.xml can declare more than one valid opener for a level
-        # using "|" (e.g. YUI/ZTG: "“|— ”" -- a dash is an
+        # using "|" (e.g. YUI/ZTG: an opening curly quote, "|", an em
+        # dash, then a closing curly quote -- a dash is an
         # equally valid alternate opener to the curly quote, sharing the
         # SAME closer/continuer). Record any alternate that is itself a
         # dash character so a dash-dialogue open can later be recognized
@@ -372,16 +401,18 @@ def _read_continue_at(directory):
 # Character sets and combined scan regex
 # ---------------------------------------------------------------------------
 
-# Options list characters space-separated (e.g. "« » “ ”") so individual
-# characters are easy to tell apart; split on whitespace rather than treating
-# the whole option string as a set of characters.
+# Options list characters space-separated (e.g. guillemets/curly quotes)
+# so individual characters are easy to tell apart; split on whitespace
+# rather than treating the whole option string as a set of characters.
 _quote_chars = frozenset(QuoteCharacters.split())
 _dash_chars = frozenset(DashCharacters.split())
 _all_chars = _quote_chars | _dash_chars
 
 # Punctuation that commonly follows an opening quote before the first word
-# (e.g. Spanish inverted question/exclamation marks: «¿Qué...» / «¡Vamos!»).
-_OPENER_FOLLOW_PUNCT = frozenset(u'¿¡')
+# (e.g. Spanish inverted question/exclamation marks, U+00BF/U+00A1, inside
+# guillemets). Built with unichr() rather than literal non-ASCII characters
+# -- see feedback_cms_py_source_ascii_only in project memory.
+_OPENER_FOLLOW_PUNCT = frozenset(unichr(0x00bf) + unichr(0x00a1))
 
 # << and >> are always treated as quotation marks (an ASCII approximation of
 # guillemets some projects key in when proper Unicode input isn't available),
@@ -425,35 +456,44 @@ _WARN_BUCKETS = frozenset([
     u'midword_possible_apostrophe', u'other_unusual',
 ])
 
+# Deliberately pure ASCII, with no {0}-style embedded character -- both
+# KOG_U and PDT15 (via checking.outputError, in real live Paratext runs)
+# crashed on a UnicodeEncodeError as soon as this message contained ANY
+# non-ASCII character, mangled (see _paratext_list_safe's docstring) or a
+# genuine, unmangled character alike. The actual flagged character is still
+# visible to the user via Paratext's own TEXT/snippet column (built by
+# checking.py itself from the begin/end offsets into the real source text),
+# which is already proven safe -- mid_sentence_capital.py relies on exactly
+# that column, always passing an empty message, and never crashes.
 _WARN_MESSAGES = {
-    u'continuer_suspicious': u'Suspicious continuer: {0} at paragraph/poetry-line start with nothing open',
-    u'closer_orphan': u'{0} used as a closer with no matching opener',
-    u'midword_possible_apostrophe': u'{0} used mid-word (possible apostrophe, not a quotation mark)',
-    u'other_unusual': u'{0} in an unexpected position',
+    u'continuer_suspicious': u'Suspicious continuer at paragraph/poetry-line start with nothing open',
+    u'closer_orphan': u'Used as a closer with no matching opener',
+    u'midword_possible_apostrophe': u'Used mid-word (possible apostrophe, not a quotation mark)',
+    u'other_unusual': u'In an unexpected position',
 }
 
 
 def _paratext_list_safe(s):
-    """Paratext's results-list write pipeline funnels any unicode text we
-    hand it through a single Windows-codepage (mbcs) encode when it
-    actually writes bytes to checktext.out. checking.py's own pieces (e.g.
-    the flagged-snippet TEXT column) are already UTF-8-encoded byte strings
-    by the time they reach that pipeline, and -- confirmed by hex-dumping a
-    real checktext.out -- they survive correctly only by coincidence: each
-    UTF-8 byte gets implicitly promoted to its own "character" (a 1-byte-
-    per-char decode) before recombining with our text, then the whole thing
-    is mbcs-encoded once at the end, which happens to map each of those
-    fake characters straight back to its original byte. A real, properly-
-    formed unicode character we hand it (e.g. "»" as one logical codepoint)
-    never goes through that detour, so it gets mbcs-encoded directly --
-    ONE byte for a character that needs TWO+ in UTF-8 -- producing an
-    invalid byte sequence and a "?"/tofu glyph in the list.
-    Matching what checking.py's own pieces get "for free": pre-encode our
-    text as UTF-8 bytes ourselves, then decode those bytes as mbcs, so each
-    of our original UTF-8 bytes also arrives as its own stand-in character.
-    Verified deterministically (encode/decode round-trip, independent of
-    any Paratext-specific runtime behavior) to reproduce the exact original
-    UTF-8 bytes after the same final mbcs-encode step."""
+    """Historical workaround for a display-only bug in Paratext's results-
+    list write pipeline (guillemet-based projects like PDT15 showed a tofu
+    glyph instead of the flagged character). NO LONGER used for the message
+    passed to checking.outputError() -- see _record() below. Every character
+    in the curly-quote/dash block (U+2000-U+206F -- covers all of this
+    check's curly quotes and em/en dashes) encodes in UTF-8 as bytes E2 80
+    XX, and this transform's utf-8-encode-then-mbcs-decode round trip turns
+    that middle 0x80 byte into a literal EURO SIGN (U+20AC) in the
+    resulting text -- byte 0x80 is exactly what cp1252 maps it to. That is
+    harmless for guillemets (a different, 2-byte UTF-8 encoding that never
+    produces a stray euro sign), which is why this looked safe when only
+    verified against PDT15. But it means this function unconditionally
+    synthesizes a literal euro sign into the message for the (far more
+    common) curly-quote/dash convention -- and a real KOG_U crash
+    (UnicodeEncodeError, ascii codec, on that exact synthesized euro sign,
+    deep in Paratext's own results-list handling, outside anything in this
+    file) confirmed that content reaching checking.outputError() is not
+    safe. Kept only for the plain-ASCII stdout summary lines below, where
+    it is a no-op (pure ASCII text has nothing for the utf-8/mbcs round
+    trip to alter) and changing them isn't necessary."""
     return s.encode('utf-8').decode('mbcs', 'replace')
 
 
@@ -461,7 +501,10 @@ def _record(begin, end, c, bucket, ref, snippet):
     st = _stats.setdefault(c, {})
     st[bucket] = st.get(bucket, 0) + 1
     if bucket in _WARN_BUCKETS:
-        checking.outputError(begin, end, _paratext_list_safe(_WARN_MESSAGES[bucket].format(c)))
+        # Pure ASCII, no embedded character (see _WARN_MESSAGES above) --
+        # any non-ASCII content here crashes checking.outputError()'s
+        # downstream handling, confirmed on more than one real project.
+        checking.outputError(begin, end, _WARN_MESSAGES[bucket])
     key = (c, bucket)
     lst = _examples.setdefault(key, [])
     if len(lst) < _max_examples:
@@ -487,6 +530,35 @@ def _flush_unclosed(book_num):
                 'level': item['level'], 'opened_ref': item['ref'],
             })
     _state['stack'] = []
+
+
+def _log_crash(book_label, chapter_label, exc):
+    """Writes full crash diagnostics to our own plain UTF-8 file, entirely
+    bypassing checking.py's/Paratext's write pipeline (the same reasoning as
+    write_html_report below) -- so a bug in checkChapter can be diagnosed
+    even though checking.py's own exception-reporting path has already been
+    shown (see the KOG_U crash this guards against) to be unreliable for
+    non-ASCII content."""
+    directory = _project_directory()
+    if not directory:
+        return
+    try:
+        tb_text = _to_unicode(traceback.format_exc())
+    except Exception:
+        try:
+            tb_text = _to_unicode(repr(exc))
+        except Exception:
+            tb_text = u'<unformattable exception>'
+    log_path = os.path.join(directory, u'QuotationExaminerCrash.log')
+    open_path = log_path.encode('mbcs') if isinstance(log_path, type(u'')) else log_path
+    try:
+        with open(open_path, 'ab') as f:
+            header = u'--- {0} {1} ---\n'.format(book_label, chapter_label)
+            f.write(header.encode('utf-8'))
+            f.write(tb_text.encode('utf-8', 'replace'))
+            f.write(u'\n'.encode('utf-8'))
+    except Exception:
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -522,10 +594,18 @@ class _SafeStdout(object):
         try:
             self._stream.write(s)
         except UnicodeError:
-            if isinstance(s, unicode):
-                self._stream.write(s.encode('utf-8', 'replace'))
-            else:
-                self._stream.write(s.decode('utf-8', 'replace').encode('utf-8', 'replace'))
+            # The fallback below has itself been observed to raise (see the
+            # KOG_U crash it was meant to guard against) -- re-encoding can
+            # collide with whatever encoding step Paratext's own write
+            # pipeline applies downstream. This write() must never raise, so
+            # any failure here is swallowed rather than re-attempted further.
+            try:
+                if isinstance(s, unicode):
+                    self._stream.write(s.encode('utf-8', 'replace'))
+                else:
+                    self._stream.write(s.decode('utf-8', 'replace').encode('utf-8', 'replace'))
+            except Exception:
+                pass
 
     def __getattr__(self, name):
         return getattr(self._stream, name)
@@ -538,9 +618,9 @@ _configured_levels = _read_configured_levels(_project_directory())
 _configured_by_level = dict((cfg['level'], cfg) for cfg in _configured_levels)
 
 # Dash character -> level, for levels whose Settings.xml opener declares that
-# dash as a valid alternate to a curly quote (e.g. YUI: {u'—': 1}). Empty for
-# projects without such a "|" alternation (e.g. PDT15's plain "« »"), so the
-# dash-continuer recognition added below never engages for them.
+# dash as a valid alternate to a curly quote (e.g. YUI: {em-dash: 1}). Empty
+# for projects without such a "|" alternation (e.g. PDT15's plain guillemet
+# pair), so the dash-continuer recognition added below never engages for them.
 _dash_open_levels = dict(
     (cfg['dash_opener'], cfg['level']) for cfg in _configured_levels if cfg.get('dash_opener'))
 
@@ -564,7 +644,8 @@ def _effective_configured_for_level(level):
 def _match_continuer_run(text, start_pos, stack):
     """Tries to match consecutive continuer characters at start_pos against
     ALL of the stack's currently-open levels, OUTER to INNER (stack[0]
-    first, matching e.g. DBTALP's "“ ‘" -- a level-1 continuer, a space,
+    first, matching e.g. DBTALP's opening-curly-double-quote then
+    opening-curly-single-quote -- a level-1 continuer, a space,
     then a level-2 continuer, reminding the reader both levels are still
     open across one paragraph break). Whitespace/markers between
     consecutive continuers are skipped. Returns a list of
@@ -572,12 +653,13 @@ def _match_continuer_run(text, start_pos, stack):
     every level matched -- an all-or-nothing match, not just an outer
     prefix. A character that matches an OUTER level's continuer but is not
     immediately followed by the INNER level's continuer too (e.g. a level-1
-    "“" opening a fresh level-3 quote while a level-2 quote is separately
-    still open, where "“" also happens to be level-1's continuer) is
-    genuinely ambiguous from the character alone -- requiring the full
-    stack to match is what tells a real continuation (every open level
-    reminded together) apart from a coincidental character collision (see
-    Hebrews 3:10-11, where "“" matches level 1's continuer but is not
+    opening curly double-quote opening a fresh level-3 quote while a
+    level-2 quote is separately still open, where that same character
+    also happens to be level-1's continuer) is genuinely ambiguous from
+    the character alone -- requiring the full stack to match is what
+    tells a real continuation (every open level reminded together) apart
+    from a coincidental character collision (see Hebrews 3:10-11, where an
+    opening curly double-quote matches level 1's continuer but is not
     followed by level 2's, and must fall through to open a fresh level 3
     instead of being swallowed as continuing level 1)."""
     matched = []
@@ -610,7 +692,7 @@ else:
     _EXTRA_CONTINUER_MARKER_RE = None
 
 
-def checkChapter(reference, text, lastChapter):
+def _checkChapter_impl(reference, text, lastChapter):
     book_num = reference.Book if reference is not None else None
     if book_num != _state['prev_book']:
         _flush_unclosed(_state['prev_book'])
@@ -702,8 +784,9 @@ def checkChapter(reference, text, lastChapter):
             prev_c = _prev_nonspace(text, i)
             # A dash opens dialogue either at a paragraph/verse start, or
             # right after a colon introducing quoted speech within the same
-            # line (e.g. "le dijo: —¿Qué..."). Either way it's commonly
-            # followed by a word, or by Spanish inverted ¿/¡ before one.
+            # line (e.g. Spanish "le dijo:" followed by an em dash and an
+            # inverted question mark). Either way it's commonly followed
+            # by a word, or by a Spanish inverted ?/! before one.
             is_dialogue_position = (i in line_starts) or (prev_c == u':')
             if i in margin_starts and _state['dash_open']:
                 # A dash right after "\m" while a dash-quote is already open
@@ -725,7 +808,8 @@ def checkChapter(reference, text, lastChapter):
             elif _state['dash_open']:
                 # A dash appearing later, not itself a dialogue-opening
                 # position, while a dash-quote is open: treat it as an
-                # explicit closing dash (e.g. "—Hola? —preguntó María.")
+                # explicit closing dash (e.g. Spanish dash-quoted dialogue
+                # with a second em dash before the attribution verb)
                 # rather than waiting for the implicit end-of-paragraph finish.
                 opened = _state['dash_open']
                 pair = (opened['char'], c)
@@ -742,15 +826,17 @@ def checkChapter(reference, text, lastChapter):
         # like for a level, trust it EXCLUSIVELY rather than also accepting
         # any generic closer-family (Pf) character -- otherwise a project
         # whose continuer differs from its closer (e.g. DBTALP: continuer
-        # "“", closer "”") has its genuine closing "”" swallowed
-        # here as a false continuer every time it lands on a paragraph-start
+        # is the opening curly double-quote, closer is the closing curly
+        # double-quote) has its genuine closing quote swallowed here as a
+        # false continuer every time it lands on a paragraph-start
         # position, permanently leaking one open quote per occurrence instead
         # of popping the stack. The generic closer-family guess is only used
         # as a fallback when Settings.xml doesn't cover this level at all.
         #
         # More than one currently-open level can each show their own
         # continuer together at the SAME paragraph break (e.g. DBTALP's
-        # "“ ‘" -- outer level-1 continuer, then inner level-2 continuer),
+        # opening curly double-quote then opening curly single-quote --
+        # outer level-1 continuer, then inner level-2 continuer),
         # so match a whole run against the stack (outer to inner), not just
         # the single top-of-stack level.
         if i in para_starts:
@@ -768,8 +854,9 @@ def checkChapter(reference, text, lastChapter):
                 # opener for a level (see `_dash_open_levels`), the SAME
                 # continuer that level configures for its curly-quote form
                 # is just as valid a reminder that the dash-quote is still
-                # open (e.g. YUI: dash-opened level 1, continuer "”" --
-                # MAT 12:39 opens with "—", MAT 12:40 continues with "”"
+                # open (e.g. YUI: dash-opened level 1, continuer is the
+                # closing curly double-quote -- MAT 12:39 opens with an em
+                # dash, MAT 12:40 continues with a closing curly double-quote
                 # after a paragraph break). Only this exact configured
                 # continuer is accepted; anything else falls through to the
                 # same generic-closer labeling as when nothing is open at
@@ -788,9 +875,10 @@ def checkChapter(reference, text, lastChapter):
                 # way -- this is purely a reporting label (continuer vs.
                 # closer_orphan). The `_char_role(c) == u'close'` gate is
                 # required, not just a refinement: an opener-family character
-                # (e.g. DBTALP's "“", which is also its own continuer) must
-                # always fall through unconditionally to the normal opener
-                # logic below when nothing is open -- an ordinary new
+                # (e.g. DBTALP's opening curly double-quote, which is also
+                # its own continuer) must always fall through unconditionally
+                # to the normal opener logic below when nothing is open --
+                # an ordinary new
                 # quotation starting here is far more common than a stray
                 # continuer, and mislabeling it here would mean it never gets
                 # pushed at all, silently dropping a real opener.
@@ -855,6 +943,24 @@ def checkChapter(reference, text, lastChapter):
         bi += 1
 
 
+def checkChapter(reference, text, lastChapter):
+    # A bug in our own logic must never reach checkAllChapters's exception
+    # handler -- that handler mixes byte strings and unicode in a bare
+    # print, which has been observed (KOG_U New Testament) to crash on
+    # non-ASCII content and mask whatever the real, original exception was.
+    # Catching it here, logging it ourselves (see _log_crash), and letting
+    # the scan continue to the next chapter keeps this check's own bugs
+    # from taking down the entire run and losing the actual error.
+    try:
+        _checkChapter_impl(reference, text, lastChapter)
+    except Exception as e:
+        book_num = reference.Book if reference is not None else None
+        book_label = _book_label(book_num)
+        cm = CHAPTER_RE.search(text) if text else None
+        chapter_label = cm.group(1) if cm else u'?'
+        _log_crash(book_label, chapter_label, e)
+
+
 # ---------------------------------------------------------------------------
 # HTML report
 # ---------------------------------------------------------------------------
@@ -867,7 +973,7 @@ def _fmt_char(c):
 
 def _fmt_pair(open_c, close_label, n):
     # Descriptive labels (e.g. "(no closing dash)") get a separating space;
-    # a real character pair is shown run together (e.g. "«»").
+    # a real character pair is shown run together (e.g. a guillemet pair).
     sep = u' ' if close_label.startswith(u'(') else u''
     return u'{0}{1}{2} &times; {3}'.format(_he(open_c), sep, _he(close_label), n)
 
@@ -875,9 +981,10 @@ def _fmt_pair(open_c, close_label, n):
 def _level_openers_and_closers(pairs):
     """Group a level's {(open, close): count} dict by opener, picking each
     opener's most frequent closer. Returns (openers, closers), positionally
-    aligned lists -- e.g. (['«', '—'], ['»', '']), where an empty string
-    means that opener has no explicit closer (e.g. a dash-quote, which
-    finishes implicitly at the end of its paragraph)."""
+    aligned lists -- e.g. a left guillemet and an em dash as openers, paired
+    with a right guillemet and an empty string as closers, where an empty
+    string means that opener has no explicit closer (e.g. a dash-quote,
+    which finishes implicitly at the end of its paragraph)."""
     by_opener = {}
     for (o, cl), n in pairs.items():
         d = by_opener.setdefault(o, {})
@@ -906,7 +1013,7 @@ def _examples_html(key, label=None):
     if not lst:
         return u''
     rows = u''.join(
-        u'<li>{0} &mdash; <code>{1}</code></li>'.format(_he(ref), _he(snippet))
+        u'<li>{0} &mdash; <code>{1}</code></li>'.format(_ref_link(_he(ref), _goto(ref)), _he(snippet))
         for ref, snippet in lst
     )
     heading = label if label else u'Examples'
@@ -929,6 +1036,8 @@ def write_html_report(html_path, project_name):
     lines.append(u'h2{margin-top:28px}')
     lines.append(u'</style></head><body>')
     lines.append(u'<h1>Quotation Examiner</h1>')
+    if _links_on:
+        lines.append(_ptx_goto.hint_html())
     lines.append(u'<p>Project: <b>{0}</b></p>'.format(_he(project_name)))
 
     # --- Section 1: character summary ---------------------------------
@@ -997,7 +1106,7 @@ def write_html_report(html_path, project_name):
         shown = _unclosed[:_max_examples]
         rows = u''.join(
             u'<li>{0} &mdash; opened with {1} at level {2}, ref {3}, never closed before end of book</li>'.format(
-                _he(u['book']), _fmt_char(u['char']), u['level'], _he(u['opened_ref']))
+                _he(u['book']), _fmt_char(u['char']), u['level'], _ref_link(_he(u['opened_ref']), _goto(u['opened_ref'])))
             for u in shown)
         more = u'' if len(_unclosed) <= _max_examples else u'<p>+{0} more not shown.</p>'.format(
             len(_unclosed) - _max_examples)
@@ -1057,6 +1166,7 @@ checking.checkAllChapters(checkChapter)
 _flush_unclosed(_state['prev_book'])
 
 _directory = _project_directory()
+_links_on = _ptx_goto is not None and _ptx_goto.enabled(_directory)
 if _directory:
     _html_path = os.path.join(_directory, u'QuotationExaminerReport.html')
     write_html_report(_html_path, Project)

@@ -1,0 +1,33 @@
+﻿\check Informe de las notas al pie
+\submenu Herramientas_Español
+\script find_footnotes_sp.py
+\description Escanea los libros seleccionados en busca de notas al pie (\f...\f*) y muestra cada una en la lista de resultados (que se puede buscar por referencia o por los submarcadores que contiene, p. ej. "fr fq ft") para facilitar la búsqueda en Paratext. Además, escribe un informe HTML (InformeNotasAlPie.html, que se abre automáticamente) con una lista de todas las notas al pie encontradas -- una fila por nota, con la referencia, la llamada, la referencia \fr y el resto del texto de la nota (mostrado con el formato real de Negrita/Cursiva/Superíndice/Versalitas/Subrayado/Color declarado para cada marcador en usfm.sty y en el custom.sty del proyecto), cada uno en su propia columna alineada, además de una tabla resumen de cada marcador encontrado (los marcadores de apertura y cierre se cuentan por separado, p. ej. \w y \w*) y su estilo resuelto. Las revisiones opcionales de mayúsculas marcan las notas cuyo \ft (o cuyo primer marcador después de \fr) no va seguido de una mayúscula; aparecen en la lista de resultados ("\ft sin mayuscula") y resaltadas en el informe HTML.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortAlphabetically
+\optionLocalizedName ¿Ordenar las notas al pie alfabéticamente?
+\optionDescription Sí ordena las notas al pie del informe HTML alfabéticamente según el propio texto de la nota (todo excepto la referencia \fr), de modo que las notas idénticas o casi idénticas queden juntas para facilitar su comparación. No (predeterminado) las lista en el orden de escaneo canónico de libro/capítulo/versículo. Los caracteres acentuados o con diacríticos se ignoran al determinar el orden (pero se siguen mostrando normalmente).
+\optionDefault No
+
+\optionName HideMarkers
+\optionLocalizedName ¿Ocultar los marcadores en el informe HTML?
+\optionDescription Sí oculta las etiquetas de marcador (p. ej. \fq, \+it, \+it*) que aparecen antes de cada fragmento de texto de la nota en el informe HTML -- el texto conserva su formato de Negrita/Cursiva/Superíndice/Versalitas/Subrayado/Color, solo se ocultan las etiquetas de marcador, para una vista de lectura más limpia. No (predeterminado) muestra los marcadores junto al texto con estilo, como hasta ahora. No afecta la tabla resumen de marcadores y estilos de la Sección 1 ni la lista de resultados de Paratext.
+\optionDefault No
+
+\optionName CheckFtCapitals
+\optionLocalizedName ¿Revisar mayúsculas después de \ft?
+\optionDescription Sí marca, en cada nota al pie, un \ft cuya siguiente palabra no empieza con mayúscula cuando ese \ft es el primer marcador después de \fr (o el primer marcador, si no hay \fr), o cuando el texto anterior termina una oración (con . ? o !, sin contar los marcadores ni otra puntuación intermedia). Un \ft que sigue a otro marcador, como en "\fq Dios \ft o ...", no se marca a menos que antes termine una oración. Para hallar la siguiente palabra se saltan los marcadores de carácter (p. ej. \+it) y la puntuación inicial; las palabras que empiezan con un número o con una letra sin forma mayúscula no se marcan. Cada caso aparece en la lista de resultados como "\ft sin mayuscula" y resaltado en el informe HTML. No (predeterminado) no revisa.
+\optionDefault No
+
+\optionName CheckCapitalAfterFr
+\optionLocalizedName ¿Revisar mayúscula después de la referencia \fr?
+\optionDescription Sí marca las notas al pie en las que el primer marcador después de la referencia \fr (\ft, \fq, \fk...) no va seguido de mayúscula. Aparecen en la lista de resultados, p. ej. "\fq sin mayuscula despues de \fr", y resaltadas en el informe HTML. Cuando esta opción y "¿Revisar mayúsculas después de \ft?" se aplican al mismo \ft, se informa una sola vez. No (predeterminado) no revisa.
+\optionDefault No
+
+\optionName OnlyCapitalIssues
+\optionLocalizedName ¿Mostrar solo las notas con problemas de mayúsculas?
+\optionDescription Sí muestra solo las notas al pie marcadas por "¿Revisar mayúsculas después de \ft?" o "¿Revisar mayúscula después de la referencia \fr?", tanto en la lista de resultados como en la lista de notas del informe HTML (la tabla resumen de marcadores sigue contando todas las notas). No tiene efecto a menos que al menos una de esas dos revisiones esté en Sí. No (predeterminado) muestra todas las notas.
+\optionDefault No

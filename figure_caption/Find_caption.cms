@@ -1,0 +1,28 @@
+﻿\check Report of Figure captions v1.1
+\submenu Phil_new
+\script Find_caption.py
+\description Scans selected books for \fig figure markers, lists each figure's caption, copyright text, and illustration file name directly in the results list (one row per item; "empty" or "Copyright: empty" when missing), and writes a FigureCaptions.html report (opened automatically) listing every figure's reference, caption, copyright, and illustration file. When the project's figures folder has a picture for a figure (the same name, or a .jpg copy of a .tif), a "Show picture thumbnails" checkbox at the top of the report shows a small copy of each picture. Each figure is automatically classified as USFM 2 (pipe-delimited fields) or USFM 3 (key="value" attributes) based on its content, so no version needs to be selected. If a FigureCaptionsDebug.log appears in the project folder, something unexpected happened -- please share it. [Version 1.1]
+\books
+\noText
+\toList
+\utf8
+
+\optionName DisplayCaption
+\optionLocalizedName Display caption?
+\optionDescription Yes includes a Caption column in the report and a results-list row with the caption text (or "empty") for every figure.
+\optionDefault Yes
+
+\optionName DisplayCopyright
+\optionLocalizedName Display copyright?
+\optionDescription Yes includes a Copyright column in the report and a results-list row with the copyright text (or "Copyright: empty") for every figure.
+\optionDefault Yes
+
+\optionName DisplayIllustrationFile
+\optionLocalizedName Display illustration file name?
+\optionDescription Yes includes an Illustration File column in the report and a results-list row with the illustration's file name (e.g. "CN01629B.TIF" or "MyrrhBush_HK00118.tif") for every figure, or "empty" if none is specified. For USFM 3 this is the src="..." attribute; for USFM 2 it is the field right after the first pipe.
+\optionDefault Yes
+
+\optionName SortByCaption
+\optionLocalizedName Sort captions alphabetically
+\optionDescription Yes sorts the figures listed in the HTML report alphabetically by the figure's caption text, so identical or near-identical captions end up next to each other for easy comparison. If captions are hidden (Display caption = No), sorts by the illustration file name instead (if shown); if both are hidden, sorts by copyright text instead. No (default) lists them in canonical book/chapter/verse scan order. Accented/diacritic characters are ignored when determining sort order (but are still displayed normally).
+\optionDefault No

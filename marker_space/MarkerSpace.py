@@ -6,6 +6,20 @@ import sys
 import unicodedata
 import xml.etree.ElementTree as ET
 
+# Optional helper from the cms folder (ptx_goto.py): makes the references in
+# the HTML report clickable. Without it the references stay plain text.
+try:
+    import ptx_goto as _ptx_goto
+except Exception:
+    _ptx_goto = None
+_links_on = False
+
+def _goto(ref):
+    return _ptx_goto.target(ref) if _links_on else None
+
+def _ref_link(ref_html, tgt):
+    return _ptx_goto.link(ref_html, tgt) if _links_on and tgt else ref_html
+
 # ---------------------------------------------------------------------------
 # Option guards
 # ---------------------------------------------------------------------------
@@ -45,8 +59,10 @@ except NameError:
     # inside \x...\x*/\f...\f* (where it commonly has no closing marker of
     # its own -- the enclosing \x*/\f* ends it) AND standalone in running
     # text (e.g. an introduction paragraph quoting Scripture), where it's a
-    # normal character style that DOES need its own \xt*. So it's only
-    # exempt from the checks when its occurrence falls inside a note span.
+    # normal character style that DOES need its own \xt*. So when nested in
+    # a note span, only the "unclosed" verdict is suppressed for it (no
+    # \xt* found is normal there); if it DOES carry its own \xt*, that pair
+    # still gets the full normal spacing checks, note span or not.
     NoCloseInNoteMarkers = u'xt'
 NoCloseInNoteMarkers = _to_unicode(NoCloseInNoteMarkers)
 _note_context_markers = frozenset(
@@ -89,6 +105,22 @@ if _footnote_precedes_text:
     # space before it, like any other marker (see checkChapter/_check_pair
     # for the mirrored "no space after \f*" half of this).
     _no_space_before_markers = _no_space_before_markers - frozenset([u'f'])
+
+try:
+    CrossReferencesPrecedeText
+except NameError:
+    CrossReferencesPrecedeText = u'Yes'
+CrossReferencesPrecedeText = _to_unicode(CrossReferencesPrecedeText)
+_xref_precedes_text = CrossReferencesPrecedeText.strip().lower() == u'yes'
+if _xref_precedes_text:
+    # \x is normally in NoSpaceBeforeMarkers (attaches directly to the
+    # PRECEDING word/punctuation). Defaulting to Yes here means \x is
+    # removed from that set by default -- a project using the traditional
+    # "\x glued after the word" convention (e.g. real PDT15 data) must set
+    # this option to No to keep that behavior. Independent of
+    # FootnotePrecedesText: a project can have footnotes and
+    # cross-references follow opposite conventions from each other.
+    _no_space_before_markers = _no_space_before_markers - frozenset([u'x'])
 
 try:
     MaxExamples
@@ -257,8 +289,10 @@ def _load_character_markers(project_directory):
       entries, minus anything in ExcludeMarkers or NoCloseMarkers, PLUS every
       marker named in NoCloseInNoteMarkers (e.g. \\xt) even if it's missing
       or not Character-styled in the merged stylesheet -- those markers go
-      through the normal pipeline below, but are skipped per-occurrence when
-      found nested inside a \\x.../\\f... span (see _note_spans/checkChapter)
+      through the normal pipeline below, but are excused from being flagged
+      as unclosed when found nested inside a \\x.../\\f... span with no
+      closing marker of their own (see _note_spans/checkChapter); if one
+      DOES carry its own closing marker there, it's checked normally
       -- PLUS every marker named in ExtraSpacingMarkers (e.g. \\f, \\x),
       which are StyleType Note rather than Character in usfm.sty and so
       would otherwise never be picked up, but get the exact same spacing
@@ -400,9 +434,10 @@ def _in_any_span(pos, spans):
 # footnote on a Psalm heading sits right after "\c N \p " (two matches in a
 # row: "\c 9 " ends right where "\p " begins, which ends right where \f
 # begins) -- that leading space belongs to the marker's own required
-# marker-to-content spacing, not a real word-to-\f/\x gap.
+# marker-to-content spacing, not a real word-to-\f/\x gap. '~' (Paratext's
+# non-breaking space) counts as spacing here too, e.g. "\v 21~\f ...".
 MARKER_SPACE_RE = re.compile(
-    ur'\\\+?[a-zA-Z][a-zA-Z0-9]*\*?(?:\s+\d+(?:[,-]\d+)*)?\s+', re.UNICODE)
+    ur'\\\+?[a-zA-Z][a-zA-Z0-9]*\*?(?:[\s~]+\d+(?:[,-]\d+)*)?[\s~]+', re.UNICODE)
 
 
 def _marker_space_ends(text):
@@ -433,6 +468,13 @@ def _is_punct(ch):
     return ch is not None and ch != u'\\' and unicodedata.category(ch).startswith(u'P')
 
 
+def _is_space(ch):
+    # Paratext represents a non-breaking space in USFM source text as a
+    # literal '~' (rendered as an actual non-breaking space) -- every
+    # spacing check in this file treats it exactly like any other space.
+    return ch is not None and (ch.isspace() or ch == u'~')
+
+
 # Punctuation that should always hug the PRECEDING word/marker with no space
 # before it (closing/attaching marks). Deliberately narrower than _is_punct:
 # OPENING-style marks -- ( [ { the Spanish inverted question/exclamation
@@ -456,6 +498,24 @@ def _is_closing_punct(ch):
     return ch is not None and ch in _CLOSING_PUNCT
 
 
+def _marker_content_starts_with_closing_punct(text, content_start):
+    """True if, after skipping the marker's own required space(s), the
+    marker's content begins with closing-style punctuation (see
+    _CLOSING_PUNCT) -- e.g. "\\ft .". Punctuation must hug the PRECEDING
+    word directly (see check E), so when a marker's content is itself just
+    trailing punctuation, gluing the (invisible) marker to that word with
+    NO space is what renders correctly tight against it -- not a missing-
+    space mistake. Used to exempt the "missing space before" checks for
+    OPENING markers only (checks A and the no-close-marker check); closing
+    markers (e.g. "\\it* .") are NOT exempted -- that's check E's job, and
+    it's unaffected by this."""
+    n = len(text)
+    k = content_start
+    while k < n and _is_space(text[k]):
+        k += 1
+    return k < n and _is_closing_punct(text[k])
+
+
 def _open_marker_regex(marker, all_marker_names):
     # Disambiguate against the real marker vocabulary: only exclude a match
     # here if some OTHER known marker actually starts with these letters --
@@ -470,21 +530,21 @@ def _open_marker_regex(marker, all_marker_names):
 
 def _find_pairs(text, close_re, open_re, skip_predicate=None):
     """skip_predicate(pos), when given, is checked against each open match's
-    start position -- occurrences for which it returns True are ignored
-    entirely (no pair, no unclosed entry), but still count toward the
-    next-open boundary used to bound where OTHER occurrences' closing
-    marker search may look (see NoCloseInNoteMarkers)."""
+    start position -- it only suppresses the UNCLOSED outcome for that
+    occurrence (see NoCloseInNoteMarkers: an \\xt nested in a footnote/xref
+    span with no \\xt* of its own is normal, closed by the enclosing \\f*/
+    \\x* instead). A pair is still formed normally, with the full set of
+    checks applied, whenever a real closing marker IS found -- the predicate
+    never suppresses that."""
     opens = list(open_re.finditer(text))
     pairs = []
     unclosed = []
     for idx, m in enumerate(opens):
         next_open_start = opens[idx + 1].start() if idx + 1 < len(opens) else len(text)
-        if skip_predicate is not None and skip_predicate(m.start()):
-            continue
         close_m = close_re.search(text, m.end())
         if close_m is not None and close_m.start() < next_open_start:
             pairs.append((m.start(), m.end(), close_m.start(), close_m.end()))
-        else:
+        elif skip_predicate is None or not skip_predicate(m.start()):
             unclosed.append((m.start(), m.end()))
     return pairs, unclosed
 
@@ -494,7 +554,12 @@ def _check_pair(text, open_start, open_end, close_start, close_end,
                  invert_close_spacing=False):
     """Returns a list of failing check codes among 'A','B','C','D','E','F':
     A - missing space before the opening marker (normal-direction markers only
-        -- see B for the NoSpaceBeforeMarkers/invert_open_spacing case)
+        -- see B for the NoSpaceBeforeMarkers/invert_open_spacing case).
+        Exempt when the marker's own content is itself just trailing
+        punctuation (e.g. "metal\\ft .\\f*") -- see
+        _marker_content_starts_with_closing_punct: gluing the marker
+        directly to the preceding word with NO space is what's needed for
+        that punctuation to render correctly tight against it.
     B - unwanted space before the opening marker, when invert_open_spacing is
         True (NoSpaceBeforeMarkers, e.g. \\f/\\x footnote/xref callers, which
         conventionally attach directly to the preceding word/punctuation with
@@ -517,11 +582,11 @@ def _check_pair(text, open_start, open_end, close_start, close_end,
         invert_close_spacing -- punctuation should always hug tightly, so
         this rule doesn't flip with direction.
     F - unwanted space after the closing marker, when invert_close_spacing is
-        True (FootnotePrecedesText, currently only ever \\f): the mirror
-        image of D -- this project's convention glues the closing marker
-        directly to the following word with NO space, so a space there (when
-        NOT followed by punctuation, which stays governed by E) is the
-        anomaly instead.
+        True (FootnotePrecedesText for \\f, CrossReferencesPrecedeText for
+        \\x): the mirror image of D -- this project's convention glues the
+        closing marker directly to the following word with NO space, so a
+        space there (when NOT followed by punctuation, which stays governed
+        by E) is the anomaly instead.
     """
     anomalies = []
     n = len(text)
@@ -529,27 +594,29 @@ def _check_pair(text, open_start, open_end, close_start, close_end,
     before_open = text[open_start - 1] if open_start > 0 else None
     if invert_open_spacing:
         at_marker_space_end = marker_space_ends is not None and open_start in marker_space_ends
-        if before_open is not None and before_open.isspace() and not at_marker_space_end:
+        if before_open is not None and _is_space(before_open) and not at_marker_space_end:
             anomalies.append(u'B')
-    elif before_open is not None and not before_open.isspace() and not _is_punct(before_open):
+    elif (before_open is not None and not _is_space(before_open) and not _is_punct(before_open)
+          and not _marker_content_starts_with_closing_punct(text, open_end)):
         anomalies.append(u'A')
 
     before_close = text[close_start - 1] if close_start > 0 else None
-    if before_close is not None and before_close.isspace():
+    if before_close is not None and _is_space(before_close):
         anomalies.append(u'C')
 
     after_close = text[close_end] if close_end < n else None
     if after_close is not None:
-        if after_close in u' \t':
+        if after_close in u' \t~':
             # Punctuation directly after the closing marker is normal (no
             # space needed, e.g. "\nd*."), but a SPACE before that
             # punctuation is itself the mistake (e.g. "\nd* ,") -- a comma
             # should hug the preceding word/marker, not float after a stray
-            # space. Only spaces/tabs are skipped here (not newlines), so a
-            # closing marker at end of line followed by punctuation starting
-            # a later line isn't mistaken for this on-the-same-line pattern.
+            # space. Only spaces/tabs/'~' are skipped here (not newlines), so
+            # a closing marker at end of line followed by punctuation
+            # starting a later line isn't mistaken for this on-the-same-line
+            # pattern.
             k = close_end
-            while k < n and text[k] in u' \t':
+            while k < n and text[k] in u' \t~':
                 k += 1
             if k < n and _is_closing_punct(text[k]):
                 anomalies.append(u'E')
@@ -564,7 +631,7 @@ def _check_pair(text, open_start, open_end, close_start, close_end,
                    # another closing marker, i.e. nested styles ending
                    # together (e.g. "\+nd*\add*") -- any real anomaly there
                    # belongs to that outer marker's own check, not this one
-        elif not after_close.isspace() and not _is_punct(after_close):
+        elif not _is_space(after_close) and not _is_punct(after_close):
             if not invert_close_spacing:
                 anomalies.append(u'D')
             # else: glued directly to content is the CORRECT state when the
@@ -605,6 +672,7 @@ def _snippet(text, window_start, window_end, hl_start, hl_end):
 checking.setupCheck()
 
 _directory = _project_directory()
+_links_on = _ptx_goto is not None and _ptx_goto.enabled(_directory)
 _character_markers, _all_marker_names, _no_close_endmarkers, _diag = _load_character_markers(_directory)
 _open_regexes = dict(
     (marker, _open_marker_regex(marker, _all_marker_names))
@@ -615,6 +683,10 @@ _close_regexes = dict(
 _no_close_regexes = dict(
     (marker, _marker_regex(bare_endmarker))
     for marker, bare_endmarker in _no_close_endmarkers.items())
+_no_close_open_regexes = dict(
+    (marker, _open_marker_regex(marker, _all_marker_names))
+    for marker in _no_close_endmarkers
+    if marker not in _exclude_markers)
 
 BUCKETS = [
     (u'A', u'Missing space before open'),
@@ -623,10 +695,11 @@ BUCKETS = [
     (u'D', u'Missing space after closing'),
     (u'E', u'Unwanted space after closing'),
 ]
-if _footnote_precedes_text:
-    # Only relevant (and only ever nonzero) when this option is on, so it's
-    # left out of the report entirely for the common case.
-    BUCKETS.append((u'F', u'Unwanted space after closing (footnote precedes text)'))
+if _footnote_precedes_text or _xref_precedes_text:
+    # Only relevant (and only ever nonzero) when one of these options is on,
+    # so it's left out of the report entirely otherwise. CrossReferencesPrecedeText
+    # defaults to Yes, so this column/section appears by default.
+    BUCKETS.append((u'F', u'Unwanted space after closing (precedes text)'))
 
 # Per-occurrence MSG text for the Paratext results list (see checking.outputError
 # below) -- distinct from BUCKETS' generic legend text used in the HTML report,
@@ -637,7 +710,7 @@ _BUCKET_MESSAGES = {
     u'C': u'Unwanted space before \\{0}',
     u'D': u'Missing space after \\{0}',
     u'E': u'Unwanted space before punctuation after \\{0}',
-    u'F': u'Unwanted space after \\{0} (footnote precedes text)',
+    u'F': u'Unwanted space after \\{0} (precedes text)',
 }
 
 
@@ -652,6 +725,9 @@ _examples = {}    # (marker, bucket) -> list of (ref, snippet)
 _unclosed = []    # list of (marker, ref)
 _unexpected_close_counts = {}    # marker -> count of endmarker sightings
 _unexpected_close_examples = {}  # marker -> list of (ref, snippet)
+_no_close_missing_space_counts = {}    # marker -> count of missing-space-before sightings
+_no_close_missing_space_examples = {}  # marker -> list of (ref, snippet)
+_w_pipe_space_issues = []  # list of (ref, snippet): \w...\w* with a space before its | link delimiter
 
 
 def checkChapter(reference, text, lastChapter):
@@ -686,7 +762,8 @@ def checkChapter(reference, text, lastChapter):
                 u'Unclosed \\{0} (no matching \\{0}* found)'.format(marker))
 
         invert_open_spacing = marker in _no_space_before_markers
-        invert_close_spacing = _footnote_precedes_text and marker == u'f'
+        invert_close_spacing = ((_footnote_precedes_text and marker == u'f') or
+                                 (_xref_precedes_text and marker == u'x'))
         endmarker = _character_markers[marker]
         for (os_, oe, cs, ce) in pairs:
             for bucket in _check_pair(text, os_, oe, cs, ce, invert_open_spacing, marker_space_ends,
@@ -704,6 +781,15 @@ def checkChapter(reference, text, lastChapter):
                 if len(examples) < _max_examples:
                     examples.append((ref_at(os_), _snippet(text, window_start, window_end, hl_s, hl_e)))
 
+            if marker == u'w':
+                pipe_pos = text.find(u'|', oe, cs)
+                if pipe_pos > oe and _is_space(text[pipe_pos - 1]):
+                    hl_s, hl_e = pipe_pos - 1, pipe_pos + 1
+                    checking.outputError(
+                        hl_s, hl_e,
+                        u'Unwanted space before | in \\w...\\w* (produces a double space)')
+                    _w_pipe_space_issues.append((ref_at(os_), _snippet(text, hl_s - 20, hl_e + 20, hl_s, hl_e)))
+
     for marker in _no_close_endmarkers:
         close_re = _no_close_regexes[marker]
         endmarker = _no_close_endmarkers[marker]
@@ -714,6 +800,22 @@ def checkChapter(reference, text, lastChapter):
                 hl_s, hl_e,
                 u'Unexpected \\{0} (\\{1} is not normally closed)'.format(endmarker, marker))
             examples = _unexpected_close_examples.setdefault(marker, [])
+            if len(examples) < _max_examples:
+                examples.append((ref_at(hl_s), _snippet(text, hl_s - 20, hl_e + 20, hl_s, hl_e)))
+
+    for marker in _no_close_open_regexes:
+        open_re = _no_close_open_regexes[marker]
+        for m in open_re.finditer(text):
+            hl_s, hl_e = m.start(), m.end()
+            before = text[hl_s - 1] if hl_s > 0 else None
+            if (before is None or _is_space(before) or _is_punct(before)
+                    or _marker_content_starts_with_closing_punct(text, hl_e)):
+                continue
+            _no_close_missing_space_counts[marker] = _no_close_missing_space_counts.get(marker, 0) + 1
+            checking.outputError(
+                hl_s, hl_e,
+                u'Missing space before \\{0}'.format(marker))
+            examples = _no_close_missing_space_examples.setdefault(marker, [])
             if len(examples) < _max_examples:
                 examples.append((ref_at(hl_s), _snippet(text, hl_s - 20, hl_e + 20, hl_s, hl_e)))
 
@@ -736,7 +838,7 @@ def _examples_html(key, heading):
         return u''
     total = _bucket_counts.get(key, 0)
     rows = u''.join(
-        u'<li>{0} &mdash; <code>{1}</code></li>'.format(_he(ref), snip)
+        u'<li>{0} &mdash; <code>{1}</code></li>'.format(_ref_link(_he(ref), _goto(ref)), snip)
         for ref, snip in examples)
     more = u'' if total <= len(examples) else u'<p>+{0} more not shown.</p>'.format(total - len(examples))
     return u'<p><b>{0} ({1}):</b></p><ul>{2}</ul>{3}'.format(_he(heading), total, rows, more)
@@ -758,6 +860,8 @@ def write_html_report(html_path, project_name):
     lines.append(u'h2{margin-top:28px}')
     lines.append(u'</style></head><body>')
     lines.append(u'<h1>Marker Space Check</h1>')
+    if _links_on:
+        lines.append(_ptx_goto.hint_html())
     lines.append(u'<p>Project: <b>{0}</b></p>'.format(_he(project_name)))
 
     lines.append(u'<p>usfm.sty: <code>{0}</code> &mdash; {1}, {2} marker(s)<br>'
@@ -812,7 +916,7 @@ def write_html_report(html_path, project_name):
     if _unclosed:
         shown = _unclosed[:_max_examples]
         rows = u''.join(
-            u'<li>\\{0} at {1} &mdash; no matching \\{0}* found before end of chapter</li>'.format(_he(m), _he(r))
+            u'<li>\\{0} at {1} &mdash; no matching \\{0}* found before end of chapter</li>'.format(_he(m), _ref_link(_he(r), _goto(r)))
             for m, r in shown)
         more = u'' if len(_unclosed) <= _max_examples else u'<p>+{0} more not shown.</p>'.format(
             len(_unclosed) - _max_examples)
@@ -834,10 +938,46 @@ def write_html_report(html_path, project_name):
             examples = _unexpected_close_examples.get(marker, [])
             total = _unexpected_close_counts[marker]
             rows = u''.join(
-                u'<li>{0} &mdash; <code>{1}</code></li>'.format(_he(ref), snip)
+                u'<li>{0} &mdash; <code>{1}</code></li>'.format(_ref_link(_he(ref), _goto(ref)), snip)
                 for ref, snip in examples)
             more = u'' if total <= len(examples) else u'<p>+{0} more not shown.</p>'.format(total - len(examples))
             lines.append(u'<p><b>\\{0} found ({1}):</b></p><ul>{2}</ul>{3}'.format(_he(endmarker), total, rows, more))
+    else:
+        lines.append(u'<p>None found.</p>')
+    section_num += 1
+
+    # --- Section 8: missing space before markers without a closing marker
+    lines.append(u'<h2>{0}. Missing space before markers without a closing marker</h2>'.format(section_num))
+    if _no_close_open_regexes:
+        lines.append(u'<p><i>{0} are checked for a missing space before them, the same way any other marker\'s '
+                      u'opening spacing is checked, even though they don\'t take a closing marker.</i></p>'.format(
+            u', '.join(u'\\' + _he(m) for m in sorted(_no_close_open_regexes.keys()))))
+    if _no_close_missing_space_counts:
+        for marker in sorted(_no_close_missing_space_counts.keys()):
+            examples = _no_close_missing_space_examples.get(marker, [])
+            total = _no_close_missing_space_counts[marker]
+            rows = u''.join(
+                u'<li>{0} &mdash; <code>{1}</code></li>'.format(_ref_link(_he(ref), _goto(ref)), snip)
+                for ref, snip in examples)
+            more = u'' if total <= len(examples) else u'<p>+{0} more not shown.</p>'.format(total - len(examples))
+            lines.append(u'<p><b>\\{0} ({1}):</b></p><ul>{2}</ul>{3}'.format(_he(marker), total, rows, more))
+    else:
+        lines.append(u'<p>None found.</p>')
+    section_num += 1
+
+    # --- Section 9: space before | inside \w...\w* -----------------------
+    lines.append(u'<h2>{0}. Space before | inside \\w...\\w*</h2>'.format(section_num))
+    lines.append(u'<p><i>A \\w...\\w* span may carry a |-delimited glossary link after the displayed word '
+                  u'(e.g. \\w Word|Word in glossary\\w*). A space right before the | becomes part of the '
+                  u'rendered text, producing a double space.</i></p>')
+    if _w_pipe_space_issues:
+        shown = _w_pipe_space_issues[:_max_examples]
+        rows = u''.join(
+            u'<li>{0} &mdash; <code>{1}</code></li>'.format(_ref_link(_he(ref), _goto(ref)), snip)
+            for ref, snip in shown)
+        more = u'' if len(_w_pipe_space_issues) <= len(shown) else u'<p>+{0} more not shown.</p>'.format(
+            len(_w_pipe_space_issues) - len(shown))
+        lines.append(u'<ul>{0}</ul>{1}'.format(rows, more))
     else:
         lines.append(u'<p>None found.</p>')
 
@@ -861,10 +1001,13 @@ if _directory:
     _total_anomalies = sum(_bucket_counts.values())
     _total_occurrences = sum(_totals.values())
     _total_unexpected_close = sum(_unexpected_close_counts.values())
+    _total_no_close_missing_space = sum(_no_close_missing_space_counts.values())
     sys.stdout.write(
         u'# {0} character marker occurrence(s) scanned, {1} flagged, {2} unclosed, '
-        u'{3} unexpected closing marker(s)\n'.format(
-            _total_occurrences, _total_anomalies, len(_unclosed), _total_unexpected_close))
+        u'{3} unexpected closing marker(s), {4} missing space before a no-close marker, '
+        u'{5} space-before-| issue(s) in \\w\n'.format(
+            _total_occurrences, _total_anomalies, len(_unclosed), _total_unexpected_close,
+            _total_no_close_missing_space, len(_w_pipe_space_issues)))
     if not _diag['usfm_found']:
         sys.stdout.write(u'# Warning: usfm.sty was not found at {0}\n'.format(_diag['usfm_path']))
 else:

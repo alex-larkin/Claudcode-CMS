@@ -33,6 +33,7 @@ if not isinstance(WordsToIgnore, type(u'')):
     except UnicodeDecodeError:
         WordsToIgnore = WordsToIgnore.decode('mbcs')
 _ignore_words = frozenset(unicodedata.normalize('NFC', w.strip()) for w in WordsToIgnore.split(u',') if w.strip())
+_ignore_words_lower = frozenset(w.lower() for w in _ignore_words)
 
 try:
     IgnoreCapAfterQuote
@@ -44,6 +45,28 @@ if not isinstance(IgnoreCapAfterQuote, type(u'')):
     except UnicodeDecodeError:
         IgnoreCapAfterQuote = IgnoreCapAfterQuote.decode('mbcs')
 _ignore_cap_after_quote = IgnoreCapAfterQuote.strip().lower() == u'yes'
+
+try:
+    IgnoreBiblicalTerms
+except NameError:
+    IgnoreBiblicalTerms = 'Yes'
+if not isinstance(IgnoreBiblicalTerms, type(u'')):
+    try:
+        IgnoreBiblicalTerms = IgnoreBiblicalTerms.decode('utf-8')
+    except UnicodeDecodeError:
+        IgnoreBiblicalTerms = IgnoreBiblicalTerms.decode('mbcs')
+_ignore_bt = IgnoreBiblicalTerms.strip().lower() == u'yes'
+
+try:
+    IgnoreWordlistCapitals
+except NameError:
+    IgnoreWordlistCapitals = 'Yes'
+if not isinstance(IgnoreWordlistCapitals, type(u'')):
+    try:
+        IgnoreWordlistCapitals = IgnoreWordlistCapitals.decode('utf-8')
+    except UnicodeDecodeError:
+        IgnoreWordlistCapitals = IgnoreWordlistCapitals.decode('mbcs')
+_ignore_wordlist = IgnoreWordlistCapitals.strip().lower() == u'yes'
 
 try:
     QuoteOpeningChars
@@ -79,26 +102,38 @@ if not isinstance(IgnoreParaStyles, type(u'')):
 _ignore_para_names = [s.strip().lstrip(u'\\') for s in IgnoreParaStyles.split(u',') if s.strip()]
 
 try:
-    WordPrefixes
+    PrefixesToIgnore
 except NameError:
-    WordPrefixes = ''
-if not isinstance(WordPrefixes, type(u'')):
+    PrefixesToIgnore = ''
+if not isinstance(PrefixesToIgnore, type(u'')):
     try:
-        WordPrefixes = WordPrefixes.decode('utf-8')
+        PrefixesToIgnore = PrefixesToIgnore.decode('utf-8')
     except UnicodeDecodeError:
-        WordPrefixes = WordPrefixes.decode('mbcs')
-_prefixes = [p.lower() for p in WordPrefixes.split() if p.strip()]
-
+        PrefixesToIgnore = PrefixesToIgnore.decode('mbcs')
 try:
-    WordSuffixes
+    SuffixesToIgnore
 except NameError:
-    WordSuffixes = ''
-if not isinstance(WordSuffixes, type(u'')):
+    SuffixesToIgnore = ''
+if not isinstance(SuffixesToIgnore, type(u'')):
     try:
-        WordSuffixes = WordSuffixes.decode('utf-8')
+        SuffixesToIgnore = SuffixesToIgnore.decode('utf-8')
     except UnicodeDecodeError:
-        WordSuffixes = WordSuffixes.decode('mbcs')
-_suffixes = [s.lower() for s in WordSuffixes.split() if s.strip()]
+        SuffixesToIgnore = SuffixesToIgnore.decode('mbcs')
+
+# Each space-separated token is either a plain affix (strip-only, unchanged
+# from prior behavior) or a '/'-separated group of interchangeable variants
+# (e.g. "ɨ/ʉ", "ión/iones", "i/ɨ/ʉ") for languages where a suffix triggers a
+# stem-final alternation rather than simple concatenation.
+def _parse_affix_groups(raw):
+    groups = []
+    for tok in raw.split():
+        variants = [v.lower() for v in tok.split(u'/') if v]
+        if variants:
+            groups.append(variants)
+    return groups
+
+_prefix_groups = _parse_affix_groups(PrefixesToIgnore)
+_suffix_groups = _parse_affix_groups(SuffixesToIgnore)
 
 try:
     MidWordPunctuation
@@ -115,9 +150,7 @@ _joiner_chars = MidWordPunctuation
 # TermRenderings helpers
 # ---------------------------------------------------------------------------
 
-def _find_current_project_renderings():
-    """Locate TermRenderings.xml for the project currently being checked.
-    Called after checking.setupCheck() so checking.scr is initialised."""
+def _project_directory():
     scr = getattr(checking, 'scr', None)
     if scr is None:
         return None
@@ -126,11 +159,29 @@ def _find_current_project_renderings():
         return None
     if isinstance(d, bytes):
         d = d.decode('mbcs')
+    return d
+
+def _find_current_project_renderings():
+    """Locate TermRenderings.xml for the project currently being checked.
+    Called after checking.setupCheck() so checking.scr is initialised."""
+    d = _project_directory()
+    if not d:
+        return None
     p = os.path.join(d, u'TermRenderings.xml')
     return p if os.path.isfile(p) else None
 
+# A letter, combining marks included: Paratext runs these checks under IronPython,
+# whose .NET \w covers the combining marks (Mn, U+0300-U+036F among them). The
+# old form (?:[^\W\d_]|[\u0300-\u036f]) matched each mark both ways, so a word
+# with many stacked marks made a failing wildcard match take exponential time.
+_WORD_CHAR_NO_DIGIT = u'[^\\W\\d_]'
 
-_WORD_CHAR_NO_DIGIT = u'(?:[^\\W\\d_]|[\\u0300-\\u036f])'
+# Regex metacharacters in a TermRenderings word are matched literally: only the
+# '*' at either end is a wildcard. Unescaped, a rendering such as '(a+)+b*' could
+# freeze the check, and 'Sant[o*' stopped it with a pattern error. Non-ASCII
+# letters are not backslashed (IronPython's .NET engine rejects such escapes).
+def _re_literal(s):
+    return re.sub(u'([\\\\.^$|?*+()\\[\\]{}])', u'\\\\\\1', s)
 
 def _build_word_spec(word):
     has_prefix_wild = word.startswith(u'*')
@@ -142,7 +193,7 @@ def _build_word_spec(word):
         prefix_pat = _WORD_CHAR_NO_DIGIT + u'*' if has_prefix_wild else u''
         suffix_pat = _WORD_CHAR_NO_DIGIT + u'*' if has_suffix_wild else u''
         return re.compile(
-            u'\\A' + prefix_pat + root_word + suffix_pat + u'\\Z',
+            u'\\A' + prefix_pat + _re_literal(root_word) + suffix_pat + u'\\Z',
             re.UNICODE)
     return root_word
 
@@ -176,6 +227,26 @@ def _load_cap_renderings(path):
             if specs:
                 phrases.append(specs)
     return phrases
+
+# Words SpellingStatus.xml marks as always written with a given case
+# (<Status Word="galilaaya"><SpecificCase>Galilaaya</SpecificCase>). Only the
+# forms that start with a capital matter here.
+def _load_specific_case(path):
+    exact = set()
+    open_path = path.encode('mbcs') if isinstance(path, type(u'')) else path
+    with open(open_path, 'rb') as f:
+        data = f.read()
+    root = ET.fromstring(data)
+    for sc in root.iter(u'SpecificCase'):
+        word = (sc.text or u'').strip()
+        if not word:
+            continue
+        if not isinstance(word, type(u'')):
+            word = word.decode('utf-8')
+        word = unicodedata.normalize('NFC', word)
+        if unicodedata.category(word[0]) == u'Lu':
+            exact.add(word)
+    return frozenset(exact), frozenset(w.lower() for w in exact)
 
 # ---------------------------------------------------------------------------
 # Regex patterns
@@ -217,7 +288,7 @@ PARA_REF_RE = re.compile(ur'\\r\b[^\r\n]*', re.UNICODE)
 
 if _ignore_style_names:
     _style_pat = u'|'.join(
-        u'\\\\' + s + u'\\b.*?\\\\' + s + u'\\*'
+        u'\\\\' + _re_literal(s) + u'\\b.*?\\\\' + _re_literal(s) + u'\\*'
         for s in _ignore_style_names)
     IGNORE_STYLE_RE = re.compile(_style_pat, re.UNICODE | re.DOTALL)
 else:
@@ -225,7 +296,7 @@ else:
 
 if _ignore_para_names:
     _para_pat = u'|'.join(
-        u'\\\\' + s + u'\\b[^\\\\]*'
+        u'\\\\' + _re_literal(s) + u'\\b[^\\\\]*'
         for s in _ignore_para_names)
     IGNORE_PARA_RE = re.compile(_para_pat, re.UNICODE)
 else:
@@ -245,7 +316,7 @@ def _build_word_pattern(joiners):
     for c in joiners:
         if c == u'-':
             continue
-        parts.append(u'\\' + c if c in u'\\]' else c)
+        parts.append(u'\\' + c if c in u'\\]^[' else c)
     cc = (u'-' if has_hyphen else u'') + u''.join(parts)
     return _WORD_CHAR + u'+(?:[' + cc + u']' + _WORD_CHAR + u'+)*'
 
@@ -278,15 +349,48 @@ def _base_char(s):
         i -= 1
     return s[i]
 
+def _is_recognized_root(root):
+    root_nfc = unicodedata.normalize('NFC', root)
+    root_lower = root_nfc.lower()
+    if root_lower in _ignore_words_lower:
+        return True
+    if root_lower in _cap_single_word_exact_lower:
+        return True
+    if root_lower in _specific_case_lower:
+        return True
+    for spec in _cap_single_word_wildcards:
+        if _spec_matches(spec, root_nfc):
+            return True
+    return False
+
 def _word_has_affix(word_str):
-    for prefix in _prefixes:
-        pl = len(prefix)
-        if len(word_str) > pl and word_str[:pl].lower() == prefix:
-            return True
-    for suffix in _suffixes:
-        sl = len(suffix)
-        if len(word_str) > sl and word_str[-sl:].lower() == suffix:
-            return True
+    word_lower = word_str.lower()
+    for group in _prefix_groups:
+        for i, variant in enumerate(group):
+            pl = len(variant)
+            if len(word_str) <= pl or word_lower[:pl] != variant:
+                continue
+            if len(group) == 1:
+                if _is_recognized_root(word_str[pl:]):
+                    return True
+            else:
+                rest = word_str[pl:]
+                for j, other in enumerate(group):
+                    if j != i and _is_recognized_root(other + rest):
+                        return True
+    for group in _suffix_groups:
+        for i, variant in enumerate(group):
+            sl = len(variant)
+            if len(word_str) <= sl or word_lower[-sl:] != variant:
+                continue
+            if len(group) == 1:
+                if _is_recognized_root(word_str[:-sl]):
+                    return True
+            else:
+                stem = word_str[:-sl]
+                for j, other in enumerate(group):
+                    if j != i and _is_recognized_root(stem + other):
+                        return True
     return False
 
 def _spec_matches(spec, word):
@@ -322,6 +426,19 @@ def _index_cap_phrases(phrases):
             wildcard_first.append(phrase)
     return by_first_word, wildcard_first
 
+def _index_single_word_terms(phrases):
+    exact_lower = set()
+    wildcards = []
+    for phrase in phrases:
+        if len(phrase) != 1:
+            continue
+        spec = phrase[0]
+        if isinstance(spec, type(u'')):
+            exact_lower.add(spec.lower())
+        else:
+            wildcards.append(spec)
+    return frozenset(exact_lower), wildcards
+
 def _phrase_matches_at(text, start, phrase):
     words = _extract_word_seq(text, start, len(phrase))
     if len(words) != len(phrase):
@@ -344,7 +461,8 @@ def _match_cap_phrase(text, start):
 def _is_ignored_at(text, pos, word_str):
     if _match_cap_phrase(text, pos):
         return True
-    if unicodedata.normalize('NFC', word_str) in _ignore_words:
+    word_nfc = unicodedata.normalize('NFC', word_str)
+    if word_nfc in _ignore_words or word_nfc in _specific_case_words:
         return True
     return _word_has_affix(word_str)
 
@@ -352,9 +470,21 @@ def _is_ignored_at(text, pos, word_str):
 checking.setupCheck()
 # ---------------------------------------------------------------------------
 
-_tr_path = _find_current_project_renderings()
+_tr_path = _find_current_project_renderings() if _ignore_bt else None
 _cap_phrases = _load_cap_renderings(_tr_path) if _tr_path else []
 _cap_phrases_by_first_word, _cap_phrases_wildcard_first = _index_cap_phrases(_cap_phrases)
+_cap_single_word_exact_lower, _cap_single_word_wildcards = _index_single_word_terms(_cap_phrases)
+
+# A missing or unreadable SpellingStatus.xml just means no Wordlist words.
+_specific_case_words, _specific_case_lower = frozenset(), frozenset()
+_directory = _project_directory() if _ignore_wordlist else None
+if _directory:
+    _ss_path = os.path.join(_directory, u'SpellingStatus.xml')
+    try:
+        if os.path.isfile(_ss_path.encode('mbcs')):
+            _specific_case_words, _specific_case_lower = _load_specific_case(_ss_path)
+    except Exception:
+        pass
 
 class _StripCRLF(object):
     def __init__(self, wrapped):

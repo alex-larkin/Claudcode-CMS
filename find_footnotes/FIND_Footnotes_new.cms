@@ -1,0 +1,33 @@
+\check Footnotes (\f)
+\submenu Phil_new
+\script find_footnotes.py
+\description Scans selected books for footnotes (\f...\f*) and reports each one in the results list (searchable by reference or by which sub-markers it contains, e.g. "fr fq ft") for easy searching in Paratext. Also writes an HTML report (FootnotesReport.html, opened automatically) listing every footnote found -- one row per footnote, with the reference, caller, \fr reference, and remaining footnote text (rendered with the actual Bold/Italic/Superscript/SmallCaps/Underline/Color formatting declared for each marker in usfm.sty and the project's custom.sty) each in their own aligned column, plus a summary table of every marker found (opening and closing markers listed separately, e.g. \w and \w*) and its resolved style. Optional capitalization checks flag footnotes whose \ft (or whose first marker after \fr) is not followed by a capital letter; they are listed in the results list ("\ft not capitalized") and highlighted in the HTML report.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortAlphabetically
+\optionLocalizedName Sort footnotes alphabetically
+\optionDescription Yes sorts the footnotes listed in the HTML report alphabetically by the footnote's own text (everything except the \fr reference), so identical or near-identical footnotes end up next to each other for easy comparison. No (default) lists them in canonical book/chapter/verse scan order. Accented/diacritic characters are ignored when determining sort order (but are still displayed normally).
+\optionDefault No
+
+\optionName HideMarkers
+\optionLocalizedName Hide markers in HTML report
+\optionDescription Yes hides the marker labels (e.g. \fq, \+it, \+it*) shown before each piece of footnote text in the HTML report -- the text keeps its resolved Bold/Italic/Superscript/SmallCaps/Underline/Color styling, only the marker labels themselves are hidden, for a cleaner reading view. No (default) shows the markers alongside the styled text, as today. Does not affect the Section 1 marker/style summary table or the Paratext results list.
+\optionDefault No
+
+\optionName CheckFtCapitals
+\optionLocalizedName Check capitals after \ft
+\optionDescription Yes flags, within each footnote, a \ft whose next word does not start with a capital letter when that \ft is the first marker after \fr (or the first marker at all when there is no \fr), or when the text before it ends a sentence (with . ? or !, ignoring markers and other punctuation in between). A \ft that follows another marker, as in "\fq Dios \ft o ...", is not flagged unless a sentence ended before it. Character markers (e.g. \+it) and leading punctuation are skipped when finding the next word; words starting with a digit or a letter that has no capital form are not flagged. Each one is listed in the results list as "\ft not capitalized" and highlighted in the HTML report. No (default) does not check.
+\optionDefault No
+
+\optionName CheckCapitalAfterFr
+\optionLocalizedName Check capital after the \fr reference
+\optionDescription Yes flags footnotes where the first marker following the \fr reference (\ft, \fq, \fk, ...) is not followed by a capital letter. Listed in the results list as e.g. "\fq not capitalized after \fr" and highlighted in the HTML report. When this and "Check capitals after \ft" both apply to the same \ft, it is reported once. No (default) does not check.
+\optionDefault No
+
+\optionName OnlyCapitalIssues
+\optionLocalizedName Show only footnotes with capitalization issues
+\optionDescription Yes lists only the footnotes flagged by "Check capitals after \ft" or "Check capital after the \fr reference", both in the results list and in the HTML report's list of footnotes (the marker summary table still counts every footnote). Has no effect unless at least one of those two checks is set to Yes. No (default) lists every footnote.
+\optionDefault No

@@ -1,0 +1,53 @@
+﻿\check Report of TOC
+\submenu Phil_new
+\script toc_examiner.py
+\description Scans selected books for mismatches between the book's title/header markers: \toc1 (long TOC title) against the combined \mt/\mt1/\mt2/\mt3 main title text, and \toc2 (short TOC title) against \h (running header). A literal // used as a soft line break in \toc1, \mt, or a BookNames.xml long/short name is ignored (any surrounding space collapses to one space) before comparing. Optionally also compares \toc1 and \toc2 against the project's BookNames.xml long/short names for that book. Any missing marker is reported. Only actual problems are listed in the results (a clean book produces no output) -- an accompanying TocExaminerReport.html (opened automatically) lists every problem found, with the book, the conflicting marker texts, and two extra columns marking whether the difference is only a matter of letter case (Capitalization only?) or a small, typo/accent-level difference (Spelling?) as opposed to a substantively different phrase. The report also checks the numbered books (1 Samuel to 2 Chronicles, 1 Corinthians to 3 John): for each of \h, \toc1, \toc2, \toc3, \mt and the BookNames.xml long/short/abbreviation names, it finds how the number is usually written there (1 John, 1st John, I John, First John, ...) and lists the books that write it differently. If a TocExaminerDebug.log appears in the project folder, something unexpected happened -- please share it.
+\books
+\noText
+\toList
+\utf8
+
+\optionName CompareToc1ToMt
+\optionLocalizedName Compare \toc1 to \mt
+\optionDescription Yes (default) compares \toc1 against the book's main title, combining \mt/\mt1/\mt2/\mt3 in the order they appear in the text (some books split the title across more than one \mt marker). Reports a mismatch, or reports \toc1 or \mt as missing if either is absent. No turns this comparison and its missing-marker checks off entirely.
+\optionDefault Yes
+
+\optionName CompareToc2ToH
+\optionLocalizedName Compare \toc2 to \h
+\optionDescription Yes (default) compares \toc2 against \h (the running header text). Reports a mismatch, or reports \toc2 or \h as missing if either is absent. No turns this comparison and its missing-marker checks off entirely.
+\optionDefault Yes
+
+\optionName CompareToc1ToBookNames
+\optionLocalizedName Compare \toc1 to BookNames.xml
+\optionDescription Yes (default) compares \toc1 against the "long" name for that book in the project's BookNames.xml file. Reports a mismatch, or reports \toc1 as missing if absent. Silently skipped for a book if BookNames.xml is missing, unreadable, or has no long name on file for that book. No turns this comparison off entirely.
+\optionDefault Yes
+
+\optionName CompareToc2ToBookNames
+\optionLocalizedName Compare \toc2 to BookNames.xml
+\optionDescription Yes (default) compares \toc2 against the "short" name for that book in the project's BookNames.xml file. Reports a mismatch, or reports \toc2 as missing if absent. Silently skipped for a book if BookNames.xml is missing, unreadable, or has no short name on file for that book. No turns this comparison off entirely.
+\optionDefault Yes
+
+\optionName IgnoreCapitalizationOnly
+\optionLocalizedName Ignore capitalization-only differences
+\optionDescription Yes ignores (does not report) a mismatch between any two compared markers if the only difference is letter case -- the same test used for the "Capitalization only?" column in the HTML report. Spelling differences and substantively different text are still always reported. No (default) reports every mismatch, including pure capitalization differences, as today.
+\optionDefault No
+
+\optionName IgnoreMt1
+\optionLocalizedName Ignore \mt1 when combining \mt text
+\optionDescription Yes excludes \mt1's text entirely when building the main title compared against \toc1 -- useful for projects where \mt1 holds something other than title wording (e.g. a short label) and the real title text is only in \mt2/\mt3. Does not affect the missing-\mt check: if \mt1 physically exists but is the only \mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \toc1, so no mismatch is reported either. No (default) includes \mt1 as today.
+\optionDefault No
+
+\optionName IgnoreMt2
+\optionLocalizedName Ignore \mt2 when combining \mt text
+\optionDescription Yes excludes \mt2's text entirely when building the main title compared against \toc1 -- useful for projects where \mt2 holds something other than title wording and the real title text is in \mt1/\mt3 instead. Does not affect the missing-\mt check: if \mt2 physically exists but is the only \mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \toc1, so no mismatch is reported either. No (default) includes \mt2 as today.
+\optionDefault No
+
+\optionName IgnoreMt3
+\optionLocalizedName Ignore \mt3 when combining \mt text
+\optionDescription Yes excludes \mt3's text entirely when building the main title compared against \toc1 -- useful for projects where \mt3 holds something other than title wording and the real title text is in \mt1/\mt2 instead. Does not affect the missing-\mt check: if \mt3 physically exists but is the only \mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \toc1, so no mismatch is reported either. No (default) includes \mt3 as today.
+\optionDefault No
+
+\optionName CheckNumberedBooks
+\optionLocalizedName Check how numbered books write their number
+\optionDescription Yes (default) adds a section to the HTML report for the numbered books among those selected (1SA, 2SA, 1KI, 2KI, 1CH, 2CH, 1CO, 2CO, 1TH, 2TH, 1TI, 2TI, 1PE, 2PE, 1JN, 2JN, 3JN). Each field (\h, \toc1, \toc2, \toc3, \mt, and the BookNames.xml long, short and abbreviation names) is compared on its own across those books: the way most books write the number there (a digit and space, a digit with an ending such as 1st or 1.º, a Roman numeral, a word such as First, ...) is taken as usual, and every book that writes it another way is listed. Different fields may use different styles (\toc1 a word, \toc2 a digit). Two ordinal words are not compared with each other, so First and Primera count as the same style. These findings appear only in the HTML report, not in the results list. No leaves the section out.
+\optionDefault Yes

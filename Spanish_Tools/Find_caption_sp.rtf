@@ -1,0 +1,37 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b LEYENDAS DE FIGURAS\b0\fs22\par
+Versi\'f3n 1.1\par
+\par
+\b PROP\'d3SITO\b0\par
+Escanea los libros seleccionados en busca de marcadores de figura \\fig para ayudar a revisar las leyendas de figura y la informaci\'f3n de derechos de autor. Los proyectos de Paratext usan una de dos sintaxis de figura USFM incompatibles (USFM 2, con campos separados por barras verticales, o USFM 3, con atributos key="value") -- esta verificaci\'f3n detecta autom\'e1ticamente cu\'e1l usa cada figura, por lo que no es necesario seleccionar una versi\'f3n.\par
+\par
+Los resultados aparecen en dos lugares:\par
+- La lista de resultados muestra una fila por figura para la leyenda (su texto real, o "vac\'edo" si no tiene), una fila para los derechos de autor (su texto real, o "Derechos de autor: vac\'edo" si no tiene), y una fila para el nombre del archivo de ilustraci\'f3n (su nombre real, o "vac\'edo" si no tiene). Al hacer clic en una fila se salta a esa figura en el texto.\par
+- Se escribe un informe InformeDeFigura.html, con la referencia y el texto real de la leyenda/derechos de autor y el nombre del archivo de ilustraci\'f3n de cada figura, en la carpeta del proyecto, y se abre autom\'e1ticamente en su navegador despu\'e9s de ejecutar la verificaci\'f3n.\par
+- Miniaturas de las im\'e1genes: cuando la carpeta figures del proyecto tiene una imagen de una figura (con el mismo nombre de archivo, o una copia .jpg/.png de un .tif), el informe tiene una casilla "Mostrar miniaturas de las im\'e1genes" en la parte superior. M\'e1rquela para a\'f1adir una columna Imagen con una copia peque\'f1a de cada imagen ("sin imagen" donde no se encontr\'f3 ninguna). Los navegadores no pueden mostrar archivos .tif, as\'ed que una figura cuya \'fanica imagen es un .tif no tiene miniatura.\par
+\par
+Si ocurre algo inesperado, aparecer\'e1 un archivo FigureCaptionsDebug.log en la carpeta del proyecto con los detalles -- comparta su contenido para que la verificaci\'f3n pueda corregirse. (Este archivo de depuraci\'f3n es compartido con la versi\'f3n en ingl\'e9s del check; su nombre no est\'e1 traducido a prop\'f3sito, ya que es solo para diagn\'f3stico t\'e9cnico.)\par
+\par
+\b C\'d3MO USAR\b0\par
+1. Copie los archivos .cms y .py a su carpeta My Paratext Projects\\cms. Para que las referencias del informe HTML se puedan pulsar (un clic muestra ese lugar en Paratext), copie all\'ed tambi\'e9n ptx_goto.py y ParatextGoTo.exe. La primera vez el navegador pregunta si desea abrir ParatextGoTo, y Paratext solo sigue la referencia cuando el grupo de desplazamiento de la ventana sigue a otros programas.\par
+2. En Paratext, ejecute la verificaci\'f3n desde el men\'fa Proyecto > Herramientas > Herramientas personalizadas > Herramientas_Espa\'f1ol.\par
+3. Revise la lista de resultados para ver el texto de la leyenda/derechos de autor de cada figura, y el informe InformeDeFigura.html (abierto autom\'e1ticamente) para ver la misma informaci\'f3n en una sola tabla.\par
+\par
+\b OPCIONES\b0\par
+\b DisplayCaption (\'bfMostrar la leyenda de figura?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed incluye una columna de Leyenda en el informe y una fila en la lista de resultados con el texto de la leyenda (o "vac\'edo") para cada figura.\par
+\par
+\b DisplayCopyright (\'bfMostrar los derechos de autor?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed incluye una columna de Derechos de autor en el informe y una fila en la lista de resultados con el texto de los derechos de autor (o "Derechos de autor: vac\'edo") para cada figura.\par
+\par
+\b DisplayIllustrationFile (\'bfMostrar el nombre del archivo de ilustraci\'f3n?)\b0\par
+\tab Predeterminado: S\'ed\par
+\tab S\'ed incluye una columna de Archivo de ilustraci\'f3n en el informe y una fila en la lista de resultados con el nombre del archivo de la ilustraci\'f3n (p. ej. "CN01629B.TIF" o "MyrrhBush_HK00118.tif") para cada figura, o "vac\'edo" si no se especifica ninguno. En USFM 3 es el atributo src="..."; en USFM 2 es el campo justo despu\'e9s de la primera barra vertical.\par
+\par
+\b SortByCaption (\'bfOrdenar las leyendas alfab\'e9ticamente?)\b0\par
+\tab Predeterminado: No\par
+\tab S\'ed ordena las figuras que aparecen en el informe HTML alfab\'e9ticamente seg\'fan el texto de la leyenda de cada figura, de modo que las leyendas id\'e9nticas o casi id\'e9nticas queden juntas para facilitar su comparaci\'f3n. Si las leyendas est\'e1n ocultas (\'bfMostrar la leyenda de figura? = No), ordena en su lugar por el nombre del archivo de ilustraci\'f3n (si se muestra); si ambos est\'e1n ocultos, ordena por el texto de los derechos de autor. No (predeterminado) las lista en el orden de escaneo can\'f3nico de libro/cap\'edtulo/vers\'edculo. Los caracteres acentuados o con diacr\'edticos se ignoran al determinar el orden (pero se siguen mostrando normalmente).\par
+}

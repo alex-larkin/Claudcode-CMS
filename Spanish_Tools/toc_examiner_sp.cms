@@ -1,0 +1,53 @@
+﻿\check Informe de los TOC
+\submenu Herramientas_Español
+\script toc_examiner_sp.py
+\description Escanea los libros seleccionados en busca de discrepancias entre los marcadores de título/encabezado del libro: \toc1 (título largo del índice) frente al título principal del libro, combinando \mt/\mt1/\mt2/\mt3 en el orden en que aparecen en el texto (algunos libros dividen el título entre más de un marcador \mt). Un // literal usado como salto de línea suave en \toc1, \mt, o un nombre largo/corto de BookNames.xml se ignora (cualquier espacio alrededor se reduce a un solo espacio) antes de comparar. También compara \toc2 (título corto del índice) con \h (encabezado de página). Opcionalmente también compara \toc1 y \toc2 con los nombres largo/corto de ese libro en el archivo BookNames.xml del proyecto. Se informa cualquier marcador faltante. Solo se muestran problemas reales en los resultados (un libro correcto no genera ninguna salida) -- un informe InformeExaminadorTOC.html adjunto (abierto automáticamente) enumera cada problema encontrado, con el libro, los textos de los marcadores en conflicto, y dos columnas adicionales que indican si la diferencia es solo de mayúsculas/minúsculas (¿Solo mayúsculas/minúsculas?) o una diferencia menor de tipeo/ortografía (¿Ortografía?), a diferencia de una frase sustancialmente distinta. El informe también revisa los libros numerados (1 Samuel a 2 Crónicas, 1 Corintios a 3 Juan): para cada uno de \h, \toc1, \toc2, \toc3, \mt y los nombres largo/corto/abreviatura de BookNames.xml, determina cómo se escribe normalmente el número allí (1 Juan, 1.º Juan, I Juan, Primera de Juan, ...) y enumera los libros que lo escriben de otra forma. Si aparece un archivo TocExaminerDebug.log en la carpeta del proyecto, algo inesperado ocurrió -- por favor comparta su contenido.
+\books
+\noText
+\toList
+\utf8
+
+\optionName CompareToc1ToMt
+\optionLocalizedName ¿Comparar \toc1 con \mt?
+\optionDescription Sí (predeterminado) compara \toc1 con el título principal del libro, combinando \mt/\mt1/\mt2/\mt3 en el orden en que aparecen en el texto (algunos libros dividen el título entre más de un marcador \mt). Informa una discrepancia, o informa que falta \toc1 o \mt si alguno de los dos está ausente. No desactiva esta comparación y sus verificaciones de marcador faltante por completo.
+\optionDefault Yes
+
+\optionName CompareToc2ToH
+\optionLocalizedName ¿Comparar \toc2 con \h?
+\optionDescription Sí (predeterminado) compara \toc2 con \h (el texto del encabezado de página). Informa una discrepancia, o informa que falta \toc2 o \h si alguno de los dos está ausente. No desactiva esta comparación y sus verificaciones de marcador faltante por completo.
+\optionDefault Yes
+
+\optionName CompareToc1ToBookNames
+\optionLocalizedName ¿Comparar \toc1 con BookNames.xml?
+\optionDescription Sí (predeterminado) compara \toc1 con el nombre "long" de ese libro en el archivo BookNames.xml del proyecto. Informa una discrepancia, o informa que falta \toc1 si está ausente. Se omite silenciosamente para un libro si BookNames.xml falta, no se puede leer, o no tiene un nombre largo registrado para ese libro. No desactiva esta comparación por completo.
+\optionDefault Yes
+
+\optionName CompareToc2ToBookNames
+\optionLocalizedName ¿Comparar \toc2 con BookNames.xml?
+\optionDescription Sí (predeterminado) compara \toc2 con el nombre "short" de ese libro en el archivo BookNames.xml del proyecto. Informa una discrepancia, o informa que falta \toc2 si está ausente. Se omite silenciosamente para un libro si BookNames.xml falta, no se puede leer, o no tiene un nombre corto registrado para ese libro. No desactiva esta comparación por completo.
+\optionDefault Yes
+
+\optionName IgnoreCapitalizationOnly
+\optionLocalizedName Ignorar diferencias solo de mayúsculas/minúsculas
+\optionDescription Sí ignora (no informa) una discrepancia entre dos marcadores comparados si la única diferencia es el uso de mayúsculas/minúsculas -- la misma prueba usada para la columna "¿Solo mayúsculas/minúsculas?" del informe HTML. Las diferencias de ortografía y el texto sustancialmente distinto siempre se informan. No (predeterminado) informa toda discrepancia, incluidas las diferencias de mayúsculas/minúsculas, como hoy.
+\optionDefault No
+
+\optionName IgnoreMt1
+\optionLocalizedName Ignorar \mt1 al combinar el texto de \mt
+\optionDescription Sí excluye por completo el texto de \mt1 al construir el título principal comparado con \toc1 -- útil para proyectos donde \mt1 contiene algo distinto del texto del título (p. ej. una etiqueta corta) y el título real está solo en \mt2/\mt3. No afecta la verificación de \mt faltante: si \mt1 existe físicamente pero es el único marcador de nivel \mt presente, sigue sin informarse como faltante, pero entonces no queda nada que comparar con \toc1, por lo que tampoco se informa ninguna discrepancia. No (predeterminado) incluye \mt1 como hoy.
+\optionDefault No
+
+\optionName IgnoreMt2
+\optionLocalizedName Ignorar \mt2 al combinar el texto de \mt
+\optionDescription Sí excluye por completo el texto de \mt2 al construir el título principal comparado con \toc1 -- útil para proyectos donde \mt2 contiene algo distinto del texto del título y el título real está en \mt1/\mt3. No afecta la verificación de \mt faltante: si \mt2 existe físicamente pero es el único marcador de nivel \mt presente, sigue sin informarse como faltante, pero entonces no queda nada que comparar con \toc1, por lo que tampoco se informa ninguna discrepancia. No (predeterminado) incluye \mt2 como hoy.
+\optionDefault No
+
+\optionName IgnoreMt3
+\optionLocalizedName Ignorar \mt3 al combinar el texto de \mt
+\optionDescription Sí excluye por completo el texto de \mt3 al construir el título principal comparado con \toc1 -- útil para proyectos donde \mt3 contiene algo distinto del texto del título y el título real está en \mt1/\mt2. No afecta la verificación de \mt faltante: si \mt3 existe físicamente pero es el único marcador de nivel \mt presente, sigue sin informarse como faltante, pero entonces no queda nada que comparar con \toc1, por lo que tampoco se informa ninguna discrepancia. No (predeterminado) incluye \mt3 como hoy.
+\optionDefault No
+
+\optionName CheckNumberedBooks
+\optionLocalizedName Revisar cómo los libros numerados escriben su número
+\optionDescription Sí (predeterminado) añade al informe HTML una sección para los libros numerados entre los seleccionados (1SA, 2SA, 1KI, 2KI, 1CH, 2CH, 1CO, 2CO, 1TH, 2TH, 1TI, 2TI, 1PE, 2PE, 1JN, 2JN, 3JN). Cada campo (\h, \toc1, \toc2, \toc3, \mt y los nombres largo, corto y abreviatura de BookNames.xml) se compara por separado entre esos libros: la forma en que la mayoría de los libros escribe el número allí (un dígito y espacio, un dígito con terminación como 1.º o 1st, un número romano, una palabra como Primera, ...) se toma como la habitual, y se enumera cada libro que lo escribe de otra forma. Campos distintos pueden usar estilos distintos (\toc1 una palabra, \toc2 un dígito). Dos palabras ordinales no se comparan entre sí, así que Primera y First cuentan como el mismo estilo. Estos resultados aparecen solo en el informe HTML, no en la lista de resultados. No omite la sección.
+\optionDefault Yes

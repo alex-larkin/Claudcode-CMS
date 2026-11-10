@@ -10,8 +10,23 @@ import checking
 import os
 import re
 import sys
+import traceback
 import unicodedata
 import xml.etree.ElementTree as ET
+
+# Optional helper from the cms folder (ptx_goto.py): makes the references in
+# the HTML report clickable. Without it the references stay plain text.
+try:
+    import ptx_goto as _ptx_goto
+except Exception:
+    _ptx_goto = None
+_links_on = False
+
+def _goto(ref):
+    return _ptx_goto.target(ref) if _links_on else None
+
+def _ref_link(ref_html, tgt):
+    return _ptx_goto.link(ref_html, tgt) if _links_on and tgt else ref_html
 
 # ---------------------------------------------------------------------------
 # Option guards
@@ -432,35 +447,48 @@ _WARN_BUCKETS = frozenset([
     u'midword_possible_apostrophe', u'other_unusual',
 ])
 
+# Deliberately pure ASCII (including no accented Spanish letters), with no
+# {0}-style embedded character -- both KOG_U and PDT15 (via
+# checking.outputError, in real live Paratext runs) crashed on a
+# UnicodeEncodeError as soon as this message contained ANY non-ASCII
+# character, mangled (see _paratext_list_safe's docstring) or a genuine,
+# unmangled character alike -- accented letters are just as unsafe here as
+# curly quotes. The actual flagged character is still visible to the user
+# via Paratext's own TEXT/snippet column (built by checking.py itself from
+# the begin/end offsets into the real source text), which is already
+# proven safe -- mid_sentence_capital.py relies on exactly that column,
+# always passing an empty message, and never crashes. The HTML report
+# (built entirely by this script's own UTF-8 file writing, never through
+# checking.outputError) is unaffected and keeps proper accented Spanish.
 _WARN_MESSAGES = {
-    u'continuer_suspicious': u'Continuador sospechoso: {0} al inicio de párrafo/línea de poesía sin nada abierto',
-    u'closer_orphan': u'{0} usado como cierre sin apertura correspondiente',
-    u'midword_possible_apostrophe': u'{0} usado en medio de palabra (posible apóstrofe, no una comilla)',
-    u'other_unusual': u'{0} en una posición inesperada',
+    u'continuer_suspicious': u'Continuador sospechoso al inicio de parrafo/linea de poesia sin nada abierto',
+    u'closer_orphan': u'Usado como cierre sin apertura correspondiente',
+    u'midword_possible_apostrophe': u'Usado en medio de palabra (posible apostrofe, no una comilla)',
+    u'other_unusual': u'En una posicion inesperada',
 }
 
 
 def _paratext_list_safe(s):
-    """Paratext's results-list write pipeline funnels any unicode text we
-    hand it through a single Windows-codepage (mbcs) encode when it
-    actually writes bytes to checktext.out. checking.py's own pieces (e.g.
-    the flagged-snippet TEXT column) are already UTF-8-encoded byte strings
-    by the time they reach that pipeline, and -- confirmed by hex-dumping a
-    real checktext.out -- they survive correctly only by coincidence: each
-    UTF-8 byte gets implicitly promoted to its own "character" (a 1-byte-
-    per-char decode) before recombining with our text, then the whole thing
-    is mbcs-encoded once at the end, which happens to map each of those
-    fake characters straight back to its original byte. A real, properly-
-    formed unicode character we hand it (e.g. "»" as one logical codepoint)
-    never goes through that detour, so it gets mbcs-encoded directly --
-    ONE byte for a character that needs TWO+ in UTF-8 -- producing an
-    invalid byte sequence and a "?"/tofu glyph in the list.
-    Matching what checking.py's own pieces get "for free": pre-encode our
-    text as UTF-8 bytes ourselves, then decode those bytes as mbcs, so each
-    of our original UTF-8 bytes also arrives as its own stand-in character.
-    Verified deterministically (encode/decode round-trip, independent of
-    any Paratext-specific runtime behavior) to reproduce the exact original
-    UTF-8 bytes after the same final mbcs-encode step."""
+    """Historical workaround for a display-only bug in Paratext's results-
+    list write pipeline (guillemet-based projects like PDT15 showed a tofu
+    glyph instead of the flagged character). NO LONGER used for the message
+    passed to checking.outputError() -- see _record() below. Every character
+    in the curly-quote/dash block (U+2000-U+206F -- covers all of this
+    check's curly quotes and em/en dashes) encodes in UTF-8 as bytes E2 80
+    XX, and this transform's utf-8-encode-then-mbcs-decode round trip turns
+    that middle 0x80 byte into a literal EURO SIGN (U+20AC) in the
+    resulting text -- byte 0x80 is exactly what cp1252 maps it to. That is
+    harmless for guillemets (a different, 2-byte UTF-8 encoding that never
+    produces a stray euro sign), which is why this looked safe when only
+    verified against PDT15. But it means this function unconditionally
+    synthesizes a literal euro sign into the message for the (far more
+    common) curly-quote/dash convention -- and a real KOG_U crash
+    (UnicodeEncodeError, ascii codec, on that exact synthesized euro sign,
+    deep in Paratext's own results-list handling, outside anything in this
+    file) confirmed that content reaching checking.outputError() is not
+    safe. Kept only for the plain-ASCII stdout summary lines below, where
+    it is a no-op (pure ASCII text has nothing for the utf-8/mbcs round
+    trip to alter) and changing them isn't necessary."""
     return s.encode('utf-8').decode('mbcs', 'replace')
 
 
@@ -468,7 +496,10 @@ def _record(begin, end, c, bucket, ref, snippet):
     st = _stats.setdefault(c, {})
     st[bucket] = st.get(bucket, 0) + 1
     if bucket in _WARN_BUCKETS:
-        checking.outputError(begin, end, _paratext_list_safe(_WARN_MESSAGES[bucket].format(c)))
+        # Pure ASCII, no embedded character (see _WARN_MESSAGES above) --
+        # any non-ASCII content here crashes checking.outputError()'s
+        # downstream handling, confirmed on more than one real project.
+        checking.outputError(begin, end, _WARN_MESSAGES[bucket])
     key = (c, bucket)
     lst = _examples.setdefault(key, [])
     if len(lst) < _max_examples:
@@ -494,6 +525,35 @@ def _flush_unclosed(book_num):
                 'level': item['level'], 'opened_ref': item['ref'],
             })
     _state['stack'] = []
+
+
+def _log_crash(book_label, chapter_label, exc):
+    """Writes full crash diagnostics to our own plain UTF-8 file, entirely
+    bypassing checking.py's/Paratext's write pipeline (the same reasoning as
+    write_html_report below) -- so a bug in checkChapter can be diagnosed
+    even though checking.py's own exception-reporting path has already been
+    shown (see the KOG_U crash this guards against) to be unreliable for
+    non-ASCII content."""
+    directory = _project_directory()
+    if not directory:
+        return
+    try:
+        tb_text = _to_unicode(traceback.format_exc())
+    except Exception:
+        try:
+            tb_text = _to_unicode(repr(exc))
+        except Exception:
+            tb_text = u'<unformattable exception>'
+    log_path = os.path.join(directory, u'QuotationExaminerCrash.log')
+    open_path = log_path.encode('mbcs') if isinstance(log_path, type(u'')) else log_path
+    try:
+        with open(open_path, 'ab') as f:
+            header = u'--- {0} {1} ---\n'.format(book_label, chapter_label)
+            f.write(header.encode('utf-8'))
+            f.write(tb_text.encode('utf-8', 'replace'))
+            f.write(u'\n'.encode('utf-8'))
+    except Exception:
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -529,10 +589,18 @@ class _SafeStdout(object):
         try:
             self._stream.write(s)
         except UnicodeError:
-            if isinstance(s, unicode):
-                self._stream.write(s.encode('utf-8', 'replace'))
-            else:
-                self._stream.write(s.decode('utf-8', 'replace').encode('utf-8', 'replace'))
+            # The fallback below has itself been observed to raise (see the
+            # KOG_U crash it was meant to guard against) -- re-encoding can
+            # collide with whatever encoding step Paratext's own write
+            # pipeline applies downstream. This write() must never raise, so
+            # any failure here is swallowed rather than re-attempted further.
+            try:
+                if isinstance(s, unicode):
+                    self._stream.write(s.encode('utf-8', 'replace'))
+                else:
+                    self._stream.write(s.decode('utf-8', 'replace').encode('utf-8', 'replace'))
+            except Exception:
+                pass
 
     def __getattr__(self, name):
         return getattr(self._stream, name)
@@ -617,7 +685,7 @@ else:
     _EXTRA_CONTINUER_MARKER_RE = None
 
 
-def checkChapter(reference, text, lastChapter):
+def _checkChapter_impl(reference, text, lastChapter):
     book_num = reference.Book if reference is not None else None
     if book_num != _state['prev_book']:
         _flush_unclosed(_state['prev_book'])
@@ -862,6 +930,24 @@ def checkChapter(reference, text, lastChapter):
         bi += 1
 
 
+def checkChapter(reference, text, lastChapter):
+    # A bug in our own logic must never reach checkAllChapters's exception
+    # handler -- that handler mixes byte strings and unicode in a bare
+    # print, which has been observed (KOG_U New Testament) to crash on
+    # non-ASCII content and mask whatever the real, original exception was.
+    # Catching it here, logging it ourselves (see _log_crash), and letting
+    # the scan continue to the next chapter keeps this check's own bugs
+    # from taking down the entire run and losing the actual error.
+    try:
+        _checkChapter_impl(reference, text, lastChapter)
+    except Exception as e:
+        book_num = reference.Book if reference is not None else None
+        book_label = _book_label(book_num)
+        cm = CHAPTER_RE.search(text) if text else None
+        chapter_label = cm.group(1) if cm else u'?'
+        _log_crash(book_label, chapter_label, e)
+
+
 # ---------------------------------------------------------------------------
 # HTML report
 # ---------------------------------------------------------------------------
@@ -913,7 +999,7 @@ def _examples_html(key, label=None):
     if not lst:
         return u''
     rows = u''.join(
-        u'<li>{0} &mdash; <code>{1}</code></li>'.format(_he(ref), _he(snippet))
+        u'<li>{0} &mdash; <code>{1}</code></li>'.format(_ref_link(_he(ref), _goto(ref)), _he(snippet))
         for ref, snippet in lst
     )
     heading = label if label else u'Ejemplos'
@@ -936,6 +1022,8 @@ def write_html_report(html_path, project_name):
     lines.append(u'h2{margin-top:28px}')
     lines.append(u'</style></head><body>')
     lines.append(u'<h1>Examinador de comillas</h1>')
+    if _links_on:
+        lines.append(_ptx_goto.hint_html(True))
     lines.append(u'<p>Proyecto: <b>{0}</b></p>'.format(_he(project_name)))
 
     # --- Section 1: character summary ---------------------------------
@@ -1004,7 +1092,7 @@ def write_html_report(html_path, project_name):
         shown = _unclosed[:_max_examples]
         rows = u''.join(
             u'<li>{0} &mdash; abierta con {1} en el nivel {2}, ref {3}, nunca cerrada antes del fin del libro</li>'.format(
-                _he(u['book']), _fmt_char(u['char']), u['level'], _he(u['opened_ref']))
+                _he(u['book']), _fmt_char(u['char']), u['level'], _ref_link(_he(u['opened_ref']), _goto(u['opened_ref'])))
             for u in shown)
         more = u'' if len(_unclosed) <= _max_examples else u'<p>+{0} más no mostradas.</p>'.format(
             len(_unclosed) - _max_examples)
@@ -1064,6 +1152,7 @@ checking.checkAllChapters(checkChapter)
 _flush_unclosed(_state['prev_book'])
 
 _directory = _project_directory()
+_links_on = _ptx_goto is not None and _ptx_goto.enabled(_directory)
 if _directory:
     # Distinct filename from the English variant's QuotationExaminerReport.html
     # so running both checks on the same project doesn't overwrite one report

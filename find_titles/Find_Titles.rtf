@@ -1,0 +1,31 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b FIND TITLES\b0\fs22\par
+\par
+\b PURPOSE\b0\par
+Scans selected books and lists the \\mt/\\mt1/\\mt2/\\mt3 main title text found for each book, combined in the order they appear. A book with no \\mt marker at all is listed as missing.\par
+\par
+Results appear in two places:\par
+- The results list shows one row per book with its \\mt title text (or "missing"), and optionally the \\h running header text. Clicking a row jumps to the relevant marker in the text.\par
+- A FindTitlesReport.html report, listing every book's title text (each \\mt segment styled per usfm.sty/custom.sty) and optionally the \\h running header text, is written to the project folder and opened automatically in your browser after the check runs.\par
+\par
+If anything unexpected happens, a FindTitlesDebug.log file will appear in the project folder with the details - please share its contents so the check can be fixed.\par
+\par
+\b HOW TO USE\b0\par
+1. Copy the .cms and .py files to your My Paratext Projects\\cms folder. To make the references in the HTML report clickable (a click shows that place in Paratext), also copy ptx_goto.py and ParatextGoTo.exe there. The first click makes the browser ask whether to open ParatextGoTo, and Paratext follows only when the text window's scroll group follows other programs.\par
+2. In Paratext, run the check from Project menu > Tools > Custom Tools > Phil_new.\par
+3. Review the results list for each book's title text, and the FindTitlesReport.html report (opened automatically) for the same information in one table.\par
+\par
+\b OPTIONS\b0\par
+\b SortByTitle\b0\par
+\tab Default:  No\par
+No (default) lists books in canonical scan order. Yes sorts the report alphabetically by \\mt title text instead (accented/diacritic characters are ignored when determining sort order, but are still displayed normally; books with a missing title sort to the end). Overridden by Sort by Header below if that is set to Yes.\par
+\par
+\b DisplayHeader\b0\par
+\tab Default:  No\par
+No (default) shows only the \\mt title. Yes adds a column to the report showing the \\h (running header) text for each book, or "missing" if absent. Automatically turned on if Sort by Header below is Yes.\par
+\par
+\b SortByHeader\b0\par
+\tab Default:  No\par
+No (default). Yes sorts the report alphabetically by \\h text instead, overriding Sort by Title above, and automatically displays the Header column even if Display Header above is No (accented/diacritic characters are ignored when determining sort order, but are still displayed normally; books missing \\h text sort to the end).\par
+}

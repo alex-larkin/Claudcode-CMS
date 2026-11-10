@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import checking
 import re
 
@@ -25,7 +25,7 @@ INLINE_RE = re.compile(
 
 VERSE1_RE = re.compile(ur'\\v\s+1(?!\d)(?:-\d+)?[ \t\r\n]+', re.UNICODE)
 
-# All paragraph-type markers — used to find the marker immediately before \v 1
+# All paragraph-type markers -- used to find the marker immediately before \v 1
 ALL_PARA_RE = re.compile(
     ur'\\(p(?:[crhi]\d?)?|q[a-z]?\d?|mi?|nb|b|li\d?)(?=[\s\\]|$)',
     re.UNICODE | re.MULTILINE)
