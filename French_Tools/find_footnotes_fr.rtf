@@ -1,0 +1,40 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b NOTES DE BAS DE PAGE\b0\fs22\par
+\par
+\b OBJET\b0\par
+Parcourt les livres choisis \'e0 la recherche des notes de bas de page (\\f...\\f*) pour aider \'e0 revoir leur structure interne (\\fr, \\fq, \\ft et les styles de caract\'e8re imbriqu\'e9s comme \\+it ou \\+xt) et v\'e9rifier que chaque marqueur ouvrant a son marqueur fermant.\par
+\par
+Les r\'e9sultats apparaissent \'e0 deux endroits\'a0:\par
+- La liste des r\'e9sultats montre une ligne par note, avec les codes des sous-marqueurs qu\'92elle contient (p. ex. \'ab\'a0fr fq ft\'a0\'bb) pour faciliter la recherche. Un clic sur une ligne m\'e8ne \'e0 cette note dans le texte.\par
+- Un rapport RapportNotesBasDePage.html est \'e9crit, avec une ligne par note montrant la r\'e9f\'e9rence, l\'92appel de note, la r\'e9f\'e9rence \\fr et le reste du texte de la note, affich\'e9 avec la mise en forme r\'e9elle (Gras/Italique/Exposant/Petites capitales/Soulign\'e9/Couleur) d\'e9clar\'e9e dans usfm.sty et dans le custom.sty du projet, chacun dans sa propre colonne align\'e9e, ainsi qu\'92un tableau r\'e9capitulatif de tous les marqueurs trouv\'e9s (marqueurs ouvrants et fermants compt\'e9s \'e0 part, p. ex. \\w et \\w*) et de leur style. Le rapport s\'92ouvre automatiquement dans votre navigateur apr\'e8s la v\'e9rification.\par
+- Quand une option de majuscules est activ\'e9e (voir OPTIONS), chaque note qu\'92elle signale re\'e7oit sa propre ligne suppl\'e9mentaire dans la liste des r\'e9sultats (p. ex. \'ab\'a0\\ft sans majuscule\'a0\'bb), et sa ligne du rapport HTML est surlign\'e9e, avec le message en rouge.\par
+\par
+Si un probl\'e8me inattendu se produit, un fichier FootnotesDebug.log appara\'eet dans le dossier du projet avec les d\'e9tails - merci d\'92en communiquer le contenu pour que la v\'e9rification puisse \'eatre corrig\'e9e.\par
+\par
+\b MODE D\'92EMPLOI\b0\par
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext Projects\\cms. Pour rendre cliquables les r\'e9f\'e9rences du rapport HTML (un clic affiche cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s\'92il faut ouvrir ParatextGoTo, et Paratext ne suit que si le groupe de d\'e9filement de la fen\'eatre de texte suit les autres programmes.\par
+2. Dans Paratext, lancez la v\'e9rification depuis le menu du projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+3. Consultez la liste des r\'e9sultats pour chercher les notes par r\'e9f\'e9rence ou par marqueur, et le rapport RapportNotesBasDePage.html (ouvert automatiquement) pour voir les m\'eames informations dans un tableau align\'e9.\par
+\par
+\b OPTIONS\b0\par
+\b Trier les notes par ordre alphab\'e9tique\b0\par
+\tab Par d\'e9faut\'a0:  No\par
+\tab Yes trie les notes du rapport HTML par ordre alphab\'e9tique de leur propre texte (tout sauf la r\'e9f\'e9rence \\fr), afin que les notes identiques ou presque se retrouvent c\'f4te \'e0 c\'f4te et soient faciles \'e0 comparer. No (par d\'e9faut) les liste dans l\'92ordre canonique livre/chapitre/verset.\par
+\par
+\b Masquer les marqueurs dans le rapport HTML\b0\par
+\tab Par d\'e9faut\'a0:  No\par
+\tab Yes masque les \'e9tiquettes de marqueur (p. ex. \\fq, \\+it, \\+it*) affich\'e9es avant chaque morceau de texte de note dans le rapport HTML - le texte garde sa mise en forme Gras/Italique/Exposant/Petites capitales/Soulign\'e9/Couleur, seules les \'e9tiquettes sont masqu\'e9es, pour une lecture plus claire. No (par d\'e9faut) affiche les marqueurs \'e0 c\'f4t\'e9 du texte mis en forme. N\'92a pas d\'92effet sur le tableau r\'e9capitulatif des marqueurs et styles (section 1) ni sur la liste des r\'e9sultats de Paratext.\par
+\par
+\b V\'e9rifier les majuscules apr\'e8s \\ft\b0\par
+\tab Par d\'e9faut\'a0:  No\par
+\tab Yes v\'e9rifie, dans chaque note\'a0: (1) un \\ft qui est le premier marqueur apr\'e8s la r\'e9f\'e9rence \\fr (ou le tout premier marqueur s\'92il n\'92y a pas de \\fr) doit \'eatre suivi d\'92un mot qui commence par une majuscule\'a0; (2) tout autre \\ft n\'92est v\'e9rifi\'e9 que si le texte qui le pr\'e9c\'e8de termine une phrase (par . ? ou !, sans tenir compte des marqueurs et de la ponctuation interm\'e9diaire comme les guillemets ou crochets fermants), et il doit alors lui aussi \'eatre suivi d\'92une majuscule. Ainsi, dans \'ab\'a0\\fr 21:6 \\fq Dios \\ft o ...\'a0\'bb, le \\ft suit \\fq et n\'92est pas signal\'e9. Pour trouver le mot suivant, les marqueurs de caract\'e8re (p. ex. \\+it) et la ponctuation initiale (p. ex. \'ab ou \'bf) sont saut\'e9s. Les mots qui commencent par un chiffre, ou par une lettre sans forme majuscule, ne sont pas signal\'e9s. Les notes signal\'e9es apparaissent dans la liste des r\'e9sultats comme \'ab\'a0\\ft sans majuscule\'a0\'bb.\par
+\par
+\b V\'e9rifier la majuscule apr\'e8s la r\'e9f\'e9rence \\fr\b0\par
+\tab Par d\'e9faut\'a0:  No\par
+\tab Yes v\'e9rifie que le premier marqueur qui suit la r\'e9f\'e9rence \\fr (\\ft, \\fq, \\fk...) est suivi d\'92une majuscule, avec les m\'eames r\'e8gles pour trouver le mot suivant. Les notes signal\'e9es apparaissent p. ex. comme \'ab\'a0\\fq sans majuscule suivant \\fr\'a0\'bb. Si cette option et \'ab\'a0V\'e9rifier les majuscules apr\'e8s \\ft\'a0\'bb s\'92appliquent au m\'eame \\ft, il n\'92est signal\'e9 qu\'92une fois. Certains projets citent volontairement le texte du verset en minuscules dans \\fq\'a0; pour eux, cette option signalera la plupart des notes.\par
+\par
+\b Afficher seulement les notes ayant un probl\'e8me de majuscule\b0\par
+\tab Par d\'e9faut\'a0:  No\par
+\tab Yes ne liste que les notes signal\'e9es par \'ab\'a0V\'e9rifier les majuscules apr\'e8s \\ft\'a0\'bb ou \'ab\'a0V\'e9rifier la majuscule apr\'e8s la r\'e9f\'e9rence \\fr\'a0\'bb, dans la liste des r\'e9sultats comme dans la liste des notes du rapport HTML, qui indique alors combien de notes sont affich\'e9es sur le total. Le tableau r\'e9capitulatif des marqueurs compte toujours toutes les notes. Sans effet si aucune de ces deux v\'e9rifications n\'92est sur Yes\'a0; le rapport le signale alors.\par
+}

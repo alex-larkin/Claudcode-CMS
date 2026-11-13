@@ -1,0 +1,53 @@
+﻿\check Rapport de la table des matières
+\submenu Outils_Français
+\script toc_examiner_fr.py
+\description Parcourt les livres choisis à la recherche de discordances entre les marqueurs de titre et d’en-tête du livre : \toc1 (titre long de la table des matières) contre le texte du titre principal \mt/\mt1/\mt2/\mt3 assemblé, et \toc2 (titre court de la table des matières) contre \h (en-tête courant). Un // utilisé comme saut de ligne facultatif dans \toc1, \mt ou un nom long/court de BookNames.xml est ignoré (les espaces autour sont réduites à une seule) avant la comparaison. En option, compare aussi \toc1 et \toc2 avec les noms long/court du livre dans le BookNames.xml du projet. Tout marqueur absent est signalé. Seuls les vrais problèmes sont listés dans les résultats (un livre sans problème ne donne aucun résultat) -- un rapport RapportTableMatieres.html joint (ouvert automatiquement) liste chaque problème trouvé, avec le livre, les textes des marqueurs en désaccord, et deux colonnes de plus indiquant si la différence ne porte que sur les majuscules (Majuscules seulement ?) ou si c’est une petite différence de frappe ou d’accent (Orthographe ?), et non une expression vraiment différente. Le rapport vérifie aussi les livres numérotés (1 Samuel à 2 Chroniques, 1 Corinthiens à 3 Jean) : pour chacun des champs \h, \toc1, \toc2, \toc3, \mt et les noms long/court/abréviation de BookNames.xml, il trouve comment le numéro y est écrit d’habitude (1 Jean, 1er Jean, I Jean, Premier Jean, ...) et liste les livres qui l’écrivent autrement. Si un fichier TocExaminerDebug.log apparaît dans le dossier du projet, quelque chose d’inattendu s’est produit -- merci de le transmettre.
+\books
+\noText
+\toList
+\utf8
+
+\optionName CompareToc1ToMt
+\optionLocalizedName Comparer \toc1 à \mt
+\optionDescription Oui (par défaut) compare \toc1 avec le titre principal du livre, en assemblant \mt/\mt1/\mt2/\mt3 dans l’ordre où ils apparaissent dans le texte (certains livres répartissent le titre sur plus d’un marqueur \mt). Signale une discordance, ou signale \toc1 ou \mt comme absent si l’un des deux manque. Non désactive entièrement cette comparaison et ses vérifications de marqueur absent.
+\optionDefault Yes
+
+\optionName CompareToc2ToH
+\optionLocalizedName Comparer \toc2 à \h
+\optionDescription Oui (par défaut) compare \toc2 avec \h (le texte de l’en-tête courant). Signale une discordance, ou signale \toc2 ou \h comme absent si l’un des deux manque. Non désactive entièrement cette comparaison et ses vérifications de marqueur absent.
+\optionDefault Yes
+
+\optionName CompareToc1ToBookNames
+\optionLocalizedName Comparer \toc1 à BookNames.xml
+\optionDescription Oui (par défaut) compare \toc1 avec le nom « long » du livre dans le fichier BookNames.xml du projet. Signale une discordance, ou signale \toc1 comme absent s’il manque. Ignorée sans message pour un livre si BookNames.xml est absent, illisible, ou n’a pas de nom long pour ce livre. Non désactive entièrement cette comparaison.
+\optionDefault Yes
+
+\optionName CompareToc2ToBookNames
+\optionLocalizedName Comparer \toc2 à BookNames.xml
+\optionDescription Oui (par défaut) compare \toc2 avec le nom « court » du livre dans le fichier BookNames.xml du projet. Signale une discordance, ou signale \toc2 comme absent s’il manque. Ignorée sans message pour un livre si BookNames.xml est absent, illisible, ou n’a pas de nom court pour ce livre. Non désactive entièrement cette comparaison.
+\optionDefault Yes
+
+\optionName IgnoreCapitalizationOnly
+\optionLocalizedName Ignorer les différences de majuscules seulement
+\optionDescription Oui ignore (ne signale pas) une discordance entre deux marqueurs comparés si la seule différence porte sur les majuscules -- le même test que pour la colonne « Majuscules seulement ? » du rapport HTML. Les différences d’orthographe et les textes vraiment différents sont toujours signalés. Non (par défaut) signale toutes les discordances, y compris les simples différences de majuscules.
+\optionDefault No
+
+\optionName IgnoreMt1
+\optionLocalizedName Ignorer \mt1 dans le texte \mt assemblé
+\optionDescription Oui exclut entièrement le texte de \mt1 du titre principal comparé à \toc1 -- utile pour les projets où \mt1 contient autre chose que le titre (par exemple une courte étiquette) et où le vrai titre n’est que dans \mt2/\mt3. N’a pas d’effet sur la vérification de \mt absent : si \mt1 existe mais est le seul marqueur de niveau \mt, il n’est pas signalé comme absent, mais il ne reste alors rien à comparer avec \toc1, donc aucune discordance n’est signalée non plus. Non (par défaut) inclut \mt1.
+\optionDefault No
+
+\optionName IgnoreMt2
+\optionLocalizedName Ignorer \mt2 dans le texte \mt assemblé
+\optionDescription Oui exclut entièrement le texte de \mt2 du titre principal comparé à \toc1 -- utile pour les projets où \mt2 contient autre chose que le titre et où le vrai titre est plutôt dans \mt1/\mt3. N’a pas d’effet sur la vérification de \mt absent : si \mt2 existe mais est le seul marqueur de niveau \mt, il n’est pas signalé comme absent, mais il ne reste alors rien à comparer avec \toc1, donc aucune discordance n’est signalée non plus. Non (par défaut) inclut \mt2.
+\optionDefault No
+
+\optionName IgnoreMt3
+\optionLocalizedName Ignorer \mt3 dans le texte \mt assemblé
+\optionDescription Oui exclut entièrement le texte de \mt3 du titre principal comparé à \toc1 -- utile pour les projets où \mt3 contient autre chose que le titre et où le vrai titre est plutôt dans \mt1/\mt2. N’a pas d’effet sur la vérification de \mt absent : si \mt3 existe mais est le seul marqueur de niveau \mt, il n’est pas signalé comme absent, mais il ne reste alors rien à comparer avec \toc1, donc aucune discordance n’est signalée non plus. Non (par défaut) inclut \mt3.
+\optionDefault No
+
+\optionName CheckNumberedBooks
+\optionLocalizedName Vérifier l’écriture du numéro des livres numérotés
+\optionDescription Oui (par défaut) ajoute au rapport HTML une section pour les livres numérotés parmi ceux choisis (1SA, 2SA, 1KI, 2KI, 1CH, 2CH, 1CO, 2CO, 1TH, 2TH, 1TI, 2TI, 1PE, 2PE, 1JN, 2JN, 3JN). Chaque champ (\h, \toc1, \toc2, \toc3, \mt, et les noms long, court et abréviation de BookNames.xml) est comparé séparément entre ces livres : la façon dont la plupart des livres y écrivent le numéro (un chiffre et une espace, un chiffre avec une terminaison comme 1er ou 1.º, un chiffre romain, un mot comme Premier, ...) est considérée comme habituelle, et chaque livre qui l’écrit autrement est listé. Des champs différents peuvent utiliser des styles différents (\toc1 un mot, \toc2 un chiffre). Deux mots ordinaux ne sont pas comparés entre eux, si bien que Premier et Primera comptent comme le même style. Ces résultats n’apparaissent que dans le rapport HTML, pas dans la liste des résultats. Non omet cette section.
+\optionDefault Yes

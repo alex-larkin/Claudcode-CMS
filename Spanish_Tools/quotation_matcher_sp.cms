@@ -1,0 +1,50 @@
+﻿\check Insertar comillas del texto base  [PUEDE CAMBIAR EL TEXTO]
+\submenu Herramientas_Español
+\script quotation_matcher_sp.py
+\description Compara cada versículo con un proyecto o recurso base (p. ej. un recurso bien puntuado, como RVC) y, donde el texto base tiene comillas pero el versículo actual no tiene ninguna, inserta comillas equivalentes en el proyecto actual. Los versículos se emparejan por número de versículo, no por la posición de las palabras, así que la ubicación dentro del versículo es aproximada: se ancla en la puntuación cercana (una coma o dos puntos antes de una comilla de apertura, puntuación de final de oración antes de una de cierre) cuando es posible y, si no, usa una posición proporcional dentro del versículo. También detecta los caracteres de continuación de cita -- un carácter que el texto base repite al inicio de un nuevo párrafo (\p, \q, etc.) cuando una cita continúa después de un cambio de párrafo, incluso varias veces en el mismo versículo en una cita poética de varias líneas -- e inserta el carácter de continuación configurado en la misma posición de inicio de párrafo en el proyecto actual. Como el otomí y el texto base tienen distinto orden de palabras, revise siempre el informe HTML (InformeInsertarComillas.html, escrito en la carpeta del proyecto y abierto automáticamente) antes de fiarse de una inserción, sobre todo de las marcadas "proporcional" en lugar de "anclada". No toca ningún versículo que ya contenga un carácter de comillas o de continuación configurado, así que nunca sobrescribe comillas existentes. Con Aplicar cambios = No (el valor predeterminado) no se escribe nada: solo informa de lo que haría. Con Aplicar cambios = Sí, antes de escribir guarda el texto original de los capítulos de cada libro modificado en QuotationMatcherBackup_<LIBRO>.sfm en la carpeta del proyecto, pero aun así conviene hacer antes una copia de seguridad o un Enviar/Recibir del proyecto.
+\books
+\noText
+\toList
+\outputProject
+\utf8
+
+\optionName BaseProject
+\optionLocalizedName Proyecto o recurso base
+\optionDescription Proyecto o recurso cuyas comillas se deben imitar (p. ej. RVC).
+\optionDefault RVCST
+\optionListAllTexts
+
+\optionName BaseQuotes
+\optionLocalizedName Texto base: caracteres de comillas
+\optionDescription Caracteres de apertura y de cierre (separados por un espacio) que cuentan como comillas en el proyecto o recurso base.
+\optionDefault « »
+
+\optionName InsertQuotes
+\optionLocalizedName Proyecto actual: caracteres de comillas que insertar
+\optionDescription Caracteres de apertura y de cierre (separados por un espacio) que se insertan en el proyecto actual. Póngalos según la convención de comillas del propio proyecto actual.
+\optionDefault « »
+
+\optionName BaseContinuer
+\optionLocalizedName Texto base: carácter de continuación
+\optionDescription Carácter que el proyecto o recurso base repite al inicio de un nuevo párrafo (o línea de poesía) cuando una cita continúa después de un cambio de párrafo; a menudo es el mismo que el carácter de cierre. Déjelo en blanco para no detectar caracteres de continuación.
+\optionDefault »
+
+\optionName InsertContinuer
+\optionLocalizedName Proyecto actual: carácter de continuación que insertar
+\optionDescription Carácter que se inserta al inicio de un nuevo párrafo (o línea de poesía) en el proyecto actual cuando una cita continúa después de un cambio de párrafo. Déjelo en blanco para no insertarlo.
+\optionDefault »
+
+\optionName ApplyChanges
+\optionLocalizedName Aplicar cambios
+\optionDescription No = solo vista previa: informa de lo que se insertaría sin cambiar el texto. Sí = escribe las comillas insertadas en el proyecto actual (antes se guarda una copia de seguridad del texto original de cada libro modificado).
+\optionDefault No
+
+\optionName IgnoreNotes
+\optionLocalizedName Pasar por alto notas al pie y referencias cruzadas
+\optionDescription No buscar ni insertar dentro de notas al pie o referencias cruzadas.
+\optionDefault Yes
+
+\optionName MaxExamples
+\optionLocalizedName Máximo de filas por tabla del informe
+\optionDescription Limita cuántas filas se muestran en cada tabla del informe HTML, para que se pueda leer. Los totales del resumen no cambian.
+\optionDefault 100

@@ -118,8 +118,14 @@ def link(inner_html, tgt):
 
 def hint_html(spanish=False):
     # The second sentence says what was registered and how to remove it, since the
-    # registration happens without asking.
-    if spanish:
+    # registration happens without asking. spanish: True = Spanish, 'fr' = French.
+    if spanish == 'fr':
+        text = (u'Cliquez sur une r\u00e9f\u00e9rence pour y aller dans Paratext (le groupe '
+                u'de d\u00e9filement de la fen\u00eatre doit suivre les autres programmes). Pour '
+                u'cela, le type de lien \u00ab\u00a0ptxgoto:\u00a0\u00bb est enregistr\u00e9 pour '
+                u'votre compte Windows\u00a0; pour le retirer, ex\u00e9cutez '
+                u'ParatextGoTo.exe --unregister depuis le dossier cms.')
+    elif spanish:
         text = (u'Haga clic en una referencia para ir a ella en Paratext (el grupo de '
                 u'desplazamiento de la ventana debe seguir a otros programas). Para esto se '
                 u'registra el tipo de enlace "ptxgoto:" en su cuenta de Windows; para quitarlo, '

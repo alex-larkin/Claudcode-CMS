@@ -1,0 +1,31 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b RAPPORT DES TITRES\b0\fs22\par
+\par
+\b BUT\b0\par
+Parcourt les livres choisis et liste le texte du titre principal \\mt/\\mt1/\\mt2/\\mt3 trouv\'e9 dans chaque livre, assembl\'e9 dans l\'92ordre o\'f9 les marqueurs apparaissent. Un livre sans aucun marqueur \\mt est indiqu\'e9 comme absent.\par
+\par
+Les r\'e9sultats apparaissent \'e0 deux endroits\'a0:\par
+- La liste des r\'e9sultats montre une ligne par livre avec le texte de son titre \\mt (ou \'ab\'a0absent\'a0\'bb), et en option le texte de l\'92en-t\'eate courant \\h. Un clic sur une ligne m\'e8ne au marqueur correspondant dans le texte.\par
+- Un rapport RapportTitres.html, qui liste le texte du titre de chaque livre (chaque segment \\mt mis en forme selon usfm.sty/custom.sty) et en option le texte de l\'92en-t\'eate courant \\h, est \'e9crit dans le dossier du projet et s\'92ouvre automatiquement dans votre navigateur apr\'e8s la v\'e9rification.\par
+\par
+En cas de probl\'e8me inattendu, un fichier FindTitlesDebug.log appara\'eet dans le dossier du projet avec les d\'e9tails - merci d\'92en transmettre le contenu pour que la v\'e9rification puisse \'eatre corrig\'e9e.\par
+\par
+\b MODE D\'92EMPLOI\b0\par
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext Projects\\cms. Pour rendre cliquables les r\'e9f\'e9rences du rapport HTML (un clic montre cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s\'92il faut ouvrir ParatextGoTo, et Paratext ne suit que si le groupe de d\'e9filement de la fen\'eatre de texte suit les autres programmes.\par
+2. Dans Paratext, lancez la v\'e9rification depuis le menu Projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+3. Parcourez la liste des r\'e9sultats pour le texte du titre de chaque livre, et le rapport RapportTitres.html (ouvert automatiquement) pour les m\'eames informations dans un seul tableau.\par
+\par
+\b OPTIONS\b0\par
+\b Trier par titre\b0\par
+\tab Par d\'e9faut\'a0:  Non\par
+Non (par d\'e9faut) liste les livres dans l\'92ordre canonique. Oui trie plut\'f4t le rapport par ordre alphab\'e9tique du titre \\mt (les accents et diacritiques sont ignor\'e9s pour le tri mais s\'92affichent normalement\'a0; les livres sans titre sont plac\'e9s \'e0 la fin). Remplac\'e9 par Trier par en-t\'eate ci-dessous si celui-ci vaut Oui.\par
+\par
+\b Afficher l\'92en-t\'eate\b0\par
+\tab Par d\'e9faut\'a0:  Oui\par
+Oui (par d\'e9faut) ajoute au rapport une colonne avec le texte \\h (en-t\'eate courant) de chaque livre, ou \'ab\'a0absent\'a0\'bb s\'92il n\'92y en a pas. Non montre seulement le titre \\mt. Activ\'e9 automatiquement si Trier par en-t\'eate ci-dessous vaut Oui.\par
+\par
+\b Trier par en-t\'eate\b0\par
+\tab Par d\'e9faut\'a0:  Non\par
+Non (par d\'e9faut). Oui trie plut\'f4t le rapport par ordre alphab\'e9tique du texte \\h, l\'92emporte sur Trier par titre ci-dessus et affiche automatiquement la colonne de l\'92en-t\'eate m\'eame si Afficher l\'92en-t\'eate ci-dessus vaut Non (les accents et diacritiques sont ignor\'e9s pour le tri mais s\'92affichent normalement\'a0; les livres sans texte \\h sont plac\'e9s \'e0 la fin).\par
+}

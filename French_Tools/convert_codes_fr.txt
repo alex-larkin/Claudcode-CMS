@@ -1,0 +1,30 @@
+﻿CONVERTIR LES CODES
+===================
+
+OBJET
+Convertit des codes numériques compacts de versets en références bibliques
+Paratext lisibles. Par exemple, le code 001036042 devient GEN 36:42. Utile
+pour travailler avec des données exportées ou des rapports qui identifient
+les versets par des numéros au lieu de références habituelles.
+
+MODE D'EMPLOI
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\cms.
+2. Copiez une liste de codes numériques dans le presse-papiers (un code par
+   ligne, ou séparés par des virgules). Les codes peuvent aussi être au format
+   XML, avec des balises <Verse>.
+3. Dans Paratext, lancez la vérification depuis le menu Projet > Outils >
+   Outils personnalisés > Outils_Français.
+4. La liste des résultats montre chaque code avec la référence obtenue.
+
+FORMAT DES CODES
+  Chaque code est un nombre de 9 chiffres : BBBCCCVVV
+    BBB = numéro du livre (001 = Genèse, 066 = Apocalypse)
+    CCC = numéro du chapitre (complété par des zéros)
+    VVV = numéro du verset (complété par des zéros)
+
+OPTIONS
+  Sortie cliquable
+    Par défaut :  No
+    Avec Yes, les références sont écrites au format cliquable de Paratext :
+    un clic sur un résultat mène directement à ce verset. Avec No, elles sont
+    écrites en texte brut, facile à copier et coller ailleurs.

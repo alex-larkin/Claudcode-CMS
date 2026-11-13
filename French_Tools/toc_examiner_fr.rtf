@@ -1,0 +1,59 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b RAPPORT DE LA TABLE DES MATI\'c8RES\b0\fs22\par
+\par
+\b BUT\b0\par
+Parcourt les livres choisis \'e0 la recherche de discordances entre les marqueurs de titre et d\'92en-t\'eate du livre\'a0: \\toc1 (titre long de la table des mati\'e8res) contre le titre principal du livre, en assemblant \\mt/\\mt1/\\mt2/\\mt3 dans l\'92ordre o\'f9 ils apparaissent dans le texte (certains livres r\'e9partissent le titre sur plus d\'92un marqueur \\mt)\'a0; et \\toc2 (titre court de la table des mati\'e8res) contre \\h (en-t\'eate courant). Un // utilis\'e9 comme saut de ligne facultatif dans \\toc1, \\mt ou un nom long/court de BookNames.xml est ignor\'e9 (les espaces autour sont r\'e9duites \'e0 une seule) avant la comparaison. En option, compare aussi \\toc1 et \\toc2 avec les noms long/court du livre dans le BookNames.xml du projet. Tout marqueur absent est signal\'e9.\par
+\par
+Les r\'e9sultats apparaissent \'e0 deux endroits\'a0:\par
+- La liste des r\'e9sultats montre une ligne par probl\'e8me trouv\'e9 (une discordance ou un marqueur absent) - un livre sans probl\'e8me ne donne aucune ligne. Un clic sur une ligne m\'e8ne au marqueur correspondant dans le texte.\par
+- Un rapport RapportTableMatieres.html, qui liste chaque probl\'e8me trouv\'e9 avec le livre, les textes des marqueurs en d\'e9saccord, et deux colonnes de plus indiquant si la diff\'e9rence ne porte que sur les majuscules (Majuscules seulement\'a0?) ou si c\'92est une petite diff\'e9rence de frappe ou d\'92accent (Orthographe\'a0?), et non une expression vraiment diff\'e9rente, est \'e9crit dans le dossier du projet et s\'92ouvre automatiquement dans votre navigateur apr\'e8s la v\'e9rification.\par
+\par
+\b LIVRES NUM\'c9ROT\'c9S (1, 2, 3)\b0\par
+Le rapport a aussi une section pour les livres num\'e9rot\'e9s parmi ceux choisis (1 Samuel \'e0 2 Chroniques, 1 Corinthiens \'e0 3 Jean). Pour chaque champ - \\h, \\toc1, \\toc2, \\toc3, \\mt, et les noms long, court et abr\'e9viation de BookNames.xml - il regarde comment le num\'e9ro est \'e9crit dans chacun de ces livres\'a0: un chiffre et une espace (1 Jean), un chiffre avec une terminaison (1er, 1.\'ba, 1\'aa), un chiffre sans espace (1Jean), un chiffre et un point (1. Jean), un chiffre et une espace ins\'e9cable, un chiffre romain (I Jean), un num\'e9ro apr\'e8s le nom (Jean 1), ou un mot (Premier Jean). Le style utilis\'e9 par la plupart des livres est consid\'e9r\'e9 comme habituel pour ce champ, et chaque livre qui l\'92\'e9crit autrement est list\'e9, avec le texte et son style. Suit un tableau de tous les livres num\'e9rot\'e9s, o\'f9 ces cellules sont surlign\'e9es. Si aucun style n\'92est nettement le plus courant, tous les livres de ce champ sont surlign\'e9s.\par
+Chaque champ est compar\'e9 s\'e9par\'e9ment, si bien que \\toc1 peut utiliser un mot et \\toc2 un chiffre. Deux mots ordinaux ne sont pas compar\'e9s entre eux\'a0: Premier et Primera comptent comme le m\'eame style. Ces r\'e9sultats n\'92apparaissent que dans le rapport HTML, pas dans la liste des r\'e9sultats. L\'92option V\'e9rifier l\'92\'e9criture du num\'e9ro des livres num\'e9rot\'e9s d\'e9sactive cette section.\par
+\par
+En cas de probl\'e8me inattendu, un fichier TocExaminerDebug.log appara\'eet dans le dossier du projet avec les d\'e9tails - merci d\'92en transmettre le contenu pour que la v\'e9rification puisse \'eatre corrig\'e9e.\par
+\par
+\b MODE D\'92EMPLOI\b0\par
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext Projects\\cms. Pour rendre cliquables les r\'e9f\'e9rences du rapport HTML (un clic montre cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s\'92il faut ouvrir ParatextGoTo, et Paratext ne suit que si le groupe de d\'e9filement de la fen\'eatre de texte suit les autres programmes.\par
+2. Dans Paratext, lancez la v\'e9rification depuis le menu Projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+3. Parcourez la liste des r\'e9sultats pour chaque probl\'e8me trouv\'e9, et le rapport RapportTableMatieres.html (ouvert automatiquement) pour les m\'eames informations dans un seul tableau.\par
+\par
+\b OPTIONS\b0\par
+\b Comparer \\toc1 \'e0 \\mt\b0\par
+\tab Par d\'e9faut\'a0:  Oui\par
+\tab Oui (par d\'e9faut) compare \\toc1 avec le titre principal du livre, en assemblant \\mt/\\mt1/\\mt2/\\mt3 dans l\'92ordre o\'f9 ils apparaissent dans le texte (certains livres r\'e9partissent le titre sur plus d\'92un marqueur \\mt). Signale une discordance, ou signale \\toc1 ou \\mt comme absent si l\'92un des deux manque. Non d\'e9sactive enti\'e8rement cette comparaison et ses v\'e9rifications de marqueur absent.\par
+\par
+\b Comparer \\toc2 \'e0 \\h\b0\par
+\tab Par d\'e9faut\'a0:  Oui\par
+\tab Oui (par d\'e9faut) compare \\toc2 avec \\h (le texte de l\'92en-t\'eate courant). Signale une discordance, ou signale \\toc2 ou \\h comme absent si l\'92un des deux manque. Non d\'e9sactive enti\'e8rement cette comparaison et ses v\'e9rifications de marqueur absent.\par
+\par
+\b Comparer \\toc1 \'e0 BookNames.xml\b0\par
+\tab Par d\'e9faut\'a0:  Oui\par
+\tab Oui (par d\'e9faut) compare \\toc1 avec le nom \'ab\'a0long\'a0\'bb du livre dans le fichier BookNames.xml du projet. Signale une discordance, ou signale \\toc1 comme absent s\'92il manque. Ignor\'e9e sans message pour un livre si BookNames.xml est absent, illisible, ou n\'92a pas de nom long pour ce livre. Non d\'e9sactive enti\'e8rement cette comparaison.\par
+\par
+\b Comparer \\toc2 \'e0 BookNames.xml\b0\par
+\tab Par d\'e9faut\'a0:  Oui\par
+\tab Oui (par d\'e9faut) compare \\toc2 avec le nom \'ab\'a0court\'a0\'bb du livre dans le fichier BookNames.xml du projet. Signale une discordance, ou signale \\toc2 comme absent s\'92il manque. Ignor\'e9e sans message pour un livre si BookNames.xml est absent, illisible, ou n\'92a pas de nom court pour ce livre. Non d\'e9sactive enti\'e8rement cette comparaison.\par
+\par
+\b Ignorer les diff\'e9rences de majuscules seulement\b0\par
+\tab Par d\'e9faut\'a0:  Non\par
+\tab Oui ignore (ne signale pas) une discordance entre deux marqueurs compar\'e9s si la seule diff\'e9rence porte sur les majuscules -- le m\'eame test que pour la colonne \'ab\'a0Majuscules seulement\'a0?\'a0\'bb du rapport HTML. Les diff\'e9rences d\'92orthographe et les textes vraiment diff\'e9rents sont toujours signal\'e9s. Non (par d\'e9faut) signale toutes les discordances, y compris les simples diff\'e9rences de majuscules.\par
+\par
+\b Ignorer \\mt1 dans le texte \\mt assembl\'e9\b0\par
+\tab Par d\'e9faut\'a0:  Non\par
+\tab Oui exclut enti\'e8rement le texte de \\mt1 du titre principal compar\'e9 \'e0 \\toc1 -- utile pour les projets o\'f9 \\mt1 contient autre chose que le titre (par exemple une courte \'e9tiquette) et o\'f9 le vrai titre n\'92est que dans \\mt2/\\mt3. N\'92a pas d\'92effet sur la v\'e9rification de \\mt absent\'a0: si \\mt1 existe mais est le seul marqueur de niveau \\mt, il n\'92est pas signal\'e9 comme absent, mais il ne reste alors rien \'e0 comparer avec \\toc1, donc aucune discordance n\'92est signal\'e9e non plus. Non (par d\'e9faut) inclut \\mt1.\par
+\par
+\b Ignorer \\mt2 dans le texte \\mt assembl\'e9\b0\par
+\tab Par d\'e9faut\'a0:  Non\par
+\tab Oui exclut enti\'e8rement le texte de \\mt2 du titre principal compar\'e9 \'e0 \\toc1 -- utile pour les projets o\'f9 \\mt2 contient autre chose que le titre et o\'f9 le vrai titre est plut\'f4t dans \\mt1/\\mt3. N\'92a pas d\'92effet sur la v\'e9rification de \\mt absent\'a0: si \\mt2 existe mais est le seul marqueur de niveau \\mt, il n\'92est pas signal\'e9 comme absent, mais il ne reste alors rien \'e0 comparer avec \\toc1, donc aucune discordance n\'92est signal\'e9e non plus. Non (par d\'e9faut) inclut \\mt2.\par
+\par
+\b Ignorer \\mt3 dans le texte \\mt assembl\'e9\b0\par
+\tab Par d\'e9faut\'a0:  Non\par
+\tab Oui exclut enti\'e8rement le texte de \\mt3 du titre principal compar\'e9 \'e0 \\toc1 -- utile pour les projets o\'f9 \\mt3 contient autre chose que le titre et o\'f9 le vrai titre est plut\'f4t dans \\mt1/\\mt2. N\'92a pas d\'92effet sur la v\'e9rification de \\mt absent\'a0: si \\mt3 existe mais est le seul marqueur de niveau \\mt, il n\'92est pas signal\'e9 comme absent, mais il ne reste alors rien \'e0 comparer avec \\toc1, donc aucune discordance n\'92est signal\'e9e non plus. Non (par d\'e9faut) inclut \\mt3.\par
+\par
+\b V\'e9rifier l\'92\'e9criture du num\'e9ro des livres num\'e9rot\'e9s\b0\par
+\tab Par d\'e9faut\'a0:  Oui\par
+\tab Oui (par d\'e9faut) ajoute au rapport HTML la section des livres num\'e9rot\'e9s d\'e9crite ci-dessus. Non omet cette section.\par
+}

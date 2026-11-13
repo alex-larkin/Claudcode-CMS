@@ -1,0 +1,37 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b L\'c9GENDES DES ILLUSTRATIONS\b0\fs22\par
+Version 1.1\par
+\par
+\b OBJET\b0\par
+Parcourt les livres choisis \'e0 la recherche des marqueurs d\'92illustration \\fig, pour aider \'e0 revoir les l\'e9gendes et les informations de copyright. Les projets Paratext utilisent l\'92une de deux syntaxes USFM incompatibles pour les illustrations (champs USFM 2 s\'e9par\'e9s par des barres verticales, ou attributs USFM 3 key="value") - cette v\'e9rification d\'e9tecte automatiquement celle de chaque illustration, il n\'92y a donc pas de version \'e0 choisir.\par
+\par
+Les r\'e9sultats apparaissent \'e0 deux endroits\'a0:\par
+- La liste des r\'e9sultats montre, pour chaque illustration, une ligne pour la l\'e9gende (son texte, ou \'ab\'a0vide\'a0\'bb s\'92il n\'92y en a pas), une ligne pour le copyright (son texte, ou \'ab\'a0Droits d'auteur : vide\'a0\'bb s\'92il n\'92y en a pas) et une ligne pour le nom du fichier d\'92image (son nom, ou \'ab\'a0vide\'a0\'bb s\'92il n\'92y en a pas). Un clic sur une ligne m\'e8ne \'e0 cette illustration dans le texte.\par
+- Un rapport LegendesIllustrations.html, qui donne pour chaque illustration la r\'e9f\'e9rence, le texte de la l\'e9gende et du copyright et le nom du fichier d\'92image, est \'e9crit dans le dossier du projet et s\'92ouvre automatiquement dans votre navigateur apr\'e8s la v\'e9rification.\par
+- Vignettes des images\'a0: quand le dossier figures du projet contient une image pour une illustration (m\'eame nom de fichier, ou copie .jpg/.png d\'92un .tif), le rapport a en haut une case \'ab\'a0Afficher les vignettes des images\'a0\'bb. Cochez-la pour ajouter une colonne Image avec une petite copie de chaque image (\'ab\'a0pas d\'92image\'a0\'bb quand aucune n\'92a \'e9t\'e9 trouv\'e9e). Les navigateurs n\'92affichent pas les fichiers .tif\'a0; une illustration dont la seule image est un .tif n\'92a donc pas de vignette.\par
+\par
+Si un probl\'e8me inattendu se produit, un fichier FigureCaptionsDebug.log appara\'eet dans le dossier du projet avec les d\'e9tails - merci d\'92en communiquer le contenu pour que la v\'e9rification puisse \'eatre corrig\'e9e.\par
+\par
+\b MODE D\'92EMPLOI\b0\par
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext Projects\\cms. Pour rendre cliquables les r\'e9f\'e9rences du rapport HTML (un clic affiche cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s\'92il faut ouvrir ParatextGoTo, et Paratext ne suit que si le groupe de d\'e9filement de la fen\'eatre de texte suit les autres programmes.\par
+2. Dans Paratext, lancez la v\'e9rification depuis le menu du projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+3. Consultez la liste des r\'e9sultats pour la l\'e9gende et le copyright de chaque illustration, et le rapport LegendesIllustrations.html (ouvert automatiquement) pour les m\'eames informations dans un seul tableau.\par
+\par
+\b OPTIONS\b0\par
+\b Afficher la l\'e9gende\'a0?\b0\par
+\tab Par d\'e9faut\'a0:  Yes\par
+\tab Yes ajoute une colonne L\'e9gende au rapport et, pour chaque illustration, une ligne dans la liste des r\'e9sultats avec le texte de la l\'e9gende (ou \'ab\'a0vide\'a0\'bb).\par
+\par
+\b Afficher le copyright\'a0?\b0\par
+\tab Par d\'e9faut\'a0:  Yes\par
+\tab Yes ajoute une colonne Droits d\'92auteur au rapport et, pour chaque illustration, une ligne dans la liste des r\'e9sultats avec le texte du copyright (ou \'ab\'a0Droits d'auteur : vide\'a0\'bb).\par
+\par
+\b Afficher le nom du fichier d\'92image\'a0?\b0\par
+\tab Par d\'e9faut\'a0:  Yes\par
+\tab Yes ajoute une colonne Fichier d\'92image au rapport et, pour chaque illustration, une ligne dans la liste des r\'e9sultats avec le nom du fichier d\'92image (p. ex. \'ab\'a0CN01629B.TIF\'a0\'bb ou \'ab\'a0MyrrhBush_HK00118.tif\'a0\'bb), ou \'ab\'a0vide\'a0\'bb s\'92il n\'92y en a pas. En USFM 3, c\'92est l\'92attribut src="..."\'a0; en USFM 2, c\'92est le champ qui suit la premi\'e8re barre verticale.\par
+\par
+\b Trier les l\'e9gendes par ordre alphab\'e9tique\b0\par
+\tab Par d\'e9faut\'a0:  No\par
+\tab Yes trie les illustrations du rapport HTML par ordre alphab\'e9tique de leur l\'e9gende, afin que les l\'e9gendes identiques ou presque se retrouvent c\'f4te \'e0 c\'f4te et soient faciles \'e0 comparer. Si les l\'e9gendes sont masqu\'e9es (\'ab\'a0Afficher la l\'e9gende\'a0?\'a0\'bb = No), le tri se fait plut\'f4t sur le nom du fichier d\'92image (s\'92il est affich\'e9)\'a0; si les deux sont masqu\'e9s, sur le texte du copyright. No (par d\'e9faut) les liste dans l\'92ordre canonique livre/chapitre/verset. Les accents et autres diacritiques sont ignor\'e9s pour le tri (mais restent affich\'e9s normalement).\par
+}

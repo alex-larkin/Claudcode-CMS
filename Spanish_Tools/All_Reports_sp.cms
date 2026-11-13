@@ -1,0 +1,118 @@
+﻿\check Todos los informes
+\submenu Herramientas_Español
+\script All_Reports_sp.py
+\description Ejecuta el Informe de los TOC, de los títulos, de los encabezados de sección, de comillas, de errores en q, de estilos anidados, de espacios en marcadores, de las notas al pie, de leyendas de figuras y de mayúscula al inicio de versículo, en ese orden, y reúne sus informes HTML en un solo InformeTodosLosInformes.html (se abre automáticamente). Esta lista de resultados es a propósito solo un mensaje de estado: ejecute una verificación por separado si necesita su lista detallada de problemas. Una verificación cuyo script no se encuentra aparece como sección omitida en lugar de detener la ejecución. Las opciones Incluir permiten desactivar verificaciones para una ejecución; todas son Sí por defecto. Las demás opciones son las de Mayúscula al inicio de versículo, que se le pasan cuando se ejecuta.
+\books
+\noText
+\toList
+\utf8
+
+\optionName IncludeToc
+\optionLocalizedName Incluir Informe de los TOC
+\optionDescription Elija No para omitir Informe de los TOC en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeTitles
+\optionLocalizedName Incluir Informe de los títulos
+\optionDescription Elija No para omitir Informe de los títulos en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeSectionHeads
+\optionLocalizedName Incluir Informe de los encabezados de sección
+\optionDescription Elija No para omitir Informe de los encabezados de sección en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeQuotationMarks
+\optionLocalizedName Incluir Informe de comillas
+\optionDescription Elija No para omitir Informe de comillas en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludePoetryErrors
+\optionLocalizedName Incluir Informe de errores en q
+\optionDescription Elija No para omitir Informe de errores en q en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeNestedStyles
+\optionLocalizedName Incluir Informe de estilos anidados
+\optionDescription Elija No para omitir Informe de estilos anidados en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeMarkerSpaces
+\optionLocalizedName Incluir Informe de espacios en marcadores
+\optionDescription Elija No para omitir Informe de espacios en marcadores en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeFootnotes
+\optionLocalizedName Incluir Informe de las notas al pie
+\optionDescription Elija No para omitir Informe de las notas al pie en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeFigureCaptions
+\optionLocalizedName Incluir Informe de leyendas de figuras
+\optionDescription Elija No para omitir Informe de leyendas de figuras en esta ejecución.
+\optionDefault Yes
+
+\optionName IncludeCapitalAtVerse
+\optionLocalizedName Incluir Informe de mayúscula al inicio de versículo
+\optionDescription Elija No para omitir Informe de mayúscula al inicio de versículo en esta ejecución.
+\optionDefault Yes
+
+\optionName FinalPunctuation
+\optionLocalizedName Caracteres de fin de oración
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Caracteres que finalizan una oración. Los versículos que siguen a cualquiera de estos no se marcan. Agregue comillas de cierre específicas del idioma si es necesario.
+\optionDefault .!?
+
+\optionName WordsToIgnore
+\optionLocalizedName Palabras para ignorar
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Lista separada por comas de palabras en mayúscula que no deben marcarse (p. ej. Senor, Alfa, Espiritu). Use esta opción para nombres propios no incluidos en TermRenderings.xml. Esta es también la lista de palabras base sobre la que se construyen los Prefijos/Sufijos de palabras para ignorar: una palabra listada aquí con uno de esos prefijos o sufijos agregado tampoco será marcada.
+\optionDefault
+
+\optionName IgnoreBiblicalTerms
+\optionLocalizedName Ignorar Términos bíblicos con mayúscula
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Establezca en Sí para omitir una palabra o frase con mayúscula que sea una traducción en los Términos bíblicos del proyecto (TermRenderings.xml), como un nombre propio. Establezca en No para marcarlas también; en ese caso los prefijos/sufijos a ignorar se aplican solo a las Palabras a ignorar y a la lista de palabras.
+\optionDefault Yes
+
+\optionName IgnoreWordlistCapitals
+\optionLocalizedName Ignorar palabras con mayúscula de la Lista de palabras
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Establezca en Sí para omitir una palabra que la Lista de palabras del proyecto marca como siempre con mayúscula (una grafía específica en SpellingStatus.xml, p. ej. Galilaaya). También se omite si lleva uno de los prefijos/sufijos a ignorar.
+\optionDefault Yes
+
+\optionName IgnoreCapAfterQuote
+\optionLocalizedName Ignorar mayúscula después de comilla de apertura
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Establezca en Sí para suprimir errores donde un versículo comienza con una palabra en mayúscula inmediatamente después de una comilla de apertura (p. ej., discurso directo). Los caracteres que se tratan como apertura se configuran en la opción Caracteres de apertura de cita.
+\optionDefault No
+
+\optionName QuoteOpeningChars
+\optionLocalizedName Caracteres de apertura de cita
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Caracteres tratados como comillas de apertura cuando "Ignorar mayúscula después de comilla de apertura" está establecido en Sí. Cada carácter en esta cadena es un abridor. El valor predeterminado cubre la comilla angular izquierda («), la comilla doble curva izquierda (“), el guion largo (—) y la comilla simple curva izquierda (‘). Deje este campo en blanco para usar la detección de categoría Pi de Unicode.
+\optionDefault «“—‘
+
+\optionName IgnoreStyles
+\optionLocalizedName Estilos de carácter para ignorar
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Lista separada por comas de nombres de estilos de carácter USFM (sin barra invertida) cuyo texto se excluye al detectar el último carácter de un versículo. Use para estilos como qs (Selah) o pn (nombres propios) que no terminan con puntuación de fin de oración.
+\optionDefault
+
+\optionName IgnoreParaStyles
+\optionLocalizedName Estilos de párrafo para ignorar
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Lista separada por comas de nombres de marcadores de párrafo USFM (sin barra invertida) cuyo texto se excluye al calcular el último carácter de un versículo. El valor predeterminado cubre: sp (locutor), r (referencia paralela), ms/mr (sección mayor), sr (rango de sección). Los encabezados de sección (s, s1, s2...) se suprimen automáticamente. Un salto de párrafo cuyo único texto antes del siguiente versículo es de estos estilos (p. ej. encabezado \s1, luego locutor \sp, luego \q1) también suprime la verificación.
+\optionDefault sp, r, ms, mr, sr
+
+\optionName PrefixesToIgnore
+\optionLocalizedName Prefijos de palabras para ignorar
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Lista separada por espacios de prefijos de palabras (p. ej. ra Ra). Una palabra en mayúscula al inicio de versículo formada por uno de estos prefijos más una palabra listada en Palabras para ignorar, o una representación de Términos Bíblicos que este chequeo ya reconoce desde TermRenderings.xml (sin distinguir mayúsculas), no será marcada. No tiene efecto sobre una palabra cuyo resto después del prefijo no esté reconocido de ninguna de las dos formas. Una entrada también puede ser un grupo de variantes intercambiables separadas por "/" (p. ej. i/ɨ/ʉ), para idiomas donde agregar el prefijo cambia la(s) letra(s) siguiente(s) en lugar de simplemente añadir caracteres: si la palabra comienza con una variante, se prueba cada otra variante del grupo en su lugar al reconstruir la palabra para verificarla contra Palabras para ignorar / TermRenderings.xml.
+\optionDefault
+
+\optionName SuffixesToIgnore
+\optionLocalizedName Sufijos de palabras para ignorar
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Lista separada por espacios de sufijos de palabras (p. ej. es am). Una palabra en mayúscula al inicio de versículo formada por uno de estos sufijos más una palabra listada en Palabras para ignorar, o una representación de Términos Bíblicos que este chequeo ya reconoce desde TermRenderings.xml (sin distinguir mayúsculas), no será marcada. No tiene efecto sobre una palabra cuyo resto antes del sufijo no esté reconocido de ninguna de las dos formas. Una entrada también puede ser un grupo de variantes intercambiables separadas por "/" (p. ej. ión/iones, o ɨ/ʉ), para idiomas donde la terminación de la raíz cambia al agregar un sufijo en lugar de que el sufijo simplemente se añada: si la palabra termina en una variante, se prueba cada otra variante del grupo en su lugar al reconstruir la palabra para verificarla contra Palabras para ignorar / TermRenderings.xml.
+\optionDefault
+
+\optionName MidWordPunctuation
+\optionLocalizedName Puntuación dentro de palabras
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Caracteres que pueden aparecer dentro de una palabra (p. ej. - para guion, ' para apóstrofe). Ingrese sin espacios. Las palabras que contienen estos caracteres se tratan como una unidad al verificar mayúsculas.
+\optionDefault -
+
+\optionName SkipBeforeVerse
+\optionLocalizedName Caracteres para omitir antes del número de versículo
+\optionDescription Se pasa al Informe de mayúscula al inicio de versículo. Caracteres (sin espacios) que pueden aparecer justo antes de un número de versículo, como el [ que abre un versículo entre corchetes. Se pasan por alto al determinar cómo terminó el versículo anterior, así que "palabra. [" cuenta como terminado en . y un marcador de párrafo seguido solo de [ cuenta como salto de párrafo. Deje este campo vacío para tratarlos como caracteres normales.
+\optionDefault [

@@ -1,0 +1,23 @@
+﻿\check Rapport des guillemets
+\submenu Outils_Français
+\script quotation_examiner_fr.py
+\description Parcourt les livres choisis à la recherche des guillemets et des tirets, et écrit un rapport HTML qui résume où chacun est employé comme ouvrant, fermant, guillemet de continuation ou à une position inhabituelle, avec le détail des niveaux d’imbrication des citations et une comparaison entre l’emploi réel et les réglages de guillemets (Quotation) du projet. Un tiret en début de paragraphe est traité comme une possible citation de niveau 1 (tiret de dialogue) ; comme un tiret n’a normalement pas de fermant, la citation est considérée comme terminée à la fin de son paragraphe, sauf si un tiret fermant explicite est trouvé avant, ce qui est noté à part. Les guillemets de continuation ne sont pris en compte qu’au début d’un vrai marqueur de paragraphe ou de poésie, pas d’un titre de section ou d’un marqueur semblable. << et >> sont aussi reconnus comme guillemets. Les continuations suspectes, les fermants orphelins, les possibles apostrophes en milieu de mot et les autres positions inhabituelles sont aussi signalés directement dans la liste des résultats de Paratext, pas seulement dans le rapport HTML.
+\books
+\noText
+\toList
+\utf8
+
+\optionName QuoteCharacters
+\optionLocalizedName Guillemets à rechercher
+\optionDescription Caractères traités comme guillemets, chacun recherché séparément. Séparez chaque caractère par une seule espace, pour bien distinguer les caractères.
+\optionDefault " ' « » ‹ › ‘ ’ ‚ ‛ “ ” „ ‟ < > << >>
+
+\optionName DashCharacters
+\optionLocalizedName Tirets à rechercher
+\optionDescription Caractères traités comme possibles tirets de dialogue ou marques de continuation. Par défaut : tiret cadratin, barre horizontale et tiret demi-cadratin. Séparez chaque caractère par une seule espace, pour bien distinguer les caractères.
+\optionDefault — ― –
+
+\optionName MaxExamples
+\optionLocalizedName Nombre maximal d’exemples par section du rapport
+\optionDescription Limite le nombre de références d’exemple listées dans chaque section du rapport, pour que le HTML reste lisible. Les totaux ne changent pas.
+\optionDefault 25

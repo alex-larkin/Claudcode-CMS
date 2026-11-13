@@ -1,0 +1,50 @@
+﻿\check Insérer les guillemets du texte de base  [PEUT MODIFIER LE TEXTE]
+\submenu Outils_Français
+\script quotation_matcher_fr.py
+\description Compare chaque verset avec un projet ou une ressource de base (p. ex. une ressource bien ponctuée comme RVC) et, partout où le texte de base a des guillemets alors que le verset actuel n'en a aucun, insère des guillemets correspondants dans le projet actuel. Les versets sont associés par leur numéro, et non par la position des mots ; l'emplacement dans le verset est donc approximatif : il s'ancre si possible sur la ponctuation voisine (une virgule ou un deux-points avant un guillemet ouvrant, une ponctuation de fin de phrase avant un guillemet fermant), et sinon il prend une position proportionnelle dans le verset. L'outil détecte aussi les caractères de continuation de citation -- un caractère que le texte de base répète au début d'un nouveau paragraphe (\p, \q, etc.) quand une citation continue après un changement de paragraphe, y compris plusieurs fois dans le même verset pour une citation poétique de plusieurs lignes -- et insère le caractère de continuation choisi à la même position de début de paragraphe dans le projet actuel. Comme l'otomi et le texte de base n'ont pas le même ordre des mots, vérifiez toujours le rapport HTML (RapportInsererGuillemets.html, écrit dans le dossier du projet et ouvert automatiquement) avant de vous fier à une insertion, surtout celles marquées « proportionnelle » plutôt que « ancrée ». Un verset qui contient déjà un des caractères de guillemets ou de continuation choisis n'est pas touché ; l'outil n'écrase donc jamais des guillemets existants. Avec Appliquer les modifications = Non (par défaut), rien n'est écrit : l'outil indique seulement ce qu'il ferait. Avec Appliquer les modifications = Oui, il enregistre d'abord le texte d'origine des chapitres de chaque livre touché dans QuotationMatcherBackup_<LIVRE>.sfm, dans le dossier du projet, mais faites quand même d'abord une sauvegarde ou un Envoyer/Recevoir de votre projet.
+\books
+\noText
+\toList
+\outputProject
+\utf8
+
+\optionName BaseProject
+\optionLocalizedName Projet ou ressource de base
+\optionDescription Projet ou ressource dont il faut reproduire les guillemets (p. ex. RVC).
+\optionDefault RVCST
+\optionListAllTexts
+
+\optionName BaseQuotes
+\optionLocalizedName Texte de base : caractères de guillemets
+\optionDescription Caractères ouvrant et fermant (séparés par une espace) qui comptent comme guillemets dans le projet ou la ressource de base.
+\optionDefault « »
+
+\optionName InsertQuotes
+\optionLocalizedName Projet actuel : guillemets à insérer
+\optionDescription Caractères ouvrant et fermant (séparés par une espace) à insérer dans le projet actuel. Choisissez-les selon les guillemets qu'utilise le projet actuel lui-même.
+\optionDefault « »
+
+\optionName BaseContinuer
+\optionLocalizedName Texte de base : caractère de continuation
+\optionDescription Caractère que le projet ou la ressource de base répète au début d'un nouveau paragraphe (ou d'une ligne de poésie) quand une citation continue après un changement de paragraphe ; c'est souvent le même que le caractère fermant. Laissez vide pour ne pas détecter les caractères de continuation.
+\optionDefault »
+
+\optionName InsertContinuer
+\optionLocalizedName Projet actuel : caractère de continuation à insérer
+\optionDescription Caractère à insérer au début d'un nouveau paragraphe (ou d'une ligne de poésie) dans le projet actuel quand une citation continue après un changement de paragraphe. Laissez vide pour ne pas en insérer.
+\optionDefault »
+
+\optionName ApplyChanges
+\optionLocalizedName Appliquer les modifications
+\optionDescription Non = aperçu seulement : indique ce qui serait inséré sans modifier le texte. Oui = écrit les guillemets insérés dans le projet actuel (une copie de sauvegarde du texte d'origine de chaque livre touché est d'abord écrite).
+\optionDefault No
+
+\optionName IgnoreNotes
+\optionLocalizedName Ignorer les notes de bas de page et les renvois
+\optionDescription Ne pas chercher ni insérer dans les notes de bas de page ou les renvois.
+\optionDefault Yes
+
+\optionName MaxExamples
+\optionLocalizedName Nombre maximal de lignes par tableau du rapport
+\optionDescription Limite le nombre de lignes affichées dans chaque tableau du rapport HTML, pour qu'il reste lisible. Les totaux du résumé ne changent pas.
+\optionDefault 100

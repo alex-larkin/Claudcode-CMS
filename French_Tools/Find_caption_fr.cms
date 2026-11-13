@@ -1,0 +1,28 @@
+﻿\check Rapport des légendes d’illustrations v1.1
+\submenu Outils_Français
+\script Find_caption_fr.py
+\description Parcourt les livres choisis à la recherche des marqueurs d’illustration \fig, affiche la légende, le texte de copyright et le nom du fichier d’image de chaque illustration directement dans la liste des résultats (une ligne par élément ; « vide » ou « Droits d'auteur : vide » quand l’information manque), et écrit un rapport LegendesIllustrations.html (ouvert automatiquement) qui donne la référence, la légende, le copyright et le fichier d’image de chaque illustration. Quand le dossier figures du projet contient une image pour une illustration (même nom, ou copie .jpg d’un .tif), une case « Afficher les vignettes des images » en haut du rapport montre une petite copie de chaque image. Chaque illustration est classée automatiquement en USFM 2 (champs séparés par des barres verticales) ou USFM 3 (attributs key="value") selon son contenu, il n’y a donc pas de version à choisir. Si un fichier FigureCaptionsDebug.log apparaît dans le dossier du projet, un problème inattendu s’est produit -- merci de le communiquer. [Version 1.1]
+\books
+\noText
+\toList
+\utf8
+
+\optionName DisplayCaption
+\optionLocalizedName Afficher la légende ?
+\optionDescription Yes ajoute une colonne Légende au rapport et, pour chaque illustration, une ligne dans la liste des résultats avec le texte de la légende (ou « vide »).
+\optionDefault Yes
+
+\optionName DisplayCopyright
+\optionLocalizedName Afficher le copyright ?
+\optionDescription Yes ajoute une colonne Droits d’auteur au rapport et, pour chaque illustration, une ligne dans la liste des résultats avec le texte du copyright (ou « Droits d'auteur : vide »).
+\optionDefault Yes
+
+\optionName DisplayIllustrationFile
+\optionLocalizedName Afficher le nom du fichier d’image ?
+\optionDescription Yes ajoute une colonne Fichier d’image au rapport et, pour chaque illustration, une ligne dans la liste des résultats avec le nom du fichier d’image (p. ex. « CN01629B.TIF » ou « MyrrhBush_HK00118.tif »), ou « vide » s’il n’y en a pas. En USFM 3, c’est l’attribut src="..." ; en USFM 2, c’est le champ qui suit la première barre verticale.
+\optionDefault Yes
+
+\optionName SortByCaption
+\optionLocalizedName Trier les légendes par ordre alphabétique
+\optionDescription Yes trie les illustrations du rapport HTML par ordre alphabétique de leur légende, afin que les légendes identiques ou presque se retrouvent côte à côte et soient faciles à comparer. Si les légendes sont masquées (« Afficher la légende ? » = No), le tri se fait plutôt sur le nom du fichier d’image (s’il est affiché) ; si les deux sont masqués, sur le texte du copyright. No (par défaut) les liste dans l’ordre canonique livre/chapitre/verset. Les accents et autres diacritiques sont ignorés pour le tri (mais restent affichés normalement).
+\optionDefault No

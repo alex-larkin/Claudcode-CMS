@@ -3,7 +3,7 @@
 \pard\sa200\sl276\slmult1\f0\fs28\b TOC EXAMINER\b0\fs22\par
 \par
 \b PURPOSE\b0\par
-Scans selected books for mismatches between the book's title/header markers: \toc1 (long TOC title) against the book's main title, combining \mt/\mt1/\mt2/\mt3 in the order they appear in the text (some books split the title across more than one \mt marker); and \toc2 (short TOC title) against \h (running header). A literal // used as a soft line break in \toc1, \mt, or a BookNames.xml long/short name is ignored (any surrounding space collapses to one space) before comparing. Optionally also compares \toc1 and \toc2 against the project's BookNames.xml long/short names for that book. Any missing marker is reported.\par
+Scans selected books for mismatches between the book's title/header markers: \\toc1 (long TOC title) against the book's main title, combining \\mt/\\mt1/\\mt2/\\mt3 in the order they appear in the text (some books split the title across more than one \\mt marker); and \\toc2 (short TOC title) against \\h (running header). A literal // used as a soft line break in \\toc1, \\mt, or a BookNames.xml long/short name is ignored (any surrounding space collapses to one space) before comparing. Optionally also compares \\toc1 and \\toc2 against the project's BookNames.xml long/short names for that book. Any missing marker is reported.\par
 \par
 Results appear in two places:\par
 - The results list shows one row per problem found (a mismatch, or a missing marker) - a clean book with no problems produces no rows at all. Clicking a row jumps to the relevant marker in the text.\par
@@ -23,19 +23,19 @@ If anything unexpected happens, a TocExaminerDebug.log file will appear in the p
 \b OPTIONS\b0\par
 \b CompareToc1ToMt\b0\par
 \tab Default:  Yes\par
-\tab Yes (default) compares \toc1 against the book's main title, combining \mt/\mt1/\mt2/\mt3 in the order they appear in the text (some books split the title across more than one \mt marker). Reports a mismatch, or reports \toc1 or \mt as missing if either is absent. No turns this comparison and its missing-marker checks off entirely.\par
+\tab Yes (default) compares \\toc1 against the book's main title, combining \\mt/\\mt1/\\mt2/\\mt3 in the order they appear in the text (some books split the title across more than one \\mt marker). Reports a mismatch, or reports \\toc1 or \\mt as missing if either is absent. No turns this comparison and its missing-marker checks off entirely.\par
 \par
 \b CompareToc2ToH\b0\par
 \tab Default:  Yes\par
-\tab Yes (default) compares \toc2 against \h (the running header text). Reports a mismatch, or reports \toc2 or \h as missing if either is absent. No turns this comparison and its missing-marker checks off entirely.\par
+\tab Yes (default) compares \\toc2 against \\h (the running header text). Reports a mismatch, or reports \\toc2 or \\h as missing if either is absent. No turns this comparison and its missing-marker checks off entirely.\par
 \par
 \b CompareToc1ToBookNames\b0\par
 \tab Default:  Yes\par
-\tab Yes (default) compares \toc1 against the "long" name for that book in the project's BookNames.xml file. Reports a mismatch, or reports \toc1 as missing if absent. Silently skipped for a book if BookNames.xml is missing, unreadable, or has no long name on file for that book. No turns this comparison off entirely.\par
+\tab Yes (default) compares \\toc1 against the "long" name for that book in the project's BookNames.xml file. Reports a mismatch, or reports \\toc1 as missing if absent. Silently skipped for a book if BookNames.xml is missing, unreadable, or has no long name on file for that book. No turns this comparison off entirely.\par
 \par
 \b CompareToc2ToBookNames\b0\par
 \tab Default:  Yes\par
-\tab Yes (default) compares \toc2 against the "short" name for that book in the project's BookNames.xml file. Reports a mismatch, or reports \toc2 as missing if absent. Silently skipped for a book if BookNames.xml is missing, unreadable, or has no short name on file for that book. No turns this comparison off entirely.\par
+\tab Yes (default) compares \\toc2 against the "short" name for that book in the project's BookNames.xml file. Reports a mismatch, or reports \\toc2 as missing if absent. Silently skipped for a book if BookNames.xml is missing, unreadable, or has no short name on file for that book. No turns this comparison off entirely.\par
 \par
 \b IgnoreCapitalizationOnly\b0\par
 \tab Default:  No\par
@@ -43,15 +43,15 @@ If anything unexpected happens, a TocExaminerDebug.log file will appear in the p
 \par
 \b IgnoreMt1\b0\par
 \tab Default:  No\par
-\tab Yes excludes \mt1's text entirely when building the main title compared against \toc1 -- useful for projects where \mt1 holds something other than title wording (e.g. a short label) and the real title text is only in \mt2/\mt3. Does not affect the missing-\mt check: if \mt1 physically exists but is the only \mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \toc1, so no mismatch is reported either. No (default) includes \mt1 as today.\par
+\tab Yes excludes \\mt1's text entirely when building the main title compared against \\toc1 -- useful for projects where \\mt1 holds something other than title wording (e.g. a short label) and the real title text is only in \\mt2/\\mt3. Does not affect the missing-\\mt check: if \\mt1 physically exists but is the only \\mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \\toc1, so no mismatch is reported either. No (default) includes \\mt1 as today.\par
 \par
 \b IgnoreMt2\b0\par
 \tab Default:  No\par
-\tab Yes excludes \mt2's text entirely when building the main title compared against \toc1 -- useful for projects where \mt2 holds something other than title wording and the real title text is in \mt1/\mt3 instead. Does not affect the missing-\mt check: if \mt2 physically exists but is the only \mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \toc1, so no mismatch is reported either. No (default) includes \mt2 as today.\par
+\tab Yes excludes \\mt2's text entirely when building the main title compared against \\toc1 -- useful for projects where \\mt2 holds something other than title wording and the real title text is in \\mt1/\\mt3 instead. Does not affect the missing-\\mt check: if \\mt2 physically exists but is the only \\mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \\toc1, so no mismatch is reported either. No (default) includes \\mt2 as today.\par
 \par
 \b IgnoreMt3\b0\par
 \tab Default:  No\par
-\tab Yes excludes \mt3's text entirely when building the main title compared against \toc1 -- useful for projects where \mt3 holds something other than title wording and the real title text is in \mt1/\mt2 instead. Does not affect the missing-\mt check: if \mt3 physically exists but is the only \mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \toc1, so no mismatch is reported either. No (default) includes \mt3 as today.\par
+\tab Yes excludes \\mt3's text entirely when building the main title compared against \\toc1 -- useful for projects where \\mt3 holds something other than title wording and the real title text is in \\mt1/\\mt2 instead. Does not affect the missing-\\mt check: if \\mt3 physically exists but is the only \\mt-level marker present, it is still not reported as missing, but there is then nothing left to compare against \\toc1, so no mismatch is reported either. No (default) includes \\mt3 as today.\par
 \par
 \b CheckNumberedBooks\b0\par
 \tab Default:  Yes\par

@@ -1,0 +1,48 @@
+﻿\check Rapport des espaces autour des marqueurs
+\submenu Outils_Français
+\script MarkerSpace_fr.py
+\description Parcourt les livres choisis à la recherche des marqueurs de caractère (lus dans usfm.sty et dans le custom.sty du projet), plus \f et \x, et écrit un rapport HTML des anomalies d’espacement : espace manquante avant le marqueur d’ouverture ; espace en trop avant le marqueur d’ouverture de \f/\x, qui s’attachent normalement directement au mot précédent sans espace ; espace en trop juste avant le marqueur de fermeture ; espace manquante juste après le marqueur de fermeture ; et espace parasite entre le marqueur de fermeture et la ponctuation qui suit (p. ex. "texte* ,"). Une ponctuation juste après un marqueur de fermeture est normale et n’est pas signalée, pas plus qu’un marqueur de fermeture suivi immédiatement d’un autre (styles imbriqués qui se terminent ensemble). Un marqueur d’ouverture collé au mot précédent est aussi normal, et n’est pas signalé, quand le contenu de ce marqueur n’est lui-même qu’une ponctuation finale (p. ex. "bóveda de metal\ft .\f*" -- données réelles de PDT) : le marqueur est invisible une fois le texte mis en forme, et c’est en le collant au mot que la ponctuation s’affiche bien serrée contre lui. Cela ne s’applique PAS aux marqueurs de fermeture -- "\it* ." (espace entre un marqueur de fermeture et la ponctuation qui suit) est toujours signalé. Signale aussi une espace manquante avant les marqueurs qui ne prennent jamais de marqueur de fermeture (\v et les marqueurs de texte de note ou de renvoi comme \fr/\fq/\ft, p. ex. deux de ces marqueurs collés sans espace entre eux ; la même exception pour la ponctuation finale s’applique ici aussi), dans une section à part du rapport. Un marqueur comme \xt, dispensé de marqueur de fermeture seulement à l’intérieur d’une note ou d’un renvoi, est quand même entièrement vérifié (y compris l’espace parasite avant la ponctuation) chaque fois qu’il y porte son propre marqueur de fermeture. Signale aussi une espace juste avant le séparateur | du lien de glossaire dans \w...\w* (p. ex. "\w Mot |Mot du glossaire\w*"), car cette espace fait partie du texte affiché et donne une double espace ; un \w...\w* sans | n’est pas concerné. Chaque vérification traite "~" (l’espace insécable de Paratext) exactement comme une espace normale, dans les deux sens -- un "~" satisfait une vérification qui attend une espace, et un "~" déclenche une vérification qui signale une espace en trop. Les codes de marqueur qui commencent par \t sont ignorés par défaut (marqueurs de tableau ou de structure comme \tc1 ou \tr), sauf \tl et \ts-s/\ts-e. Si ce projet place la note AVANT le mot qu’elle annote au lieu d’après, voir l’option "La note précède le texte" ci-dessous ; les renvois suivent déjà par défaut cette convention "avant le mot" (voir "Les renvois précèdent le mot" ci-dessous), contrairement aux notes.
+\books
+\noText
+\toList
+\utf8
+
+\optionName ExcludeMarkers
+\optionLocalizedName Codes de marqueur à exclure
+\optionDescription Codes de marqueur de caractère à ignorer, séparés par des espaces (p. ex. "w rq"), pour les marqueurs qui suivent une autre convention d’espacement dans ce projet.
+\optionDefault
+
+\optionName NoCloseMarkers
+\optionLocalizedName Marqueurs qui n’exigent pas de marqueur de fermeture
+\optionDescription Codes de marqueur, séparés par des espaces, qui ne prennent normalement de marqueur de fermeture dans aucun contexte (p. ex. les marqueurs de texte de note ou de renvoi et le marqueur de verset). Ils sont ignorés par les vérifications d’espacement ci-dessus ; si un marqueur de fermeture est quand même trouvé pour l’un d’eux, il est signalé à part.
+\optionDefault v fk fp fq fqa ft fr xk xo xq
+
+\optionName NoCloseInNoteMarkers
+\optionLocalizedName Marqueurs sans marqueur de fermeture seulement dans une note ou un renvoi
+\optionDescription Codes de marqueur, séparés par des espaces, qui n’exigent pas de marqueur de fermeture SEULEMENT à l’intérieur d’une note (\f...\f*) ou d’un renvoi (\x...\x*) -- employés seuls ailleurs, ils sont vérifiés normalement comme tout autre marqueur de caractère, y compris l’exigence de leur propre marqueur de fermeture. Par défaut : \xt, que l’USFM réel emploie des deux façons.
+\optionDefault xt
+
+\optionName ExtraSpacingMarkers
+\optionLocalizedName Autres marqueurs dont vérifier l’espacement
+\optionDescription Codes de marqueur, séparés par des espaces, dont l’espacement doit être vérifié même s’ils ne sont pas de StyleType Character dans usfm.sty. Par défaut : \f (note de bas de page) et \x (renvoi), qui sont de StyleType Note mais doivent quand même suivre les conventions normales d’espacement à l’ouverture et à la fermeture.
+\optionDefault f x
+
+\optionName NoSpaceBeforeMarkers
+\optionLocalizedName Marqueurs qui ne doivent PAS avoir d’espace avant eux
+\optionDescription Codes de marqueur, séparés par des espaces, qui s’attachent normalement directement au mot ou à la ponctuation qui précède, sans espace (p. ex. les appels de note et de renvoi) -- pour eux, c’est une espace avant le marqueur d’ouverture qui est l’anomalie, à l’inverse de la vérification habituelle "espace manquante avant". Un marqueur de fermeture (p. ex. \tl* ou \qs*) suivi immédiatement de l’un d’eux est toujours normal et ignoré ; l’espacement propre de ce marqueur est quand même vérifié normalement. \f est retiré automatiquement de cette liste quand "La note précède le texte" ci-dessous vaut Yes ; \x est retiré automatiquement de cette liste quand "Les renvois précèdent le mot" ci-dessous vaut Yes (valeur par défaut).
+\optionDefault f x
+
+\optionName FootnotePrecedesText
+\optionLocalizedName La note précède le texte
+\optionDescription Mettez Yes si la convention de ce projet place le marqueur de note AVANT le mot qu’elle annote, et non après (la convention habituelle). Avec Yes, \f est vérifié dans le sens inverse : une espace est attendue avant \f, et aucune espace après \f* -- une espace parasite juste avant la ponctuation (p. ex. "\f* ,") est signalée dans les deux cas. N’a pas d’effet sur \x ; pour ce marqueur, voir "Les renvois précèdent le mot" ci-dessous.
+\optionDefault No
+
+\optionName CrossReferencesPrecedeText
+\optionLocalizedName Les renvois précèdent le mot
+\optionDescription Mettez Yes (valeur par défaut) si la convention de ce projet place le marqueur de renvoi AVANT le mot qu’il annote, et non après. Avec Yes, \x est vérifié dans le sens inverse : une espace est attendue avant \x, et aucune espace après \x* -- une espace parasite juste avant la ponctuation (p. ex. "\x* ,") est signalée dans les deux cas. Mettez No si ce projet suit plutôt la convention traditionnelle qui colle \x directement au mot ou à la ponctuation qui précède, sans espace (comme \f par défaut). N’a pas d’effet sur \f ; pour ce marqueur, voir "La note précède le texte" ci-dessus.
+\optionDefault Yes
+
+\optionName MaxExamples
+\optionLocalizedName Nombre maximal d’exemples par section du rapport
+\optionDescription Limite le nombre de références d’exemple listées dans chaque section du rapport, pour que le HTML reste lisible. Les totaux ne changent pas.
+\optionDefault 25

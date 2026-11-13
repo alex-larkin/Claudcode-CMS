@@ -1,0 +1,64 @@
+﻿\check Majuscule en milieu de phrase
+\submenu Outils_Français
+\script mid_sentence_capital_fr.py
+\description Signale une majuscule placée en milieu de phrase : après une virgule, un point-virgule ou un autre mot, et non après une ponctuation de fin de phrase. Les rendus des termes bibliques avec majuscule et les mots que la liste de mots du projet écrit toujours avec une majuscule peuvent être ignorés. Des options permettent de choisir les caractères de limite de phrase, les mots/préfixes/suffixes à ignorer, le traitement des guillemets ouvrants et les styles de caractère/paragraphe à sauter.
+\books
+\noText
+\toList
+\utf8
+
+\optionName FinalPunctuation
+\optionLocalizedName Caractères de limite de phrase
+\optionDescription Caractères qui marquent une limite de phrase. Un mot avec majuscule qui suit immédiatement l’un d’eux n’est pas signalé. La valeur par défaut comprend . ! ? ; la ponctuation inversée qui ouvre une phrase (espagnol) est traitée automatiquement.
+\optionDefault .!?
+
+\optionName WordsToIgnore
+\optionLocalizedName Mots à ignorer
+\optionDescription Liste, séparée par des virgules, de mots avec majuscule qui ne doivent pas être signalés (p. ex. Senor, Alfa, Espiritu). Utilisez-la pour les noms propres absents de TermRenderings.xml. C’est aussi la liste de mots de base sur laquelle s’appuient « Préfixes de mots à ignorer » et « Suffixes de mots à ignorer » : un mot de la liste auquel s’ajoute l’un de ces préfixes ou suffixes n’est pas signalé non plus.
+\optionDefault
+
+\optionName IgnoreBiblicalTerms
+\optionLocalizedName Ignorer les termes bibliques avec majuscule
+\optionDescription Yes ignore un mot ou une expression avec majuscule qui est un rendu des termes bibliques du projet (TermRenderings.xml), comme un nom propre. No les signale aussi ; les préfixes/suffixes à ignorer ne s’appuient alors que sur « Mots à ignorer » et la liste de mots.
+\optionDefault Yes
+
+\optionName IgnoreWordlistCapitals
+\optionLocalizedName Ignorer les mots avec majuscule de la liste de mots
+\optionDescription Yes ignore un mot que la liste de mots du projet indique comme toujours écrit avec une majuscule (une casse précise dans SpellingStatus.xml, p. ex. Galilaaya). Un tel mot auquel s’ajoute l’un des préfixes/suffixes à ignorer est aussi ignoré.
+\optionDefault Yes
+
+\optionName IgnoreCapAfterQuote
+\optionLocalizedName Ignorer la majuscule après un guillemet ouvrant
+\optionDescription Yes supprime les erreurs où un mot avec majuscule suit un guillemet ouvrant (p. ex. discours direct après une virgule). Les caractères traités comme guillemets ouvrants se règlent avec l’option « Caractères de guillemet ouvrant » ci-dessous.
+\optionDefault No
+
+\optionName QuoteOpeningChars
+\optionLocalizedName Caractères de guillemet ouvrant
+\optionDescription Caractères traités comme guillemets ouvrants quand « Ignorer la majuscule après un guillemet ouvrant » est sur Yes. Chaque caractère de cette chaîne est un guillemet ouvrant. La valeur par défaut comprend le guillemet français ouvrant («), le guillemet double anglais ouvrant (“), le tiret cadratin (—) et le guillemet simple anglais ouvrant (‘). Videz ce champ pour revenir à la détection par la catégorie Unicode Pi.
+\optionDefault «“—‘
+
+\optionName IgnoreStyles
+\optionLocalizedName Styles de caractère à ignorer
+\optionDescription Noms de styles de caractère USFM (sans barre oblique inverse), séparés par des virgules, dont le texte n’est pas vérifié et est exclu de la détection de la fin du verset. Pour des styles appariés comme qs (Sélah) ou pn (noms propres) qui contiennent des mots avec majuscule à ne pas signaler.
+\optionDefault
+
+\optionName IgnoreParaStyles
+\optionLocalizedName Styles de paragraphe à ignorer
+\optionDescription Noms de marqueurs de paragraphe USFM (sans barre oblique inverse), séparés par des virgules, dont le texte compte comme une limite de phrase et est exclu de la détection de la fin du verset. Valeur par défaut : sp (locuteur), r (référence parallèle), ms/mr (division majeure), sr (plage de la section). Les titres de section (s, s1, s2...) sont écartés automatiquement.
+\optionDefault sp, r, ms, mr, sr
+
+\optionName PrefixesToIgnore
+\optionLocalizedName Préfixes de mots à ignorer
+\optionDescription Liste de préfixes de mots, séparés par des espaces (p. ex. ra Ra). Un mot avec majuscule formé de l’un d’eux suivi soit d’un mot de « Mots à ignorer », soit d’un rendu de terme biblique avec majuscule que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, après le préfixe, n’est reconnu ni d’une façon ni de l’autre. Une entrée peut aussi être un groupe de variantes interchangeables séparées par "/" (p. ex. i/ɨ/ʉ), pour les langues où l’ajout du préfixe change la ou les lettres suivantes au lieu d’ajouter simplement des caractères : si le mot commence par une variante, chacune des autres variantes du groupe est essayée à sa place pour reconstruire le mot à comparer avec « Mots à ignorer » / TermRenderings.xml.
+\optionDefault
+
+\optionName SuffixesToIgnore
+\optionLocalizedName Suffixes de mots à ignorer
+\optionDescription Liste de suffixes de mots, séparés par des espaces (p. ex. es am). Un mot avec majuscule formé de l’un d’eux ajouté soit à un mot de « Mots à ignorer », soit à un rendu de terme biblique avec majuscule que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, avant le suffixe, n’est reconnu ni d’une façon ni de l’autre. Une entrée peut aussi être un groupe de variantes interchangeables séparées par "/" (p. ex. ión/iones, ou ɨ/ʉ), pour les langues où la fin du radical change quand un suffixe s’y ajoute : si le mot se termine par une variante, chacune des autres variantes du groupe est essayée à sa place pour reconstruire le mot à comparer avec « Mots à ignorer » / TermRenderings.xml.
+\optionDefault
+
+\optionName MidWordPunctuation
+\optionLocalizedName Ponctuation à l’intérieur des mots
+\optionDescription Caractères qui peuvent se trouver à l’intérieur d’un mot (p. ex. - pour le trait d’union, ' pour l’apostrophe). À saisir sans espaces. Les mots qui contiennent ces caractères sont traités comme un seul mot pour vérifier les majuscules.
+\optionDefault -
+

@@ -1,0 +1,118 @@
+﻿\check Tous les rapports
+\submenu Outils_Français
+\script All_Reports_fr.py
+\description Exécute le rapport de la table des matières, des titres, des titres de section, des guillemets, des erreurs de poésie, des styles imbriqués, des espaces autour des marqueurs, des notes de bas de page, des légendes d’illustrations et des majuscules en début de verset, dans cet ordre, et réunit leurs rapports HTML en un seul RapportTousLesRapports.html (ouvert automatiquement). Cette liste de résultats n’est volontairement qu’un message d’état : exécutez une vérification seule pour avoir sa liste détaillée de problèmes. Une vérification dont le script est introuvable apparaît comme section ignorée, sans arrêter l’exécution. Les options Inclure permettent de désactiver des vérifications pour une exécution ; elles sont toutes à Oui par défaut. Les autres options sont celles des majuscules en début de verset, qui lui sont transmises quand il s’exécute.
+\books
+\noText
+\toList
+\utf8
+
+\optionName IncludeToc
+\optionLocalizedName Inclure : Rapport de la table des matières
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport de la table des matières » cette fois.
+\optionDefault Yes
+
+\optionName IncludeTitles
+\optionLocalizedName Inclure : Rapport des titres
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des titres » cette fois.
+\optionDefault Yes
+
+\optionName IncludeSectionHeads
+\optionLocalizedName Inclure : Rapport des titres de section
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des titres de section » cette fois.
+\optionDefault Yes
+
+\optionName IncludeQuotationMarks
+\optionLocalizedName Inclure : Rapport des guillemets
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des guillemets » cette fois.
+\optionDefault Yes
+
+\optionName IncludePoetryErrors
+\optionLocalizedName Inclure : Rapport des erreurs de poésie
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des erreurs de poésie » cette fois.
+\optionDefault Yes
+
+\optionName IncludeNestedStyles
+\optionLocalizedName Inclure : Rapport des styles imbriqués
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des styles imbriqués » cette fois.
+\optionDefault Yes
+
+\optionName IncludeMarkerSpaces
+\optionLocalizedName Inclure : Rapport des espaces autour des marqueurs
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des espaces autour des marqueurs » cette fois.
+\optionDefault Yes
+
+\optionName IncludeFootnotes
+\optionLocalizedName Inclure : Rapport des notes de bas de page
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des notes de bas de page » cette fois.
+\optionDefault Yes
+
+\optionName IncludeFigureCaptions
+\optionLocalizedName Inclure : Rapport des légendes d’illustrations
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des légendes d’illustrations » cette fois.
+\optionDefault Yes
+
+\optionName IncludeCapitalAtVerse
+\optionLocalizedName Inclure : Rapport des majuscules en début de verset
+\optionDescription Choisissez Non pour ne pas exécuter « Rapport des majuscules en début de verset » cette fois.
+\optionDefault Yes
+
+\optionName FinalPunctuation
+\optionLocalizedName Caractères de fin de phrase
+\optionDescription Transmis au rapport des majuscules en début de verset. Caractères qui TERMINENT une phrase. Un verset qui suit l’un d’eux n’est pas signalé. Ajoutez si besoin les guillemets fermants propres à la langue.
+\optionDefault .!?
+
+\optionName WordsToIgnore
+\optionLocalizedName Mots à ignorer
+\optionDescription Transmis au rapport des majuscules en début de verset. Liste, séparée par des virgules, de mots avec majuscule qui ne doivent pas être signalés (p. ex. Senor, Alfa, Espiritu). Utilisez-la pour les noms propres absents de TermRenderings.xml. C’est aussi la liste de mots de base sur laquelle s’appuient « Préfixes de mots à ignorer » et « Suffixes de mots à ignorer » : un mot de la liste auquel s’ajoute l’un de ces préfixes ou suffixes n’est pas signalé non plus.
+\optionDefault
+
+\optionName IgnoreBiblicalTerms
+\optionLocalizedName Ignorer les termes bibliques avec majuscule
+\optionDescription Transmis au rapport des majuscules en début de verset. Yes ignore un mot ou une expression avec majuscule qui est un rendu des termes bibliques du projet (TermRenderings.xml), comme un nom propre. No les signale aussi ; les préfixes/suffixes à ignorer ne s’appuient alors que sur « Mots à ignorer » et la liste de mots.
+\optionDefault Yes
+
+\optionName IgnoreWordlistCapitals
+\optionLocalizedName Ignorer les mots avec majuscule de la liste de mots
+\optionDescription Transmis au rapport des majuscules en début de verset. Yes ignore un mot que la liste de mots du projet indique comme toujours écrit avec une majuscule (une casse précise dans SpellingStatus.xml, p. ex. Galilaaya). Un tel mot auquel s’ajoute l’un des préfixes/suffixes à ignorer est aussi ignoré.
+\optionDefault Yes
+
+\optionName IgnoreCapAfterQuote
+\optionLocalizedName Ignorer la majuscule après un guillemet ouvrant
+\optionDescription Transmis au rapport des majuscules en début de verset. Yes supprime les erreurs où un verset commence par un mot avec majuscule juste après un guillemet ouvrant (p. ex. discours direct). Les caractères traités comme guillemets ouvrants se règlent avec l’option « Caractères de guillemet ouvrant » ci-dessous.
+\optionDefault No
+
+\optionName QuoteOpeningChars
+\optionLocalizedName Caractères de guillemet ouvrant
+\optionDescription Transmis au rapport des majuscules en début de verset. Caractères traités comme guillemets ouvrants quand « Ignorer la majuscule après un guillemet ouvrant » est sur Yes. Chaque caractère de cette chaîne est un guillemet ouvrant. La valeur par défaut comprend le guillemet français ouvrant («), le guillemet double anglais ouvrant (“), le tiret cadratin (—) et le guillemet simple anglais ouvrant (‘). Videz ce champ pour revenir à la détection par la catégorie Unicode Pi.
+\optionDefault «“—‘
+
+\optionName IgnoreStyles
+\optionLocalizedName Styles de caractère à ignorer
+\optionDescription Transmis au rapport des majuscules en début de verset. Noms de styles de caractère USFM (sans barre oblique inverse), séparés par des virgules, dont le texte est exclu pour trouver le dernier caractère d’un verset. Pour des styles comme qs (Sélah) ou pn (noms propres) qui ne se terminent pas par une ponctuation de fin de phrase.
+\optionDefault
+
+\optionName IgnoreParaStyles
+\optionLocalizedName Styles de paragraphe à ignorer
+\optionDescription Transmis au rapport des majuscules en début de verset. Noms de marqueurs de paragraphe USFM (sans barre oblique inverse), séparés par des virgules, dont le texte est exclu pour trouver le dernier caractère d’un verset. Valeur par défaut : sp (locuteur), r (référence parallèle), ms/mr (division majeure), sr (plage de la section). Les titres de section (s, s1, s2...) sont écartés automatiquement, sans cette option. Un changement de paragraphe dont le seul texte avant le verset suivant vient de ces styles (p. ex. titre \s1, puis locuteur \sp, puis \q1) supprime aussi la vérification.
+\optionDefault sp, r, ms, mr, sr
+
+\optionName PrefixesToIgnore
+\optionLocalizedName Préfixes de mots à ignorer
+\optionDescription Transmis au rapport des majuscules en début de verset. Liste de préfixes de mots, séparés par des espaces (p. ex. ra Ra). Un mot avec majuscule en début de verset, formé de l’un d’eux suivi soit d’un mot de « Mots à ignorer », soit d’un rendu de terme biblique avec majuscule que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, après le préfixe, n’est reconnu ni d’une façon ni de l’autre. Une entrée peut aussi être un groupe de variantes interchangeables séparées par "/" (p. ex. i/ɨ/ʉ), pour les langues où l’ajout du préfixe change la ou les lettres suivantes au lieu d’ajouter simplement des caractères : si le mot commence par une variante, chacune des autres variantes du groupe est essayée à sa place pour reconstruire le mot à comparer avec « Mots à ignorer » / TermRenderings.xml.
+\optionDefault
+
+\optionName SuffixesToIgnore
+\optionLocalizedName Suffixes de mots à ignorer
+\optionDescription Transmis au rapport des majuscules en début de verset. Liste de suffixes de mots, séparés par des espaces (p. ex. es am). Un mot avec majuscule en début de verset, formé de l’un d’eux ajouté soit à un mot de « Mots à ignorer », soit à un rendu de terme biblique avec majuscule que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, avant le suffixe, n’est reconnu ni d’une façon ni de l’autre. Une entrée peut aussi être un groupe de variantes interchangeables séparées par "/" (p. ex. ión/iones, ou ɨ/ʉ), pour les langues où la fin du radical change quand un suffixe s’y ajoute : si le mot se termine par une variante, chacune des autres variantes du groupe est essayée à sa place pour reconstruire le mot à comparer avec « Mots à ignorer » / TermRenderings.xml.
+\optionDefault
+
+\optionName MidWordPunctuation
+\optionLocalizedName Ponctuation à l’intérieur des mots
+\optionDescription Transmis au rapport des majuscules en début de verset. Caractères qui peuvent se trouver à l’intérieur d’un mot (p. ex. - pour le trait d’union, ' pour l’apostrophe). À saisir sans espaces. Les mots qui contiennent ces caractères sont traités comme un seul mot pour vérifier les majuscules.
+\optionDefault -
+
+\optionName SkipBeforeVerse
+\optionLocalizedName Caractères à sauter avant un numéro de verset
+\optionDescription Transmis au rapport des majuscules en début de verset. Caractères (sans espaces) qui peuvent précéder immédiatement un numéro de verset, comme le [ qui ouvre un verset entre crochets. Ils sont sautés pour savoir comment le verset précédent se termine : « mot. [ » compte comme une fin par . et un marqueur de paragraphe suivi seulement de [ compte comme un changement de paragraphe. Videz ce champ pour les traiter comme des caractères ordinaires.
+\optionDefault [

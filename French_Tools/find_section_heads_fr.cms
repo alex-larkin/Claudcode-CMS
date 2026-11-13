@@ -1,0 +1,68 @@
+﻿\check Rapport des titres de section
+\submenu Outils_Français
+\script find_section_heads_fr.py
+\description Parcourt les livres choisis à la recherche des marqueurs de titre de section \s/\s1-\s4 et indique chacun d’eux dans la liste des résultats (et dans un rapport RapportTitresSection.html joint, ouvert automatiquement). Des marqueurs \s/\s1-\s4 consécutifs sans texte de verset entre eux (par exemple une suite \s3/\s2/\s1) sont réunis en une seule entrée du rapport, dans l’ordre du document, chaque niveau ayant son style (\s/\s1 gras, \s2 normal, \s3 italique, \s4 normal). En option, trie le rapport par ordre alphabétique du texte des titres de section, inclut les champs \r (référence de passage parallèle) -- aussi bien ceux qui suivent immédiatement un titre de section que tout \r isolé sans \s avant lui --, signale les titres de section qui contiennent une ponctuation n’importe où dans leur texte, signale les titres de section (ou paires titre de section + \r) immédiatement suivis de \m, peut montrer seulement les titres de section avec ponctuation et/ou suivis de \m (les deux options Montrer seulement), et affiche (en plus petit) les notes de bas de page et renvois \f...\f*/\x...\x* trouvés dans un titre de section au lieu de les ignorer. En option, signale aussi tout mot autre que le premier mot d’un titre de section (éventuellement sur plusieurs marqueurs) qui commence par une majuscule -- avec les mêmes mots, préfixes et suffixes à ignorer et la même reconnaissance de TermRenderings.xml que la vérification des majuscules en milieu de phrase -- et surligne le ou les mots signalés à leur place dans la colonne \s. Si un fichier FindSectionHeadsDebug.log apparaît dans le dossier du projet, quelque chose d’inattendu s’est produit -- merci de le transmettre.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortAlphabetically
+\optionLocalizedName Trier par ordre alphabétique
+\optionDescription Non (par défaut) liste les titres de section dans l’ordre canonique livre/chapitre/verset. Oui trie plutôt le rapport HTML par ordre alphabétique du texte des titres de section (les accents et diacritiques sont ignorés pour le tri mais s’affichent normalement ; les lignes \r isolées sans titre de section sont placées à la fin).
+\optionDefault No
+
+\optionName IncludeReferences
+\optionLocalizedName Inclure les références \r
+\optionDescription Non (par défaut) indique seulement les titres de section \s/\s1-\s4. Oui ajoute au rapport une colonne \r montrant la référence de passage parallèle de chaque titre de section (quand elle le suit immédiatement), et indique aussi sur sa propre ligne tout \r trouvé sans titre de section avant lui -- dans le rapport HTML comme dans la liste des résultats.
+\optionDefault No
+
+\optionName FlagPunctuation
+\optionLocalizedName Signaler la ponctuation
+\optionDescription Oui (par défaut) ajoute au rapport une colonne Ponctuation avec une coche pour tout titre de section dont le texte contient l’un des caractères listés dans Caractères de ponctuation ci-dessous, n’importe où dans le texte (pas seulement à la fin). Non masque la colonne (la ligne de résumé du rapport indique toujours combien de titres de section se terminent par une ponctuation, quelle que soit cette option).
+\optionDefault Yes
+
+\optionName PunctuationChars
+\optionLocalizedName Caractères de ponctuation
+\optionDescription Caractères comptés comme ponctuation pour l’option Signaler la ponctuation ci-dessus (utilisés seulement quand cette option vaut Oui). Ajoutez au besoin la ponctuation propre à la langue.
+\optionDefault .?!
+
+\optionName FlagFollowedByM
+\optionLocalizedName Signaler les titres suivis de \m
+\optionDescription Oui (par défaut) ajoute au rapport une colonne \m avec une coche pour tout titre de section -- ou paire titre de section + \r, quand Inclure les références \r ci-dessus s’applique -- immédiatement suivi d’un marqueur \m. Non masque la colonne (la ligne de résumé du rapport indique toujours combien de titres de section sont suivis de \m, quelle que soit cette option).
+\optionDefault Yes
+
+\optionName ShowOnlyPunctuation
+\optionLocalizedName Montrer seulement les titres de section avec ponctuation
+\optionDescription Non (par défaut) liste tous les titres de section. Oui liste seulement les titres de section qui contiennent l’un des Caractères de ponctuation ci-dessus, n’importe où dans le texte, dans la liste des résultats et dans le rapport HTML. Si Montrer seulement les titres de section suivis de \m vaut aussi Oui, les titres de section qui ont l’un ou l’autre problème sont listés. Les totaux du résumé du rapport portent toujours sur tous les titres de section, et les lignes \r isolées sont omises.
+\optionDefault No
+
+\optionName ShowOnlyFollowedByM
+\optionLocalizedName Montrer seulement les titres de section suivis de \m
+\optionDescription Non (par défaut) liste tous les titres de section. Oui liste seulement les titres de section (ou paires titre de section + \r) immédiatement suivis de \m, dans la liste des résultats et dans le rapport HTML. Si Montrer seulement les titres de section avec ponctuation vaut aussi Oui, les titres de section qui ont l’un ou l’autre problème sont listés. Les totaux du résumé du rapport portent toujours sur tous les titres de section, et les lignes \r isolées sont omises.
+\optionDefault No
+
+\optionName IgnoreFootnotesAndCrossRefs
+\optionLocalizedName Ignorer les notes et les renvois
+\optionDescription Oui (par défaut) ignore les notes de bas de page \f...\f* et les renvois \x...\x* trouvés dans le texte des titres de section \s/\s1-\s4 : ils sont omis du rapport HTML, et n’ont de toute façon jamais d’effet sur la vérification Signaler la ponctuation ni sur le tri alphabétique. Non affiche le balisage brut de la note ou du renvoi dans le rapport HTML, en plus petit, à l’intérieur de la mise en forme du titre de section -- la vérification Signaler la ponctuation, le tri et le message de la liste des résultats ignorent toujours le contenu des notes, quelle que soit cette option.
+\optionDefault Yes
+
+\optionName FlagNonTitleCaps
+\optionLocalizedName Signaler les majuscules initiales hors titre
+\optionDescription Non (par défaut) ne vérifie pas les majuscules dans le texte des titres de section. Oui ajoute une colonne Majuscule hors titre avec une coche pour tout titre de section contenant un mot commençant par une majuscule autre que le tout premier mot du titre (éventuellement sur plusieurs marqueurs), et surligne le ou les mots signalés à leur place dans le texte de la colonne \s. Les mots listés dans Mots à ignorer ci-dessous, et les mots reconnus (y compris grâce aux Préfixes de mots à ignorer et Suffixes de mots à ignorer) comme forme de base de cette liste ou comme traduction avec majuscule d’un terme biblique déjà reconnue dans le TermRenderings.xml du projet, ne sont pas signalés. Désactivée par défaut, car elle peut donner beaucoup de résultats tant que Mots à ignorer et TermRenderings.xml ne sont pas ajustés pour le projet.
+\optionDefault No
+
+\optionName WordsToIgnore
+\optionLocalizedName Mots à ignorer
+\optionDescription Liste, séparée par des virgules, des mots avec majuscule qui ne doivent pas être signalés (par exemple Senor, Alfa, Espiritu). Utilisez-la pour les noms propres que TermRenderings.xml ne couvre pas. C’est aussi la liste de mots de base sur laquelle s’appuient les Préfixes et Suffixes de mots à ignorer : un mot de la liste auquel est attaché l’un de ces préfixes ou suffixes n’est pas signalé non plus. Sans effet si Signaler les majuscules initiales hors titre ci-dessus ne vaut pas Oui.
+\optionDefault
+
+\optionName PrefixesToIgnore
+\optionLocalizedName Préfixes de mots à ignorer
+\optionDescription Liste, séparée par des espaces, de préfixes de mots (par exemple ra Ra). Un mot avec majuscule formé de l’un d’eux suivi soit d’un mot listé dans Mots à ignorer, soit d’une traduction avec majuscule d’un terme biblique que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, après le préfixe, n’est reconnu ni d’une façon ni de l’autre, ou si Signaler les majuscules initiales hors titre ci-dessus ne vaut pas Oui. Une entrée peut aussi être un groupe de variantes interchangeables séparées par « / » (par exemple i/ɨ/ʉ) pour les langues où l’ajout du préfixe change la ou les lettres suivantes au lieu de simplement ajouter des caractères : si le mot commence par une variante, chacune des autres variantes du groupe est essayée à sa place pour reconstruire le mot à comparer avec Mots à ignorer / TermRenderings.xml.
+\optionDefault
+
+\optionName SuffixesToIgnore
+\optionLocalizedName Suffixes de mots à ignorer
+\optionDescription Liste, séparée par des espaces, de suffixes de mots (par exemple es am). Un mot avec majuscule formé de l’un d’eux précédé soit d’un mot listé dans Mots à ignorer, soit d’une traduction avec majuscule d’un terme biblique que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, avant le suffixe, n’est reconnu ni d’une façon ni de l’autre, ou si Signaler les majuscules initiales hors titre ci-dessus ne vaut pas Oui. Une entrée peut aussi être un groupe de variantes interchangeables séparées par « / » (par exemple ión/iones, ou ɨ/ʉ) pour les langues où la fin du radical change quand un suffixe s’y attache, au lieu que le suffixe soit simplement ajouté : si le mot se termine par une variante, chacune des autres variantes du groupe est essayée à sa place pour reconstruire le mot à comparer avec Mots à ignorer / TermRenderings.xml.
+\optionDefault

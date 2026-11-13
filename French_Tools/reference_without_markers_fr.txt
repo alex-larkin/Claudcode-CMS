@@ -1,0 +1,37 @@
+﻿RÉFÉRENCES SANS MARQUEURS
+=========================
+
+OBJET
+Trouve les références bibliques du texte qui ne sont pas encadrées par les
+marqueurs USFM prévus (\xt, \rq, \ior, \fig, \r, \mr ou \sr). Une référence
+nue devrait être placée dans l’un de ces marqueurs, pour que Paratext la rende
+cliquable et qu’elle soit mise en forme de façon uniforme.
+
+FORMES DE RÉFÉRENCE RECONNUES
+  - Forme simple :         Mat 5:12
+  - Livres numérotés :     1 S 31:3   ou   2 Cr 14:1
+  - Suites de versets :    Mat 5:12-18
+  - Sur deux chapitres :   Mr 8:31-9:1
+  - Listes de versets :    Lc 22:54-55, 63-71
+  - Parties de verset :    Lc 9:43a
+  - Sans nom de livre :    1:11, 1:1-9, 1:10-4:21 (aucun nom de livre n’est
+                           nécessaire ; un verset entièrement à zéro comme
+                           50.00 est exclu, car c’est un nombre décimal et
+                           non un vrai verset)
+  - Écritures prises en charge : latine, grecque, hébraïque (et autres lettres
+                           Unicode)
+
+MODE D’EMPLOI
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\cms.
+2. Dans Paratext, lancez la vérification depuis le menu du projet > Outils >
+   Outils personnalisés > Outils_Français.
+3. Examinez les résultats ; chaque élément signalé montre la référence sans
+   marqueurs.
+
+OPTIONS
+  Séparateur chapitre-verset
+    Par défaut : :
+    Le caractère que votre projet place entre le numéro du chapitre et celui
+    du verset. La plupart des projets utilisent les deux-points (:), certains
+    le point (.). Donnez-lui la même valeur que ChapterVerseSeparator dans le
+    fichier Settings.xml de votre projet.

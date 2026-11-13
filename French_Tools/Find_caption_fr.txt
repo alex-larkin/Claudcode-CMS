@@ -1,0 +1,72 @@
+﻿LÉGENDES DES ILLUSTRATIONS
+==========================
+Version 1.1
+
+OBJET
+Parcourt les livres choisis à la recherche des marqueurs d’illustration \fig,
+pour aider à revoir les légendes et les informations de copyright. Les projets
+Paratext utilisent l’une de deux syntaxes USFM incompatibles pour les
+illustrations (champs USFM 2 séparés par des barres verticales, ou attributs
+USFM 3 key="value") - cette vérification détecte automatiquement celle de
+chaque illustration, il n’y a donc pas de version à choisir.
+
+Les résultats apparaissent à deux endroits :
+  - La liste des résultats montre, pour chaque illustration, une ligne pour
+    la légende (son texte, ou « vide » s’il n’y en a pas), une ligne pour le
+    copyright (son texte, ou « Droits d'auteur : vide » s’il n’y en a pas) et
+    une ligne pour le nom du fichier d’image (son nom, ou « vide » s’il n’y
+    en a pas). Un clic sur une ligne mène à cette illustration dans le texte.
+  - Un rapport LegendesIllustrations.html, qui donne pour chaque illustration
+    la référence, le texte de la légende et du copyright et le nom du fichier
+    d’image, est écrit dans le dossier du projet et s’ouvre automatiquement
+    dans votre navigateur après la vérification.
+  - Vignettes des images : quand le dossier figures du projet contient une
+    image pour une illustration (même nom de fichier, ou copie .jpg/.png
+    d’un .tif), le rapport a en haut une case « Afficher les vignettes des
+    images ». Cochez-la pour ajouter une colonne Image avec une petite copie
+    de chaque image (« pas d’image » quand aucune n’a été trouvée). Les
+    navigateurs n’affichent pas les fichiers .tif ; une illustration dont la
+    seule image est un .tif n’a donc pas de vignette.
+
+Si un problème inattendu se produit, un fichier FigureCaptionsDebug.log
+apparaît dans le dossier du projet avec les détails - merci d’en communiquer
+le contenu pour que la vérification puisse être corrigée.
+
+MODE D’EMPLOI
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext Projects\cms. Pour rendre cliquables les références du rapport HTML (un clic affiche cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s’il faut ouvrir ParatextGoTo, et Paratext ne suit que si le groupe de défilement de la fenêtre de texte suit les autres programmes.
+2. Dans Paratext, lancez la vérification depuis le menu du projet > Outils > Outils personnalisés > Outils_Français.
+3. Consultez la liste des résultats pour la légende et le copyright de chaque
+   illustration, et le rapport LegendesIllustrations.html (ouvert
+   automatiquement) pour les mêmes informations dans un seul tableau.
+
+OPTIONS
+  Afficher la légende ?
+    Par défaut : Yes
+    Yes ajoute une colonne Légende au rapport et, pour chaque illustration,
+    une ligne dans la liste des résultats avec le texte de la légende
+    (ou « vide »).
+
+  Afficher le copyright ?
+    Par défaut : Yes
+    Yes ajoute une colonne Droits d’auteur au rapport et, pour chaque
+    illustration, une ligne dans la liste des résultats avec le texte du
+    copyright (ou « Droits d'auteur : vide »).
+
+  Afficher le nom du fichier d’image ?
+    Par défaut : Yes
+    Yes ajoute une colonne Fichier d’image au rapport et, pour chaque
+    illustration, une ligne dans la liste des résultats avec le nom du
+    fichier d’image (p. ex. « CN01629B.TIF » ou « MyrrhBush_HK00118.tif »),
+    ou « vide » s’il n’y en a pas. En USFM 3, c’est l’attribut src="..." ;
+    en USFM 2, c’est le champ qui suit la première barre verticale.
+
+  Trier les légendes par ordre alphabétique
+    Par défaut : No
+    Yes trie les illustrations du rapport HTML par ordre alphabétique de
+    leur légende, afin que les légendes identiques ou presque se retrouvent
+    côte à côte et soient faciles à comparer. Si les légendes sont masquées
+    (« Afficher la légende ? » = No), le tri se fait plutôt sur le nom du
+    fichier d’image (s’il est affiché) ; si les deux sont masqués, sur le
+    texte du copyright. No (par défaut) les liste dans l’ordre canonique
+    livre/chapitre/verset. Les accents et autres diacritiques sont ignorés
+    pour le tri (mais restent affichés normalement).

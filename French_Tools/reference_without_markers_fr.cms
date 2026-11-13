@@ -1,0 +1,12 @@
+﻿\check Références sans marqueurs
+\submenu Outils_Français
+\script reference_without_markers_fr.py
+\description Trouve les références bibliques du texte qui ne sont pas encadrées par les marqueurs \xt, \rq, \ior, \fig, \r, \mr ou \sr. Une option permet de choisir le caractère qui sépare le chapitre du verset.
+\books
+\toList
+\utf8
+
+\optionName ChapterVerseSep
+\optionLocalizedName Séparateur chapitre-verset
+\optionDescription Caractère qui sépare le numéro du chapitre de celui du verset (valeur ChapterVerseSeparator de Settings.xml : normalement : ou .).
+\optionDefault :

@@ -1,0 +1,41 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1036
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 ERREURS DE Q\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 OBJET\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 V\'e9rifie les lignes de po\'e9sie (marqu\'e9es par {\f1\\q}, {\f1\\q1}, {\f1\\q2}) \'e0 la recherche de probl\'e8mes de structure, des erreurs de mise en forme ou de composition fr\'e9quentes dans les manuscrits de traduction biblique.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 PROBL\'c8MES D\'c9TECT\'c9S\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab{\b Ponctuation finale suivie de texte}\emdash un signe de fin de phrase (p. ex. un point) se trouve au milieu d'une ligne po\'e9tique au lieu de la fin.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab{\b Deux marqueurs de verset}\emdash deux marqueurs {\f1\\v} se trouvent sur la m\'eame ligne po\'e9tique.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab{\b Texte avant un marqueur de verset}\emdash du texte se trouve avant {\f1\\v} au lieu d'apr\'e8s.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab{\b Mot isol\'e9 (en option)}\emdash une ligne finit par une ponctuation non finale (p. ex. une virgule) suivie d'un seul mot avant la ligne po\'e9tique suivante.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 RAPPORT HTML\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 En plus de la liste des r\'e9sultats, la v\'e9rification \'e9crit un rapport HTML ({\f1 RapportErreursQ.html}) dans le dossier du projet et l'ouvre automatiquement. Les r\'e9sultats sont regroup\'e9s par type d'erreur, et chaque entr\'e9e montre la ligne po\'e9tique compl\'e8te avec le probl\'e8me pr\'e9cis surlign\'e9 en rouge\emdash et un point final isol\'e9 est un peu plus grand, car on le remarque mal sinon.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 MODE D'EMPLOI\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\\cms. Pour que les r\'e9f\'e9rences du rapport HTML soient cliquables (un clic montre cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s'il faut ouvrir ParatextGoTo, et Paratext ne suit la r\'e9f\'e9rence que si le groupe de d\'e9filement de la fen\'eatre de texte suit les autres programmes.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab Dans Paratext, lancez la v\'e9rification depuis le menu Projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Examinez les r\'e9sultats\'a0; le type d'erreur est affich\'e9 en premier pour faciliter le tri.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Caract\'e8res de ponctuation finale\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i .!?}\par
+\pard\li720\sb40\sa80\f0\fs20 Caract\'e8res qui marquent la fin d'une phrase, utilis\'e9s par la v\'e9rification de la ponctuation finale.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Caract\'e8res de ponctuation non finale\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i ,;:}\par
+\pard\li720\sb40\sa80\f0\fs20 Caract\'e8res consid\'e9r\'e9s comme ponctuation de milieu de ligne, utilis\'e9s par la v\'e9rification du mot isol\'e9.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Nombre minimal de caract\'e8res avant la ponctuation finale\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i 0}\par
+\pard\li720\sb40\sa80\f0\fs20 Ignore la ponctuation finale qui se trouve \'e0 moins de ce nombre de caract\'e8res du d\'e9but de la ligne. Utile pour ignorer les lignes courtes o\'f9 la ponctuation est voulue.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Signaler la ponctuation finale suivie de texte\'a0?\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Active ou d\'e9sactive la v\'e9rification de la ponctuation finale suivie de texte.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Signaler plusieurs marqueurs de verset sur une ligne po\'e9tique\'a0?\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Active ou d\'e9sactive la v\'e9rification des deux marqueurs de verset.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Signaler du texte avant le marqueur de verset\'a0?\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Active ou d\'e9sactive la v\'e9rification du texte avant un marqueur de verset.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Signaler une ligne finissant par une ponctuation + un seul mot\'a0?\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 Active ou d\'e9sactive la v\'e9rification du mot isol\'e9. Mettez Yes pour signaler les lignes po\'e9tiques qui finissent par une ponctuation suivie d'exactement un mot.\par
+}

@@ -1,0 +1,37 @@
+﻿\check Références des termes bibliques
+\submenu Outils_Français
+\script project_BT_reference_tool_fr.py
+\description IL FAUT REDÉMARRER PARATEXT APRÈS AVOIR EXÉCUTÉ CET OUTIL\n\nCet outil compare le fichier ProjectBiblicalTerms.xml d'un projet Paratext avec les listes de termes de référence standard de Paratext (AllBiblicalTerms.xml et/ou BiblicalTerms.xml, qui est la liste MajorBiblicalTerms) afin de trouver les termes dont le nombre de références diffère de celui d'AllBiblicalTerms ou de MajorBiblicalTerms. L'outil crée un tableau HTML des différences. \nEn option, avec Ajouter les références manquantes sur Oui, il écrit les références manquantes directement dans ProjectBiblicalTerms.xml, après avoir enregistré une copie de sauvegarde numérotée du fichier d'origine. \nCette option doit être activée pour ajouter les références.\n\nUne fois l'outil exécuté, les nouvelles références devraient être disponibles dans l'outil Termes bibliques.\n\nLes options permettent de choisir les listes de termes à comparer (AllBiblicalTerms/BiblicalTerms), d'ajouter ou non les références manquantes, et d'ignorer ou non les termes DC, hébreux ou grecs.
+\noText
+\toList
+\utf8
+
+\optionName AddMissing
+\optionLocalizedName Ajouter les références manquantes
+\optionDescription Si Non, crée une liste HTML des différences à examiner. Si Oui, écrit les références manquantes dans ProjectBiblicalTerms.xml
+\optionDefault No
+
+\optionName UseAllBiblicalTerms
+\optionLocalizedName Vérifier AllBiblicalTerms
+\optionDescription Choisissez Oui pour comparer avec AllBiblicalTerms.xml (la liste complète des termes de Paratext).
+\optionDefault Yes
+
+\optionName UseBiblicalTerms
+\optionLocalizedName Vérifier BiblicalTerms
+\optionDescription Choisissez Oui pour comparer avec BiblicalTerms.xml (la liste standard des principaux termes bibliques).
+\optionDefault Yes
+
+\optionName IgnoreDC
+\optionLocalizedName Ignorer les termes (DC)
+\optionDescription Choisissez Oui pour ignorer tout terme dont l'Id contient (DC).
+\optionDefault Yes
+
+\optionName IncludeHebrew
+\optionLocalizedName Inclure les termes hébreux
+\optionDescription Choisissez Oui pour inclure les termes dont l'Id contient des caractères hébreux.
+\optionDefault Yes
+
+\optionName IncludeGreek
+\optionLocalizedName Inclure les termes grecs
+\optionDescription Choisissez Oui pour inclure les termes dont l'Id contient des caractères grecs.
+\optionDefault Yes

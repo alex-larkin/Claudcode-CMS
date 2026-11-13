@@ -1,0 +1,22 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1036
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 CONVERTIR LES CODES\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 OBJET\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Convertit des codes num\'e9riques compacts de versets en r\'e9f\'e9rences bibliques Paratext lisibles. Par exemple, le code 001036042 devient GEN 36:42. Utile pour travailler avec des donn\'e9es export\'e9es ou des rapports qui identifient les versets par des num\'e9ros au lieu de r\'e9f\'e9rences habituelles.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 MODE D'EMPLOI\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\\cms.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab Copiez une liste de codes num\'e9riques dans le presse-papiers (un code par ligne, ou s\'e9par\'e9s par des virgules). Les codes peuvent aussi \'eatre au format XML, avec des balises {\f1 <Verse>}.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Dans Paratext, lancez la v\'e9rification depuis le menu Projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 4.\tab La liste des r\'e9sultats montre chaque code avec la r\'e9f\'e9rence obtenue.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 FORMAT DES CODES\par
+\pard\li360\sb0\sa80\b0\f1\fs20 Chaque code est un nombre de 9 chiffres\'a0: BBBCCCVVV\par
+\pard\li720\sb0\sa40\f1\fs20 BBB = num\'e9ro du livre (001 = Gen\'e8se, 066 = Apocalypse)\par
+\pard\li720\sb0\sa40\f1\fs20 CCC = num\'e9ro du chapitre (compl\'e9t\'e9 par des z\'e9ros)\par
+\pard\li720\sb0\sa80\f1\fs20 VVV = num\'e9ro du verset (compl\'e9t\'e9 par des z\'e9ros)\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Sortie cliquable\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 Avec Yes, les r\'e9f\'e9rences sont \'e9crites au format cliquable de Paratext\'a0: un clic sur un r\'e9sultat m\'e8ne directement \'e0 ce verset. Avec No, elles sont \'e9crites en texte brut, facile \'e0 copier et coller ailleurs.\par
+}

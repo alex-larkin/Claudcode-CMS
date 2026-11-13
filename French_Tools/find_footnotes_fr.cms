@@ -1,0 +1,33 @@
+﻿\check Notes de bas de page (\f)
+\submenu Outils_Français
+\script find_footnotes_fr.py
+\description Parcourt les livres choisis à la recherche des notes de bas de page (\f...\f*) et affiche chacune dans la liste des résultats (où l’on peut chercher par référence ou par les sous-marqueurs qu’elle contient, p. ex. « fr fq ft ») pour faciliter la recherche dans Paratext. Écrit aussi un rapport HTML (RapportNotesBasDePage.html, ouvert automatiquement) qui liste toutes les notes trouvées -- une ligne par note, avec la référence, l’appel de note, la référence \fr et le reste du texte de la note (affiché avec la mise en forme Gras/Italique/Exposant/Petites capitales/Souligné/Couleur déclarée pour chaque marqueur dans usfm.sty et dans le custom.sty du projet), chacun dans sa propre colonne alignée, ainsi qu’un tableau récapitulatif de tous les marqueurs trouvés (marqueurs ouvrants et fermants comptés à part, p. ex. \w et \w*) et de leur style. Des vérifications facultatives des majuscules signalent les notes dont le \ft (ou le premier marqueur après \fr) n’est pas suivi d’une majuscule ; elles figurent dans la liste des résultats (« \ft sans majuscule ») et sont surlignées dans le rapport HTML.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortAlphabetically
+\optionLocalizedName Trier les notes par ordre alphabétique
+\optionDescription Yes trie les notes du rapport HTML par ordre alphabétique de leur propre texte (tout sauf la référence \fr), afin que les notes identiques ou presque se retrouvent côte à côte et soient faciles à comparer. No (par défaut) les liste dans l’ordre canonique livre/chapitre/verset. Les accents et autres diacritiques sont ignorés pour le tri (mais restent affichés normalement).
+\optionDefault No
+
+\optionName HideMarkers
+\optionLocalizedName Masquer les marqueurs dans le rapport HTML
+\optionDescription Yes masque les étiquettes de marqueur (p. ex. \fq, \+it, \+it*) affichées avant chaque morceau de texte de note dans le rapport HTML -- le texte garde sa mise en forme Gras/Italique/Exposant/Petites capitales/Souligné/Couleur, seules les étiquettes sont masquées, pour une lecture plus claire. No (par défaut) affiche les marqueurs à côté du texte mis en forme. N’a pas d’effet sur le tableau récapitulatif des marqueurs et styles (section 1) ni sur la liste des résultats de Paratext.
+\optionDefault No
+
+\optionName CheckFtCapitals
+\optionLocalizedName Vérifier les majuscules après \ft
+\optionDescription Yes signale, dans chaque note, un \ft dont le mot suivant ne commence pas par une majuscule lorsque ce \ft est le premier marqueur après \fr (ou le tout premier marqueur s’il n’y a pas de \fr), ou lorsque le texte qui le précède termine une phrase (par . ? ou !, sans tenir compte des marqueurs et de la ponctuation intermédiaires). Un \ft qui suit un autre marqueur, comme dans « \fq Dios \ft o ... », n’est pas signalé, sauf si une phrase s’est terminée avant lui. Pour trouver le mot suivant, les marqueurs de caractère (p. ex. \+it) et la ponctuation initiale sont sautés ; les mots qui commencent par un chiffre ou par une lettre sans forme majuscule ne sont pas signalés. Chaque cas figure dans la liste des résultats comme « \ft sans majuscule » et est surligné dans le rapport HTML. No (par défaut) : pas de vérification.
+\optionDefault No
+
+\optionName CheckCapitalAfterFr
+\optionLocalizedName Vérifier la majuscule après la référence \fr
+\optionDescription Yes signale les notes où le premier marqueur qui suit la référence \fr (\ft, \fq, \fk...) n’est pas suivi d’une majuscule. Elles figurent dans la liste des résultats, p. ex. « \fq sans majuscule suivant \fr », et sont surlignées dans le rapport HTML. Lorsque cette option et « Vérifier les majuscules après \ft » s’appliquent au même \ft, il n’est signalé qu’une fois. No (par défaut) : pas de vérification.
+\optionDefault No
+
+\optionName OnlyCapitalIssues
+\optionLocalizedName Afficher seulement les notes ayant un problème de majuscule
+\optionDescription Yes ne liste que les notes signalées par « Vérifier les majuscules après \ft » ou « Vérifier la majuscule après la référence \fr », dans la liste des résultats comme dans la liste des notes du rapport HTML (le tableau récapitulatif des marqueurs compte toujours toutes les notes). Sans effet si aucune de ces deux vérifications n’est sur Yes. No (par défaut) liste toutes les notes.
+\optionDefault No

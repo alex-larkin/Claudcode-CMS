@@ -1,0 +1,27 @@
+﻿\check Conversion majuscules/minuscules
+\submenu Outils_Français
+\script case_convert_fr.py
+\description **Sélectionnez les mots à convertir et appuyez sur Ctrl+C. **Ou bien saisissez le ou les mots dans les options pour que Paratext montre les choix de majuscules possibles. **Les options permettent de choisir quels types de casse signaler, de fixer un nombre minimal de lettres et de filtrer un mot précis.
+\noText
+\toList
+\utf8
+
+\optionName CheckLowercase
+\optionLocalizedName Vérifier les mots tout en minuscules
+\optionDescription Signale les mots dont toutes les lettres sont en minuscules. Le message montre la forme tout en majuscules et la forme avec majuscule initiale (première lettre seulement).
+\optionDefault Yes
+
+\optionName CheckUppercase
+\optionLocalizedName Vérifier les mots tout en majuscules
+\optionDescription Signale les mots dont toutes les lettres sont en majuscules. Le message montre la forme tout en minuscules et la forme « phrase » (lettres après la première en minuscules).
+\optionDefault Yes
+
+\optionName MinLetters
+\optionLocalizedName Nombre minimal de lettres
+\optionDescription Ignore les mots qui ont moins de lettres que ce nombre. Mettez 2 pour ignorer les mots d’une seule lettre ; augmentez-le pour ignorer les abréviations courtes.
+\optionDefault 2
+
+\optionName FilterWord
+\optionLocalizedName Mot ou expression à vérifier
+\optionDescription Saisissez un mot ou une expression précise à signaler. Laissez vide pour vérifier tous les mots.
+\optionDefault

@@ -1,0 +1,96 @@
+﻿RAPPORT DES MAJUSCULES EN DÉBUT DE VERSET
+=========================================
+
+OBJET
+Signale une majuscule au début d’un verset quand le verset précédent se termine par une ponctuation qui ne finit pas la phrase (p. ex. une virgule, un point-virgule, deux-points ou un simple mot). Cela indique souvent qu’une phrase a été coupée entre deux versets sans la ponctuation voulue à la fin du premier.
+
+Les termes avec majuscule qui figurent dans le TermRenderings.xml du projet (noms propres, titres divins, etc.) ne sont pas signalés (option « Ignorer les termes bibliques avec majuscule », activée par défaut). De même pour les mots que la liste de mots du projet indique comme toujours écrits avec une majuscule (option « Ignorer les mots avec majuscule de la liste de mots », activée par défaut). Un rendu peut compter plusieurs mots (p. ex. Nueva Jerusalen) ; la vérification exige alors que le terme entier, mot pour mot et dans l’ordre, se trouve au début du verset -- il ne suffit pas que le premier mot corresponde pour supprimer l’avertissement. Les rendus séparés par || dans une entrée de TermRenderings (p. ex. Nueva Jerusalen||Jerusalen Nueva) sont chacun traités comme un terme distinct.
+Les jokers sont pris en charge dans TermRenderings : un rendu enregistré comme
+Dios* supprime aussi Dioses ; *Dios supprime raDios ; *Dios* supprime les
+formes avec préfixe et avec suffixe. Un joker peut s’appliquer à n’importe quel mot d’un terme de plusieurs mots, pas seulement aux termes d’un seul mot.
+
+Remarque : seul le premier mot d’un terme doit commencer par une majuscule pour être pris en compte (comme la condition qui déclenche cette vérification) ; un mot avec majuscule au milieu d’un terme de plusieurs mots n’est plus ignoré à lui seul -- le terme entier doit correspondre.
+
+Les mots écrits avec des marques de ton ou des accents décomposés (une lettre de base suivie d’un diacritique combinant séparé, comme dans certaines orthographes africanistes ou fondées sur l’API) sont reconnus et comparés comme des unités entières, et un verset qui se termine par un tel mot est bien reconnu comme se terminant par une lettre et non par le diacritique.
+
+MODE D’EMPLOI
+1. Copiez les fichiers .cms et .py, ptx_goto.py et ParatextGoTo.exe dans votre dossier My Paratext 9 Projects\cms.
+2. Dans Paratext, lancez la vérification depuis le menu du projet > Outils > Outils personnalisés > Outils_Français.
+3. Examinez la liste des résultats ; chaque élément signalé montre la référence et un extrait du texte autour du problème.
+4. Un rapport RapportMajusculeDebutVerset.html s’ouvre aussi automatiquement dans votre navigateur. Il montre trois mots de contexte avant et après chaque numéro de verset signalé, sans les notes de bas de page, renvois et illustrations.
+5. Cliquez sur une référence du rapport pour afficher ce verset dans Paratext. La première fois, le navigateur demande s’il faut ouvrir ParatextGoTo ; acceptez (vous pouvez cocher « toujours autoriser »). Paratext ne suit que si le groupe de défilement de la fenêtre de texte suit les autres programmes (le même réglage que pour FieldWorks ou Logos). Les clics demandent ptx_goto.py et ParatextGoTo.exe dans le dossier cms ; sans eux, les références sont du texte simple. La vérification enregistre le type de lien pour l’utilisateur Windows actuel seulement ; aucun droit d’administrateur n’est nécessaire.
+
+OPTIONS
+  Caractères de fin de phrase
+    Par défaut : .!?
+    Caractères qui marquent la fin d’une phrase. Si le verset précédent se termine par l’un d’eux, le verset suivant n’est pas signalé, même s’il commence par une majuscule. Ajoutez ici les guillemets fermants propres à votre langue s’ils peuvent terminer une phrase dans votre traduction.
+
+  Mots à ignorer
+    Par défaut : (vide)
+    Liste, séparée par des virgules, de mots avec majuscule qui ne doivent jamais être signalés, par exemple : Senor, Alfa, Espiritu
+    Utilisez-la pour les noms propres qui ne sont pas déjà dans TermRenderings.xml.
+    Les caractères accentués et non ASCII sont acceptés ; les entrées sont comparées après normalisation NFC.
+    C’est aussi la liste de mots de base sur laquelle s’appuient « Préfixes de mots à ignorer » et « Suffixes de mots à ignorer » : un mot de la liste auquel s’ajoute l’un de ces préfixes ou suffixes n’est pas signalé non plus.
+
+  Ignorer les termes bibliques avec majuscule
+    Par défaut : Yes
+    Yes ignore un mot ou une expression avec majuscule en début de verset qui est un rendu des termes bibliques du projet (TermRenderings.xml), comme décrit sous OBJET. No signale aussi ces mots. Avec No, les préfixes et suffixes à ignorer ne s’appuient que sur « Mots à ignorer » et la liste de mots.
+
+  Ignorer les mots avec majuscule de la liste de mots
+    Par défaut : Yes
+    Yes ignore un mot en début de verset que la liste de mots du projet indique comme toujours écrit avec une majuscule (un mot avec une casse précise dans SpellingStatus.xml, p. ex. Galilaaya). Le mot doit correspondre exactement. Un tel mot auquel s’ajoute l’un des préfixes ou suffixes à ignorer est aussi ignoré.
+
+  Ignorer la majuscule après un guillemet ouvrant
+    Par défaut : No
+    Yes supprime les erreurs où un verset commence par un mot avec majuscule qui suit immédiatement un guillemet ouvrant (p. ex. un discours direct introduit après une virgule ou un point-virgule). Les caractères traités comme guillemets ouvrants se règlent avec l’option « Caractères de guillemet ouvrant » ci-dessous.
+
+  Caractères de guillemet ouvrant
+    Par défaut : «"—'
+    Caractères traités comme guillemets ouvrants quand « Ignorer la majuscule après un guillemet ouvrant » est sur Yes. Chaque caractère de cette chaîne est un guillemet ouvrant. La valeur par défaut comprend le guillemet français ouvrant («), le guillemet double anglais ouvrant ("), le tiret cadratin (—) et le guillemet simple anglais ouvrant ('). Videz ce champ pour revenir à la détection par la catégorie Unicode Pi.
+
+  Styles de caractère à ignorer
+    Par défaut : (vide)
+    Liste, séparée par des virgules, de noms de styles de caractère USFM (sans barre oblique inverse) dont le texte est exclu pour trouver le dernier caractère d’un verset. Utilisez-la pour les styles de caractère appariés comme \qs...\qs* (Sélah dans les Psaumes) ou \pn...\pn* (noms propres) qui ne se terminent pas par une ponctuation de fin de phrase.
+    Exemple de saisie : qs, pn
+
+  Styles de paragraphe à ignorer
+    Par défaut : sp, r, ms, mr, sr
+    Liste, séparée par des virgules, de noms de marqueurs de paragraphe USFM (sans barre oblique inverse) dont le marqueur et le texte qui suit sont exclus pour trouver le dernier caractère d’un verset. Utilisez-la pour les marqueurs de structure placés entre les versets, dont le texte ne doit pas compter comme fin de phrase.
+    Marqueurs compris par défaut :
+      sp  - Locuteur / mention Sélah (p. ex. dans les Psaumes ou le Cantique des cantiques)
+      r   - Référence de passage parallèle
+      ms  - Titre de division majeure
+      mr  - Plage de références de la division majeure
+      sr  - Plage de références de la section
+    Remarque : les titres de section (\s, \s1, \s2, etc.) sont traités automatiquement par la vérification et n’ont pas à figurer ici.
+    Un changement de paragraphe suivi seulement de texte dans ces styles arrête aussi la vérification. Par exemple, quand un verset est suivi d’un titre \s1, puis d’un locuteur \sp, puis de \q1, le verset suivant n’est pas vérifié (fréquent dans le Cantique des cantiques).
+    Pour désactiver complètement cette fonction, videz la valeur de l’option.
+
+  Préfixes de mots à ignorer
+    Par défaut : (vide)
+    Liste de préfixes de mots, séparés par des espaces (p. ex.  ra  Ra). Un mot avec majuscule en début de verset, formé de l’un de ces préfixes suivi soit d’un mot de « Mots à ignorer », soit d’un rendu de terme biblique avec majuscule que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, après le préfixe, n’est reconnu ni d’une façon ni de l’autre.
+    Exemple de saisie : ra ka
+    Une entrée peut aussi être un groupe de variantes interchangeables séparées par "/", pour les langues où l’ajout du préfixe change la ou les lettres suivantes au lieu d’ajouter simplement des caractères devant. Si le mot commence par l’une des variantes du groupe, chacune des autres est essayée à sa place pour reconstruire le mot à comparer avec « Mots à ignorer » / TermRenderings.xml.
+    Exemple (harmonie vocalique à trois voyelles) : i/ɨ/ʉ
+
+  Suffixes de mots à ignorer
+    Par défaut : (vide)
+    Liste de suffixes de mots, séparés par des espaces (p. ex.  es  am). Un mot avec majuscule en début de verset, formé de l’un de ces suffixes ajouté soit à un mot de « Mots à ignorer », soit à un rendu de terme biblique avec majuscule que cette vérification reconnaît déjà dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signalé. Sans effet sur un mot dont le reste, avant le suffixe, n’est reconnu ni d’une façon ni de l’autre.
+    Exemple de saisie : es am pa
+    Une entrée peut aussi être un groupe de variantes interchangeables séparées par "/", pour les langues où la fin du radical change elle-même quand un suffixe s’y ajoute, au lieu que le suffixe s’ajoute simplement. Si le mot se termine par l’une des variantes du groupe, chacune des autres est essayée à sa place pour reconstruire le mot à comparer avec « Mots à ignorer » / TermRenderings.xml.
+    Exemple (singulier/pluriel espagnol) : ión/iones     (p. ex. un mot qui se termine par Salvación est aussi reconnu comme se terminant par Salvaciones, et inversement)
+    Exemple (harmonie vocalique à trois voyelles) : i/ɨ/ʉ
+
+  Ponctuation à l’intérieur des mots
+    Par défaut : -
+    Caractères qui peuvent se trouver à l’intérieur d’un mot et ne doivent pas le couper en plusieurs mots lors de la vérification des majuscules. À saisir sans espaces.
+    Le trait d’union (-) est compris par défaut, pour les noms propres composés comme Be-nimura ou Ebel-setin. Pour accepter aussi l’apostrophe (p. ex. k'am), ajoutez ' à la valeur : -'
+    Pour ne jamais joindre les parties d’un mot, videz la valeur de l’option.
+
+  Caractères à sauter avant un numéro de verset
+    Par défaut : [
+    Caractères (sans espaces) qui peuvent précéder immédiatement un numéro de verset, comme le [ qui ouvre un verset entre crochets (versets absents des plus anciens manuscrits). Ils sont sautés pour savoir comment le verset précédent se termine :
+      mot. [ \v 11 Majuscule      - le verset précédent compte comme terminé par . donc le verset 11 n’est pas signalé
+      \p [ \v 53 Majuscule        - le \p compte comme un changement de paragraphe, donc le verset 53 n’est pas signalé
+      mot, [ \v 11 Majuscule      - toujours signalé, car le verset qui précède le [ se termine par une virgule
+    Pour traiter ces caractères comme des caractères ordinaires, videz la valeur de l’option.

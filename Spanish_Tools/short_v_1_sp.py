@@ -87,7 +87,7 @@ def checkChapter(reference, text, lastChapter):
         checking.outputError(
             v1.start(),
             display_end,
-            u'%d chars (set = %d)' % (count, min_chars)
+            u'%d caracteres (minimo = %d)' % (count, min_chars)
         )
 
 checking.checkAllChapters(checkChapter)

@@ -1,0 +1,20 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+\viewkind4\uc1
+\pard\sa200\sl276\slmult1\f0\fs28\b RAPPORT DES STYLES IMBRIQU\'c9S\b0\fs22\par
+\par
+\b BUT\b0\par
+USFM 3 exige un pr\'e9fixe \'ab\'a0+\'a0\'bb sur tout style de caract\'e8re imbriqu\'e9 dans le contenu d\'92un autre marqueur -- par exemple, dans une note de bas de page (\\f...\\f*), un style de renvoi doit s\'92\'e9crire \\+xt...\\+xt*, et non \\xt...\\xt* seul. Cette v\'e9rification parcourt les livres choisis \'e0 la recherche des notes de bas de page et signale tout style de caract\'e8re utilis\'e9 dans l\'92une d\'92elles auquel il manque le \'ab\'a0+\'a0\'bb requis.\par
+\par
+Seuls les marqueurs que le usfm.sty/custom.sty de votre projet d\'e9clare r\'e9ellement comme style de caract\'e8re sont v\'e9rifi\'e9s. Les marqueurs propres \'e0 la note (\\fr, \\fq, \\fqa, \\fk, \\fl, \\fp, \\ft, \\fv, \\fdc, \\fm) ne sont jamais signal\'e9s\'a0: ils forment la structure de la note elle-m\'eame, ce ne sont pas des styles imbriqu\'e9s. Chaque marqueur d\'92ouverture et de fermeture est v\'e9rifi\'e9 s\'e9par\'e9ment, si bien qu\'92une paire mal assortie (par exemple \\+it bien ouvert mais ferm\'e9 par \\it* sans +) est signal\'e9e sur le marqueur pr\'e9cis qui est faux.\par
+\par
+Les r\'e9sultats apparaissent \'e0 deux endroits\'a0:\par
+- La liste des r\'e9sultats montre une ligne par note de bas de page signal\'e9e, avec le ou les marqueurs auxquels il manque le \'ab\'a0+\'a0\'bb (par exemple \'ab\'a0+ manquant : xt\'a0\'bb). Un clic sur une ligne m\'e8ne \'e0 cette note de bas de page dans le texte. Les notes de bas de page sans probl\'e8me n\'92y figurent pas.\par
+- Un rapport RapportStylesImbriques.html est \'e9crit\'a0: un r\'e9sum\'e9 du nombre de notes de bas de page examin\'e9es et signal\'e9es, le nombre de fois o\'f9 il manquait le \'ab\'a0+\'a0\'bb \'e0 chaque marqueur, puis chaque note de bas de page signal\'e9e, affich\'e9e avec ses marqueurs -- le ou les marqueurs auxquels il manque le \'ab\'a0+\'a0\'bb sont surlign\'e9s en rouge. Les notes de bas de page sans probl\'e8me ne figurent pas dans le rapport. Le rapport s\'92ouvre automatiquement dans votre navigateur apr\'e8s la v\'e9rification.\par
+\par
+En cas de probl\'e8me inattendu, un fichier NestedStylesDebug.log appara\'eet dans le dossier du projet avec les d\'e9tails - merci d\'92en transmettre le contenu pour que la v\'e9rification puisse \'eatre corrig\'e9e.\par
+\par
+\b MODE D\'92EMPLOI\b0\par
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext Projects\\cms. Pour rendre cliquables les r\'e9f\'e9rences du rapport HTML (un clic montre cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s\'92il faut ouvrir ParatextGoTo, et Paratext ne suit que si le groupe de d\'e9filement de la fen\'eatre de texte suit les autres programmes.\par
+2. Dans Paratext, lancez la v\'e9rification depuis le menu Projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+3. Parcourez la liste des r\'e9sultats pour aller \'e0 chaque note de bas de page signal\'e9e, et le rapport RapportStylesImbriques.html (ouvert automatiquement) pour voir chaque note de bas de page signal\'e9e avec le ou les marqueurs fautifs surlign\'e9s en rouge.\par
+}

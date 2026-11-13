@@ -1,0 +1,8 @@
+﻿\check Rapport des styles imbriqués
+\submenu Outils_Français
+\script report_nested_styles_fr.py
+\description Parcourt les livres choisis à la recherche des notes de bas de page (\f...\f*) et signale tout style de caractère utilisé dans une note de bas de page auquel il manque le préfixe d’imbrication exigé par USFM3 -- par exemple \xt seul au lieu de \+xt. Les marqueurs propres à la note (\fr, \fq, \fqa, \fk, \fl, \fp, \ft, \fv, \fdc, \fm) ne sont jamais signalés ; seuls les marqueurs que le usfm.sty/custom.sty du projet déclare comme style de caractère sont vérifiés, et chaque marqueur d’ouverture et de fermeture est vérifié séparément, si bien qu’une paire mal assortie (par exemple \+it bien ouvert mais fermé par \it* sans +) est aussi détectée. La liste des résultats montre une ligne par note de bas de page signalée. Écrit aussi un rapport HTML (RapportStylesImbriques.html, ouvert automatiquement) : un résumé du nombre de notes de bas de page examinées et signalées, et le nombre de fois où il manquait le « + » à chaque marqueur, puis chaque note de bas de page signalée, affichée avec ses marqueurs -- le ou les marqueurs auxquels il manque le « + » sont surlignés en rouge. Les notes de bas de page sans problème n’apparaissent pas dans le rapport.
+\books
+\noText
+\toList
+\utf8

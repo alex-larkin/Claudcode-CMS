@@ -1,0 +1,31 @@
+﻿CONVERSION MAJUSCULES/MINUSCULES
+================================
+
+OBJET
+Parcourt le texte à la recherche de mots tout en minuscules ou tout en majuscules et montre à quoi ils ressembleraient dans une autre casse (majuscules, minuscules, majuscule à chaque mot, majuscule initiale seulement).
+Peut aussi convertir un mot ou une expression précise que vous sélectionnez et copiez.
+
+MODE D'EMPLOI
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\cms.
+2. Pour convertir un mot précis : sélectionnez-le dans Paratext et appuyez sur Ctrl+C, puis lancez la vérification depuis le menu Projet > Outils > Outils personnalisés > Outils_Français. Les résultats montrent toutes les formes de ce mot.
+3. Pour chercher dans un passage les mots tout en minuscules ou tout en majuscules : laissez vide l'option Mot ou expression à vérifier et lancez la vérification normalement.
+4. Consultez la liste des résultats pour voir les conversions proposées.
+
+OPTIONS
+  Vérifier les mots tout en minuscules
+    Par défaut :  Yes
+    Avec Yes, signale les mots entièrement en minuscules et montre les formes avec majuscules.
+
+  Vérifier les mots tout en majuscules
+    Par défaut :  Yes
+    Avec Yes, signale les mots entièrement en majuscules et montre les formes en minuscules.
+
+  Nombre minimal de lettres
+    Par défaut :  2
+    Nombre minimal de lettres qu'un mot doit contenir pour être signalé.
+    Les mots d'une seule lettre, comme « a » ou « y », sont ignorés par défaut.
+
+  Mot ou expression à vérifier
+    Par défaut :  (vide)
+    Saisissez ici un mot ou une expression précise pour voir ses formes converties.
+    Si l'option est vide, la vérification parcourt tous les mots du passage. Vous pouvez aussi la remplacer en sélectionnant du texte dans Paratext et en le copiant dans le presse-papiers avant de lancer la vérification.

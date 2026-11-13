@@ -1,0 +1,65 @@
+﻿ERREURS DE Q
+============
+
+OBJET
+Vérifie les lignes de poésie (marquées par \q, \q1, \q2) à la recherche de
+problèmes de structure, des erreurs de mise en forme ou de composition
+fréquentes dans les manuscrits de traduction biblique.
+
+PROBLÈMES DÉTECTÉS
+  1. Ponctuation finale suivie de texte — un signe de fin de phrase (p. ex. un
+     point) se trouve au milieu d'une ligne poétique au lieu de la fin.
+  2. Deux marqueurs de verset — deux marqueurs \v se trouvent sur la même
+     ligne poétique.
+  3. Texte avant un marqueur de verset — du texte se trouve avant \v au lieu
+     d'après.
+  4. Mot isolé (en option) — une ligne finit par une ponctuation non finale
+     (p. ex. une virgule) suivie d'un seul mot avant la ligne poétique suivante.
+
+RAPPORT HTML
+  En plus de la liste des résultats, la vérification écrit un rapport HTML
+  (RapportErreursQ.html) dans le dossier du projet et l'ouvre automatiquement.
+  Les résultats sont regroupés par type d'erreur, et chaque entrée montre la
+  ligne poétique complète avec le problème précis surligné en rouge -- et un
+  point final isolé est un peu plus grand, car on le remarque mal sinon.
+
+MODE D'EMPLOI
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\cms. Pour que les références du rapport HTML soient cliquables (un clic montre cet endroit dans Paratext), copiez-y aussi ptx_goto.py et ParatextGoTo.exe. Au premier clic, le navigateur demande s'il faut ouvrir ParatextGoTo, et Paratext ne suit la référence que si le groupe de défilement de la fenêtre de texte suit les autres programmes.
+2. Dans Paratext, lancez la vérification depuis le menu Projet > Outils > Outils personnalisés > Outils_Français.
+3. Examinez les résultats ; le type d'erreur est affiché en premier pour faciliter le tri.
+
+OPTIONS
+  Caractères de ponctuation finale
+    Par défaut :  .!?
+    Caractères qui marquent la fin d'une phrase, utilisés par la vérification
+    de la ponctuation finale.
+
+  Caractères de ponctuation non finale
+    Par défaut :  ,;:
+    Caractères considérés comme ponctuation de milieu de ligne, utilisés par
+    la vérification du mot isolé.
+
+  Nombre minimal de caractères avant la ponctuation finale
+    Par défaut :  0
+    Ignore la ponctuation finale qui se trouve à moins de ce nombre de
+    caractères du début de la ligne. Utile pour ignorer les lignes courtes où
+    la ponctuation est voulue.
+
+  Signaler la ponctuation finale suivie de texte ?
+    Par défaut :  Yes
+    Active ou désactive la vérification de la ponctuation finale suivie de
+    texte.
+
+  Signaler plusieurs marqueurs de verset sur une ligne poétique ?
+    Par défaut :  Yes
+    Active ou désactive la vérification des deux marqueurs de verset.
+
+  Signaler du texte avant le marqueur de verset ?
+    Par défaut :  Yes
+    Active ou désactive la vérification du texte avant un marqueur de verset.
+
+  Signaler une ligne finissant par une ponctuation + un seul mot ?
+    Par défaut :  No
+    Active ou désactive la vérification du mot isolé. Mettez Yes pour signaler
+    les lignes poétiques qui finissent par une ponctuation suivie d'exactement
+    un mot.

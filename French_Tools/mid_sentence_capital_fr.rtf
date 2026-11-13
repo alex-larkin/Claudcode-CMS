@@ -1,0 +1,74 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl{\f0\fswiss\fcharset0 Calibri;}{\f1\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green70\blue127;\red0\green102\blue102;\red80\green80\blue80;}
+\widowctrl\hyphauto
+\pard\sb0\sa240\qc\b\f0\fs32\cf1 MAJUSCULE EN MILIEU DE PHRASE\par
+\pard\sb0\sa80\keepn\b\f0\fs22\cf2 OBJET\par
+\pard\sb0\sa120\b0\f0\fs20\cf0 Signale une majuscule plac\'e9e en milieu de phrase dans un verset\'a0: apr\'e8s une virgule, un point-virgule, deux-points ou un autre mot, et non apr\'e8s une ponctuation de fin de phrase. Signale aussi une majuscule au d\'e9but d\'92un verset quand le verset pr\'e9c\'e9dent se termine sans ponctuation de fin de phrase (m\'eame logique que la v\'e9rification \'ab\'a0Rapport des majuscules en d\'e9but de verset\'a0\'bb).\par
+\pard\sb0\sa120\f0\fs20 Les termes avec majuscule qui figurent dans le TermRenderings.xml du projet (noms propres, titres divins, etc.) ne sont pas signal\'e9s (option \'ab\'a0Ignorer les termes bibliques avec majuscule\'a0\'bb, activ\'e9e par d\'e9faut). De m\'eame pour les mots que la liste de mots du projet indique comme toujours \'e9crits avec une majuscule (option \'ab\'a0Ignorer les mots avec majuscule de la liste de mots\'a0\'bb, activ\'e9e par d\'e9faut). Un rendu peut compter plusieurs mots (p. ex. Nueva Jerusalen)\'a0; la v\'e9rification exige alors que le terme entier, mot pour mot et dans l\'92ordre, se trouve \'e0 cet endroit -- il ne suffit pas que le premier mot corresponde pour supprimer l\'92avertissement. Les rendus s\'e9par\'e9s par || dans une entr\'e9e de TermRenderings (p. ex. Nueva Jerusalen||Jerusalen Nueva) sont chacun trait\'e9s comme un terme distinct. Les jokers sont pris en charge dans TermRenderings\'a0: un rendu enregistr\'e9 comme Dios* supprime aussi Dioses\'a0; *Dios supprime raDios\'a0; *Dios* supprime les formes avec pr\'e9fixe et avec suffixe. Un joker peut s\'92appliquer \'e0 n\'92importe quel mot d\'92un terme de plusieurs mots, pas seulement aux termes d\'92un seul mot.\par
+\pard\sb0\sa120\f0\fs20{\i Remarque\'a0:} seul le premier mot d\'92un terme doit commencer par une majuscule pour \'eatre pris en compte (comme la condition qui d\'e9clenche cette v\'e9rification)\'a0; un mot avec majuscule au milieu d\'92un terme de plusieurs mots n\'92est plus ignor\'e9 \'e0 lui seul -- le terme entier doit correspondre.\par
+\pard\sb0\sa120\f0\fs20 Les mots \'e9crits avec des marques de ton ou des accents d\'e9compos\'e9s (une lettre de base suivie d\'92un diacritique combinant s\'e9par\'e9, comme dans certaines orthographes africanistes ou fond\'e9es sur l\'92API) sont reconnus et compar\'e9s comme des unit\'e9s enti\'e8res, et un verset qui se termine par un tel mot est bien reconnu comme se terminant par une lettre et non par le diacritique.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 MODE D\'92EMPLOI\par
+\pard\li720\fi-360\sb0\sa80\b0\f0\fs20 1.\tab Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\\cms.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 2.\tab Dans Paratext, lancez la v\'e9rification depuis le menu du projet > Outils > Outils personnalis\'e9s > Outils_Fran\'e7ais.\par
+\pard\li720\fi-360\sb0\sa80\f0\fs20 3.\tab Examinez la liste des r\'e9sultats\'a0; chaque \'e9l\'e9ment signal\'e9 montre la r\'e9f\'e9rence et un extrait du texte autour du probl\'e8me.\par
+\pard\sb240\sa80\keepn\b\f0\fs22\cf2 OPTIONS\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Caract\'e8res de fin de phrase\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i .!?}\par
+\pard\li720\sb40\sa0\f0\fs20 Caract\'e8res qui marquent la fin d\'92une phrase. Un mot avec majuscule qui suit imm\'e9diatement l\'92un d\'92eux n\'92est pas signal\'e9. Ajoutez ici les guillemets fermants propres \'e0 votre langue s\'92ils peuvent terminer une phrase dans votre traduction.\par
+\pard\li720\sb0\sa80\f0\fs20 La ponctuation invers\'e9e qui ouvre une phrase (! et ? invers\'e9s de l\'92espagnol) est trait\'e9e automatiquement, sans l\'92ajouter ici.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Mots \'e0 ignorer\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i (vide)}\par
+\pard\li720\sb40\sa0\f0\fs20 Liste, s\'e9par\'e9e par des virgules, de mots avec majuscule qui ne doivent jamais \'eatre signal\'e9s, par exemple\'a0:  Senor, Alfa, Espiritu\par
+\pard\li720\sb0\sa0\f0\fs20 Utilisez-la pour les noms propres qui ne sont pas d\'e9j\'e0 dans TermRenderings.xml.\par
+\pard\li720\sb0\sa80\f0\fs20 C\'92est aussi la liste de mots de base sur laquelle s\'92appuient \'ab\'a0Pr\'e9fixes de mots \'e0 ignorer\'a0\'bb et \'ab\'a0Suffixes de mots \'e0 ignorer\'a0\'bb\'a0: un mot de la liste auquel s\'92ajoute l\'92un de ces pr\'e9fixes ou suffixes n\'92est pas signal\'e9 non plus.\par
+\pard\li720\sb0\sa80\f0\fs20 Les caract\'e8res accentu\'e9s et non ASCII sont accept\'e9s\'a0; les entr\'e9es sont compar\'e9es apr\'e8s normalisation NFC.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Ignorer les termes bibliques avec majuscule\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Yes ignore un mot ou une expression avec majuscule qui est un rendu des termes bibliques du projet (TermRenderings.xml), comme d\'e9crit plus haut. No signale aussi ces mots. Avec No, les pr\'e9fixes et suffixes \'e0 ignorer ne s\'92appuient que sur \'ab\'a0Mots \'e0 ignorer\'a0\'bb et la liste de mots.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Ignorer les mots avec majuscule de la liste de mots\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i Yes}\par
+\pard\li720\sb40\sa80\f0\fs20 Yes ignore un mot que la liste de mots du projet indique comme toujours \'e9crit avec une majuscule (un mot avec une casse pr\'e9cise dans SpellingStatus.xml, p. ex. Galilaaya). Le mot doit correspondre exactement. Un tel mot auquel s\'92ajoute l\'92un des pr\'e9fixes ou suffixes \'e0 ignorer est aussi ignor\'e9.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Ignorer la majuscule apr\'e8s un guillemet ouvrant\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i No}\par
+\pard\li720\sb40\sa80\f0\fs20 Yes supprime les erreurs o\'f9 un mot avec majuscule suit imm\'e9diatement un guillemet ouvrant (p. ex. un discours direct introduit apr\'e8s une virgule). Les caract\'e8res trait\'e9s comme guillemets ouvrants se r\'e8glent avec l\'92option \'ab\'a0Caract\'e8res de guillemet ouvrant\'a0\'bb ci-dessous.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Caract\'e8res de guillemet ouvrant\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i \'ab\'93\'97\'91}\par
+\pard\li720\sb40\sa80\f0\fs20 Caract\'e8res trait\'e9s comme guillemets ouvrants quand \'ab\'a0Ignorer la majuscule apr\'e8s un guillemet ouvrant\'a0\'bb est sur Yes. Chaque caract\'e8re de cette cha\'eene est un guillemet ouvrant. La valeur par d\'e9faut comprend le guillemet fran\'e7ais ouvrant (\'ab), le guillemet double anglais ouvrant (\'93), le tiret cadratin (\'97) et le guillemet simple anglais ouvrant (\'91). Videz ce champ pour revenir \'e0 la d\'e9tection par la cat\'e9gorie Unicode Pi.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Styles de caract\'e8re \'e0 ignorer\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i (vide)}\par
+\pard\li720\sb40\sa0\f0\fs20 Liste, s\'e9par\'e9e par des virgules, de noms de styles de caract\'e8re USFM (sans barre oblique inverse) dont le texte est enti\'e8rement exclu de la v\'e9rification. Les mots \'e0 l\'92int\'e9rieur de ces styles appari\'e9s ne sont pas signal\'e9s, et ce texte est ignor\'e9 pour trouver le dernier caract\'e8re du verset.\par
+\pard\li720\sb40\sa0\f0\fs20 Pour des styles comme\'a0:\par
+\pard\li1080\sb0\sa0\f0\fs20{\f1\b qs}  - S\'e9lah / texte de titre acrostiche (p. ex. {\f1\\qs Selah\\qs*})\par
+\pard\li1080\sb0\sa60\f0\fs20{\f1\b pn}  - Noms propres\par
+\pard\li720\sb0\sa80\f0\fs20{\b Exemple de saisie\'a0:}  {\f1 qs, pn}\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Styles de paragraphe \'e0 ignorer\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i sp, r, ms, mr, sr}\par
+\pard\li720\sb40\sa0\f0\fs20 Liste, s\'e9par\'e9e par des virgules, de noms de marqueurs de paragraphe USFM (sans barre oblique inverse) dont le marqueur et le texte qui suit comptent comme une limite de phrase dans le verset et sont exclus pour trouver le dernier caract\'e8re du verset.\par
+\pard\li720\sb60\sa0\f0\fs20{\b Marqueurs compris par d\'e9faut\'a0:}\par
+\pard\li1080\sb0\sa0\f0\fs20{\f1\b sp}  - Locuteur / mention S\'e9lah (p. ex. dans les Psaumes ou le Cantique des cantiques)\par
+\pard\li1080\sb0\sa0\f0\fs20{\f1\b r}   - R\'e9f\'e9rence de passage parall\'e8le\par
+\pard\li1080\sb0\sa0\f0\fs20{\f1\b ms}  - Titre de division majeure\par
+\pard\li1080\sb0\sa0\f0\fs20{\f1\b mr}  - Plage de r\'e9f\'e9rences de la division majeure\par
+\pard\li1080\sb0\sa60\f0\fs20{\f1\b sr}  - Plage de r\'e9f\'e9rences de la section\par
+\pard\li720\sb0\sa0\f0\fs20{\i Remarque\'a0:} les titres de section ({\f1\\s}, {\f1\\s1}, {\f1\\s2}, etc.) sont trait\'e9s automatiquement par la v\'e9rification et n\'92ont pas \'e0 figurer ici.\par
+\pard\li720\sb40\sa80\f0\fs20 Pour d\'e9sactiver compl\'e8tement cette fonction, videz la valeur de l\'92option.\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Pr\'e9fixes de mots \'e0 ignorer\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i (vide)}\par
+\pard\li720\sb40\sa0\f0\fs20 Liste de pr\'e9fixes de mots, s\'e9par\'e9s par des espaces (p. ex.  ra  Ra). Un mot avec majuscule form\'e9 de l\'92un de ces pr\'e9fixes suivi soit d\'92un mot de \'ab\'a0Mots \'e0 ignorer\'a0\'bb, soit d\'92un rendu de terme biblique avec majuscule que cette v\'e9rification reconna\'eet d\'e9j\'e0 dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signal\'e9. Sans effet sur un mot dont le reste, apr\'e8s le pr\'e9fixe, n\'92est reconnu ni d\'92une fa\'e7on ni de l\'92autre.\par
+\pard\li720\sb40\sa0\f0\fs20{\b Exemple de saisie\'a0:}  {\f1 ra ka}\par
+\pard\li720\sb40\sa0\f0\fs20 Une entr\'e9e peut aussi \'eatre un groupe de variantes interchangeables s\'e9par\'e9es par "/", pour les langues o\'f9 l\'92ajout du pr\'e9fixe change la ou les lettres suivantes au lieu d\'92ajouter simplement des caract\'e8res devant. Si le mot commence par l\'92une des variantes du groupe, chacune des autres est essay\'e9e \'e0 sa place pour reconstruire le mot \'e0 comparer avec \'ab\'a0Mots \'e0 ignorer\'a0\'bb / TermRenderings.xml.\par
+\pard\li720\sb0\sa80\f0\fs20{\b Exemple (harmonie vocalique \'e0 trois voyelles)\'a0:}  {\f1 i/\u616?/\u649?}\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Suffixes de mots \'e0 ignorer\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i (vide)}\par
+\pard\li720\sb40\sa0\f0\fs20 Liste de suffixes de mots, s\'e9par\'e9s par des espaces (p. ex.  es  am). Un mot avec majuscule form\'e9 de l\'92un de ces suffixes ajout\'e9 soit \'e0 un mot de \'ab\'a0Mots \'e0 ignorer\'a0\'bb, soit \'e0 un rendu de terme biblique avec majuscule que cette v\'e9rification reconna\'eet d\'e9j\'e0 dans TermRenderings.xml (sans tenir compte de la casse), ne sera pas signal\'e9. Sans effet sur un mot dont le reste, avant le suffixe, n\'92est reconnu ni d\'92une fa\'e7on ni de l\'92autre.\par
+\pard\li720\sb40\sa0\f0\fs20{\b Exemple de saisie\'a0:}  {\f1 es am pa}\par
+\pard\li720\sb40\sa0\f0\fs20 Une entr\'e9e peut aussi \'eatre un groupe de variantes interchangeables s\'e9par\'e9es par "/", pour les langues o\'f9 la fin du radical change elle-m\'eame quand un suffixe s\'92y ajoute, au lieu que le suffixe s\'92ajoute simplement. Si le mot se termine par l\'92une des variantes du groupe, chacune des autres est essay\'e9e \'e0 sa place pour reconstruire le mot \'e0 comparer avec \'ab\'a0Mots \'e0 ignorer\'a0\'bb / TermRenderings.xml.\par
+\pard\li720\sb0\sa0\f0\fs20{\b Exemple (singulier/pluriel espagnol)\'a0:}  {\f1 i\'f3n/iones}     (p. ex. un mot qui se termine par Salvaci\'f3n est aussi reconnu comme se terminant par Salvaciones, et inversement)\par
+\pard\li720\sb0\sa80\f0\fs20{\b Exemple (harmonie vocalique \'e0 trois voyelles)\'a0:}  {\f1 i/\u616?/\u649?}\par
+\pard\li360\sb160\sa0\keepn\b\f1\fs20\cf3 Ponctuation \'e0 l\'92int\'e9rieur des mots\par
+\pard\li720\sb60\sa0\b0\f0\fs20{\b Par d\'e9faut\'a0:}  {\i -}\par
+\pard\li720\sb40\sa0\f0\fs20 Caract\'e8res qui peuvent se trouver \'e0 l\'92int\'e9rieur d\'92un mot et ne doivent pas le couper en plusieurs mots lors de la v\'e9rification des majuscules. \'c0 saisir sans espaces.\par
+\pard\li720\sb0\sa0\f0\fs20 Le trait d\'92union (-) est compris par d\'e9faut, pour les noms propres compos\'e9s comme Be-nimura ou Ebel-setin. Pour accepter aussi l\'92apostrophe (p. ex. k'am), ajoutez ' \'e0 la valeur\'a0:  {\f1 -'}\par
+\pard\li720\sb0\sa80\f0\fs20 Pour ne jamais joindre les parties d\'92un mot, videz la valeur de l\'92option.\par
+}

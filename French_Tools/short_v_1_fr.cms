@@ -1,0 +1,23 @@
+﻿\check Verset 1 court
+\submenu Outils_Français
+\script short_v_1_fr.py
+\description Signale un verset 1 trop court entre un marqueur de paragraphe (\p ou \m) et le marqueur \p suivant. Les options permettent de fixer le nombre minimum de caractères et d’ajouter d’autres marqueurs de paragraphe à vérifier.
+\books
+\noText
+\toList
+\utf8
+
+\optionName MinChars
+\optionLocalizedName Caractères minimum
+\optionDescription Nombre minimum de caractères attendus dans le verset 1 avant le marqueur de paragraphe suivant. Les versets 1 plus courts seront signalés.
+\optionDefault 40
+
+\optionName CheckOtherMarkers
+\optionLocalizedName Vérifier d’autres marqueurs
+\optionDescription Choisissez Oui pour vérifier aussi d’autres marqueurs de paragraphe (listés ci-dessous) avant et après le verset 1, en plus de ceux par défaut (\p et \m avant, \p après).
+\optionDefault No
+
+\optionName OtherMarkers
+\optionLocalizedName Autres marqueurs
+\optionDescription Liste, séparée par des espaces, des marqueurs de paragraphe supplémentaires à vérifier (sans barre oblique inverse), par exemple : q q1 q2 q3 q4. Utilisée seulement quand Vérifier d’autres marqueurs vaut Oui.
+\optionDefault q q1 q2 q3 q4

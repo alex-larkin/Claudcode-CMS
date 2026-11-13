@@ -1,0 +1,36 @@
+﻿VERSET 1 COURT
+==============
+
+BUT
+Signale les chapitres dont le verset 1 contient moins de caractères qu’un
+seuil minimum. Un verset 1 très court indique souvent qu’il manque une
+partie du texte d’introduction ou que le texte a été mal découpé.
+
+La vérification compte les caractères du texte du verset 1 jusqu’au marqueur
+de paragraphe suivant (\p). Les marqueurs USFM ainsi que les notes de bas de
+page et les renvois en ligne ne sont pas comptés.
+
+MODE D’EMPLOI
+1. Copiez les fichiers .cms et .py dans votre dossier My Paratext 9 Projects\cms.
+2. Dans Paratext, lancez la vérification depuis le menu Projet > Outils >
+   Outils personnalisés > Outils_Français.
+3. Chaque résultat indique la référence, le nombre réel de caractères et le
+   minimum demandé, pour voir tout de suite à quel point le verset est court.
+
+OPTIONS
+  Caractères minimum (MinChars)
+    Par défaut :  40
+    Le nombre minimum de caractères que le verset 1 doit contenir. Les
+    chapitres dont le verset 1 en contient moins sont signalés.
+
+  Vérifier d’autres marqueurs (CheckOtherMarkers)
+    Par défaut :  Non
+    Avec Oui, la vérification cherche aussi un texte court après les
+    marqueurs indiqués dans Autres marqueurs (par exemple les marqueurs de
+    poésie comme \q1).
+
+  Autres marqueurs (OtherMarkers)
+    Par défaut :  q q1 q2 q3 q4
+    Liste, séparée par des espaces, des marqueurs de paragraphe à vérifier
+    en plus de \p et \m. Utilisée seulement quand Vérifier d’autres
+    marqueurs vaut Oui.

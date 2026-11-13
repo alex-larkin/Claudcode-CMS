@@ -1,0 +1,23 @@
+﻿\check Rapport des titres
+\submenu Outils_Français
+\script Find_Titles_fr.py
+\description Parcourt les livres choisis et liste le texte du titre principal \mt/\mt1/\mt2/\mt3 trouvé dans chaque livre, à la fois dans la liste des résultats (une ligne par livre) et dans un rapport RapportTitres.html joint (ouvert automatiquement), où chaque segment \mt est mis en forme selon usfm.sty/custom.sty. Un livre sans aucun marqueur \mt est indiqué comme absent. En option, trie le rapport par ordre alphabétique du titre \mt, ou plutôt du texte \h (qui l’emporte sur le tri par titre), et ajoute une colonne avec le texte \h (en-tête courant) de chaque livre. Si un fichier FindTitlesDebug.log apparaît dans le dossier du projet, quelque chose d’inattendu s’est produit -- merci de le transmettre.
+\books
+\noText
+\toList
+\utf8
+
+\optionName SortByTitle
+\optionLocalizedName Trier par titre
+\optionDescription Non (par défaut) liste les livres dans l’ordre canonique. Oui trie plutôt le rapport par ordre alphabétique du titre \mt (les accents et diacritiques sont ignorés pour le tri mais s’affichent normalement ; les livres sans titre sont placés à la fin). Remplacé par Trier par en-tête ci-dessous si celui-ci vaut Oui.
+\optionDefault No
+
+\optionName DisplayHeader
+\optionLocalizedName Afficher l’en-tête
+\optionDescription Oui (par défaut) ajoute au rapport une colonne avec le texte \h (en-tête courant) de chaque livre, ou « absent » s’il n’y en a pas. Non montre seulement le titre \mt. Activé automatiquement si Trier par en-tête ci-dessous vaut Oui.
+\optionDefault Yes
+
+\optionName SortByHeader
+\optionLocalizedName Trier par en-tête
+\optionDescription Non (par défaut). Oui trie plutôt le rapport par ordre alphabétique du texte \h, l’emporte sur Trier par titre ci-dessus et affiche automatiquement la colonne de l’en-tête même si Afficher l’en-tête ci-dessus vaut Non (les accents et diacritiques sont ignorés pour le tri mais s’affichent normalement ; les livres sans texte \h sont placés à la fin).
+\optionDefault No

@@ -1,0 +1,43 @@
+﻿\check Rapport des erreurs de poésie
+\submenu Outils_Français
+\script q_error_fr.py
+\description Trouve les lignes de poésie (\q, \q1, \q2) qui ont un problème de structure : ponctuation finale suivie de texte ; deux marqueurs de verset sur une ligne ; texte avant un marqueur de verset ; ou (en option) ponctuation non finale suivie d’un seul mot avant la ligne poétique suivante. Les notes de bas de page (\f), les renvois (\x) et le contenu de \qs sont ignorés. Les options permettent d’activer ou de désactiver chaque sous-vérification et de régler les caractères de ponctuation et les seuils. Écrit aussi un rapport HTML (RapportErreursQ.html, ouvert automatiquement) qui regroupe chaque problème par type d’erreur, avec la ligne \q complète pour le contexte et le problème précis surligné en rouge.
+\books
+\noText
+\toList
+\utf8
+
+\optionName FinalPunctuation
+\optionLocalizedName Caractères de ponctuation finale
+\optionDescription Caractères qui doivent terminer une ligne poétique. Signale toute ligne \q/\q1/\q2 où l’un d’eux est suivi d’un caractère de mot. Par défaut : point, point d’exclamation et point d’interrogation.
+\optionDefault .!?
+
+\optionName MinCharsBeforePunct
+\optionLocalizedName Nombre minimal de caractères avant la ponctuation finale
+\optionDescription Ignore la ponctuation finale qui se trouve à moins de ce nombre de caractères du début du texte de la ligne poétique. Sert à éviter les fausses alertes sur les lignes très courtes. Mettez 0 pour vérifier toutes les lignes, quelle que soit leur longueur.
+\optionDefault 0
+
+\optionName NonFinalPunctuation
+\optionLocalizedName Caractères de ponctuation non finale
+\optionDescription Utilisé seulement quand « Signaler une ligne finissant par une ponctuation + un seul mot » vaut Yes. Caractères considérés comme ponctuation de milieu de ligne (non finale).
+\optionDefault ,;:
+
+\optionName CheckFinalPunct
+\optionLocalizedName Signaler la ponctuation finale suivie de texte ?
+\optionDescription Choisissez No pour ne pas chercher de ponctuation finale suivie d’un caractère de mot sur la même ligne poétique.
+\optionDefault Yes
+
+\optionName CheckDoubleVerse
+\optionLocalizedName Signaler plusieurs marqueurs de verset sur une ligne poétique ?
+\optionDescription Choisissez No pour ne pas chercher deux marqueurs \v dans une seule ligne \q/\q1/\q2 (sur la même ligne ou en continuant sur la ligne suivante).
+\optionDefault Yes
+
+\optionName CheckTextBeforeVerse
+\optionLocalizedName Signaler du texte avant le marqueur de verset ?
+\optionDescription Choisissez No pour ne pas chercher de texte placé avant un marqueur \v dans une ligne poétique. Forme normale : \q1 \v N texte ; forme fautive : \q1 texte \v N.
+\optionDefault Yes
+
+\optionName CheckHangingWord
+\optionLocalizedName Signaler une ligne finissant par une ponctuation + un seul mot ?
+\optionDescription Choisissez Yes pour signaler toute ligne poétique qui finit par une ponctuation non finale suivie d’exactement un mot (rien d’autre avant la fin de la ligne). Le dernier mot appartient peut-être à la ligne suivante.
+\optionDefault No

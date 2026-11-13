@@ -1,0 +1,12 @@
+﻿\check Convertir les codes
+\submenu Outils_Français
+\script convert_codes_fr.py
+\description Copiez une liste de codes numériques dans le presse-papiers, puis lancez cette vérification. Chaque code est converti en référence biblique Paratext (p. ex. 00103604200012 -> GEN 36:42). Une option permet de choisir une sortie cliquable ou en texte brut.
+\noText
+\toList
+\utf8
+
+\optionName Clickable
+\optionLocalizedName Sortie cliquable
+\optionDescription Choisissez Yes pour afficher les références sous forme cliquable (un clic mène au verset). La valeur par défaut No donne du texte brut, facile à copier-coller.
+\optionDefault No
