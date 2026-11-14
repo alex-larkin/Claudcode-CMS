@@ -79,6 +79,38 @@ if not isinstance(IgnoreWordlistCapitals, type(u'')):
         IgnoreWordlistCapitals = IgnoreWordlistCapitals.decode('mbcs')
 _ignore_wordlist = IgnoreWordlistCapitals.strip().lower() == u'yes'
 
+# Optional names dictionary (off while NamesDictionaryFile is empty).
+try:
+    NamesDictionaryFile
+except NameError:
+    NamesDictionaryFile = ''
+if not isinstance(NamesDictionaryFile, type(u'')):
+    try:
+        NamesDictionaryFile = NamesDictionaryFile.decode('utf-8')
+    except UnicodeDecodeError:
+        NamesDictionaryFile = NamesDictionaryFile.decode('mbcs')
+
+try:
+    NamesDictionaryMarker
+except NameError:
+    NamesDictionaryMarker = '\\lx'
+if not isinstance(NamesDictionaryMarker, type(u'')):
+    try:
+        NamesDictionaryMarker = NamesDictionaryMarker.decode('utf-8')
+    except UnicodeDecodeError:
+        NamesDictionaryMarker = NamesDictionaryMarker.decode('mbcs')
+
+try:
+    NamesDictionaryAllowSuffixes
+except NameError:
+    NamesDictionaryAllowSuffixes = 'No'
+if not isinstance(NamesDictionaryAllowSuffixes, type(u'')):
+    try:
+        NamesDictionaryAllowSuffixes = NamesDictionaryAllowSuffixes.decode('utf-8')
+    except UnicodeDecodeError:
+        NamesDictionaryAllowSuffixes = NamesDictionaryAllowSuffixes.decode('mbcs')
+_dic_allow_suffixes = NamesDictionaryAllowSuffixes.strip().lower() == u'yes'
+
 try:
     QuoteOpeningChars
 except NameError:
@@ -93,7 +125,7 @@ _quote_openers = frozenset(QuoteOpeningChars.strip()) if QuoteOpeningChars.strip
 try:
     IgnoreStyles
 except NameError:
-    IgnoreStyles = ''
+    IgnoreStyles = 'qs'
 if not isinstance(IgnoreStyles, type(u'')):
     try:
         IgnoreStyles = IgnoreStyles.decode('utf-8')
@@ -104,7 +136,7 @@ _ignore_style_names = [s.strip().lstrip(u'\\') for s in IgnoreStyles.split(u',')
 try:
     IgnoreParaStyles
 except NameError:
-    IgnoreParaStyles = 'sp, r, ms, mr, sr'
+    IgnoreParaStyles = 'sp, r, ms, mr, sr, qa'
 if not isinstance(IgnoreParaStyles, type(u'')):
     try:
         IgnoreParaStyles = IgnoreParaStyles.decode('utf-8')
@@ -429,6 +461,54 @@ def _load_specific_case(path):
             exact.add(word)
     return frozenset(exact), frozenset(w.lower() for w in exact)
 
+# Optional names dictionary: a Toolbox/SFM dictionary (.dic) whose capitalized
+# names are treated like capitalized Biblical Terms renderings. Off unless the
+# user fills in NamesDictionaryFile. Every line that starts with the chosen
+# marker (e.g. \lx or \a) supplies one name: the first word of its value,
+# without a leading "+" and without any "/ environment" or "| comment" after
+# it. A word followed by a "+" (a morpheme break) is skipped. Only names that
+# start with a capital letter can matter to this check, so the rest are dropped.
+_DIC_MARKER_OK_RE = re.compile(ur'^[A-Za-z0-9_]{1,32}$', re.UNICODE)
+_DIC_BAD_PATH_CHARS = u'<>"|*?\x00\r\n\t'
+
+# Returns the marker without its backslash, 'lx' if left empty, or None if it
+# holds anything but letters, digits and underscores (so it can never alter
+# the regex it is built into).
+def _clean_dic_marker(raw):
+    marker = raw.strip().lstrip(u'\\').strip()
+    if not marker:
+        return u'lx'
+    return marker if _DIC_MARKER_OK_RE.match(marker) else None
+
+# Returns the path without surrounding spaces/quotes (Explorer's "Copy as
+# path" adds quotes), or None if it is empty or has characters that cannot be
+# in a Windows path.
+def _clean_dic_path(raw):
+    path = raw.strip().strip(u'"').strip()
+    if not path or any(c in path for c in _DIC_BAD_PATH_CHARS):
+        return None
+    return path
+
+def _load_dic_names(path, marker):
+    with open(_open_path(path), 'rb') as f:
+        data = f.read()
+    try:
+        text = data.decode('utf-8')
+    except UnicodeDecodeError:
+        text = data.decode('mbcs')
+    line_re = re.compile(
+        u'^\\\\' + marker + ur'\s+\+?([^\s/|]+)(?=\s|/|\||$)(?!\s*\+)',
+        re.UNICODE)
+    names = set()
+    for line in text.lstrip(u'\ufeff').splitlines():
+        m = line_re.match(line)
+        if not m:
+            continue
+        word = unicodedata.normalize('NFC', m.group(1))
+        if unicodedata.category(word[0]) == u'Lu':
+            names.add(word)
+    return [[w] for w in sorted(names)]
+
 def _spec_matches(spec, word):
     if isinstance(spec, type(u'')):
         return word == spec
@@ -500,7 +580,18 @@ def _is_ignored_at(verse_text, pos, word_str):
     word_nfc = unicodedata.normalize('NFC', word_str)
     if word_nfc in _ignore_words or word_nfc in _specific_case_words:
         return True
+    if _dic_allow_suffixes and _starts_with_dic_name(word_nfc):
+        return True
     return _word_has_affix(word_str)
+
+# Optional (NamesDictionaryAllowSuffixes): for languages whose suffix
+# combinations can't be listed, any word that begins with a dictionary name
+# (case-sensitive, name followed by anything) counts as that name.
+def _starts_with_dic_name(word_nfc):
+    for i in range(1, len(word_nfc) + 1):
+        if word_nfc[:i] in _dic_names:
+            return True
+    return False
 
 # ---------------------------------------------------------------------------
 # HTML report support
@@ -647,6 +738,34 @@ checking.setupCheck()
 
 _tr_path = _find_current_project_renderings() if _ignore_bt else None
 _cap_phrases = _load_cap_renderings(_tr_path) if _tr_path else []
+
+_dic_names = frozenset()
+if NamesDictionaryFile.strip():
+    _dic_path = _clean_dic_path(NamesDictionaryFile)
+    _dic_marker = _clean_dic_marker(NamesDictionaryMarker)
+    if _dic_marker is None:
+        _sys.stdout.write(_to_utf8_bytes(
+            u'# Names dictionary ignored: marker "{0}" is not valid (use only '
+            u'letters, digits and underscores, e.g. \\lx or \\a).\n'.format(
+                NamesDictionaryMarker.strip())))
+    elif _dic_path is None or not os.path.isfile(_open_path(_dic_path)):
+        _sys.stdout.write(_to_utf8_bytes(
+            u'# Names dictionary ignored: file not found: {0}\n'.format(
+                NamesDictionaryFile.strip())))
+    else:
+        try:
+            _dic_phrases = _load_dic_names(_dic_path, _dic_marker)
+            _dic_names = frozenset(p[0] for p in _dic_phrases)
+            _cap_phrases.extend(_dic_phrases)
+            _sys.stdout.write(_to_utf8_bytes(
+                u'# Names dictionary: {0} capitalized name(s) read from \\{1} '
+                u'lines in {2}\n'.format(
+                    len(_dic_phrases), _dic_marker, _dic_path)))
+        except Exception as e:
+            _log_crash(u'names dictionary', e)
+            _sys.stdout.write(_to_utf8_bytes(
+                u'# Names dictionary ignored: could not be read; see '
+                u'CapitalAtVerseDebug.log\n'))
 _cap_phrases_by_first_word, _cap_phrases_wildcard_first = _index_cap_phrases(_cap_phrases)
 _cap_single_word_exact_lower, _cap_single_word_wildcards = _index_single_word_terms(_cap_phrases)
 
