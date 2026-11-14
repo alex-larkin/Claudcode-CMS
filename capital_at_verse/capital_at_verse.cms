@@ -29,13 +29,13 @@
 
 \optionName NamesDictionaryFile
 \optionLocalizedName Names dictionary file (optional)
-\optionDescription Optional. Full path of a Toolbox/SFM dictionary (.dic) file whose capitalized names should not be flagged, for example C:\Dictionaries\names.dic. Leave this empty (the default) to turn the feature off. The marker to read is set by Names dictionary marker below.
+\optionDescription Optional. Full path of a Toolbox/SFM dictionary (.dic) file whose capitalized names should not be flagged, for example C:\Dictionaries\names.dic. Leave this empty (the default) to turn the feature off. The markers to read are set by Names dictionary markers below.
 \optionDefault
 
-\optionName NamesDictionaryMarker
-\optionLocalizedName Names dictionary marker
-\optionDescription Marker whose values are read from the names dictionary file, for example \lx or \a. Type any marker you need, with or without the leading backslash; apart from that backslash only letters, digits and underscores are accepted. The first word of each value is used, without a leading + and without anything after a / or |. Only names that begin with a capital letter are used. Has no effect while Names dictionary file is empty.
-\optionDefault \lx
+\optionName NamesDictionaryMarkers
+\optionLocalizedName Names dictionary markers
+\optionDescription Comma-separated marker names (no backslash) whose values are read from the names dictionary file, for example lx or lx, a. Type any markers you need; only letters, digits and underscores are accepted. The first word of each value is used, without a leading + and without anything after a / or |. Only names that begin with a capital letter are used. Has no effect while Names dictionary file is empty.
+\optionDefault lx
 
 \optionName NamesDictionaryAllowSuffixes
 \optionLocalizedName Names dictionary: allow suffixes

@@ -91,14 +91,14 @@ if not isinstance(NamesDictionaryFile, type(u'')):
         NamesDictionaryFile = NamesDictionaryFile.decode('mbcs')
 
 try:
-    NamesDictionaryMarker
+    NamesDictionaryMarkers
 except NameError:
-    NamesDictionaryMarker = '\\lx'
-if not isinstance(NamesDictionaryMarker, type(u'')):
+    NamesDictionaryMarkers = 'lx'
+if not isinstance(NamesDictionaryMarkers, type(u'')):
     try:
-        NamesDictionaryMarker = NamesDictionaryMarker.decode('utf-8')
+        NamesDictionaryMarkers = NamesDictionaryMarkers.decode('utf-8')
     except UnicodeDecodeError:
-        NamesDictionaryMarker = NamesDictionaryMarker.decode('mbcs')
+        NamesDictionaryMarkers = NamesDictionaryMarkers.decode('mbcs')
 
 try:
     NamesDictionaryAllowSuffixes
@@ -463,22 +463,32 @@ def _load_specific_case(path):
 
 # Optional names dictionary: a Toolbox/SFM dictionary (.dic) whose capitalized
 # names are treated like capitalized Biblical Terms renderings. Off unless the
-# user fills in NamesDictionaryFile. Every line that starts with the chosen
-# marker (e.g. \lx or \a) supplies one name: the first word of its value,
+# user fills in NamesDictionaryFile. Every line that starts with one of the
+# chosen markers (e.g. lx, a) supplies one name: the first word of its value,
 # without a leading "+" and without any "/ environment" or "| comment" after
 # it. A word followed by a "+" (a morpheme break) is skipped. Only names that
 # start with a capital letter can matter to this check, so the rest are dropped.
 _DIC_MARKER_OK_RE = re.compile(ur'^[A-Za-z0-9_]{1,32}$', re.UNICODE)
 _DIC_BAD_PATH_CHARS = u'<>"|*?\x00\r\n\t'
 
-# Returns the marker without its backslash, 'lx' if left empty, or None if it
-# holds anything but letters, digits and underscores (so it can never alter
-# the regex it is built into).
-def _clean_dic_marker(raw):
-    marker = raw.strip().lstrip(u'\\').strip()
-    if not marker:
-        return u'lx'
-    return marker if _DIC_MARKER_OK_RE.match(marker) else None
+# Returns the list of marker names (no backslash) from a comma-separated
+# option value: ['lx'] if it is empty, or None if any entry holds anything but
+# letters, digits and underscores (so no entry can ever alter the regex it is
+# built into) or there are more than 20. A leading backslash is tolerated, as
+# in IgnoreStyles.
+def _clean_dic_markers(raw):
+    markers = []
+    for token in raw.split(u','):
+        marker = token.strip().lstrip(u'\\').strip()
+        if not marker:
+            continue
+        if not _DIC_MARKER_OK_RE.match(marker):
+            return None
+        if marker not in markers:
+            markers.append(marker)
+    if len(markers) > 20:
+        return None
+    return markers or [u'lx']
 
 # Returns the path without surrounding spaces/quotes (Explorer's "Copy as
 # path" adds quotes), or None if it is empty or has characters that cannot be
@@ -489,7 +499,7 @@ def _clean_dic_path(raw):
         return None
     return path
 
-def _load_dic_names(path, marker):
+def _load_dic_names(path, markers):
     with open(_open_path(path), 'rb') as f:
         data = f.read()
     try:
@@ -497,7 +507,7 @@ def _load_dic_names(path, marker):
     except UnicodeDecodeError:
         text = data.decode('mbcs')
     line_re = re.compile(
-        u'^\\\\' + marker + ur'\s+\+?([^\s/|]+)(?=\s|/|\||$)(?!\s*\+)',
+        u'^\\\\(?:' + u'|'.join(markers) + ur')\s+\+?([^\s/|]+)(?=\s|/|\||$)(?!\s*\+)',
         re.UNICODE)
     names = set()
     for line in text.lstrip(u'\ufeff').splitlines():
@@ -742,25 +752,28 @@ _cap_phrases = _load_cap_renderings(_tr_path) if _tr_path else []
 _dic_names = frozenset()
 if NamesDictionaryFile.strip():
     _dic_path = _clean_dic_path(NamesDictionaryFile)
-    _dic_marker = _clean_dic_marker(NamesDictionaryMarker)
-    if _dic_marker is None:
+    _dic_markers = _clean_dic_markers(NamesDictionaryMarkers)
+    if _dic_markers is None:
         _sys.stdout.write(_to_utf8_bytes(
-            u'# Names dictionary ignored: marker "{0}" is not valid (use only '
-            u'letters, digits and underscores, e.g. \\lx or \\a).\n'.format(
-                NamesDictionaryMarker.strip())))
+            u'# Names dictionary ignored: markers "{0}" are not valid (list '
+            u'marker names without a backslash, separated by commas, using '
+            u'only letters, digits and underscores, e.g. lx, a; at most '
+            u'20).\n'.format(
+                NamesDictionaryMarkers.strip())))
     elif _dic_path is None or not os.path.isfile(_open_path(_dic_path)):
         _sys.stdout.write(_to_utf8_bytes(
             u'# Names dictionary ignored: file not found: {0}\n'.format(
                 NamesDictionaryFile.strip())))
     else:
         try:
-            _dic_phrases = _load_dic_names(_dic_path, _dic_marker)
+            _dic_phrases = _load_dic_names(_dic_path, _dic_markers)
             _dic_names = frozenset(p[0] for p in _dic_phrases)
             _cap_phrases.extend(_dic_phrases)
             _sys.stdout.write(_to_utf8_bytes(
-                u'# Names dictionary: {0} capitalized name(s) read from \\{1} '
+                u'# Names dictionary: {0} capitalized name(s) read from {1} '
                 u'lines in {2}\n'.format(
-                    len(_dic_phrases), _dic_marker, _dic_path)))
+                    len(_dic_phrases),
+                    u', '.join(u'\\' + m for m in _dic_markers), _dic_path)))
         except Exception as e:
             _log_crash(u'names dictionary', e)
             _sys.stdout.write(_to_utf8_bytes(
